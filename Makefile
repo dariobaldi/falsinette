@@ -1,6 +1,11 @@
 # ============================================================================= #
-# HELPERS	  																	#
+# HELPERS									#
 # ============================================================================= #
+
+CC := cc
+CFLAGS := -Wall -Werror -Wextra
+CW := $(CC) $(CFLAGS) -o Executable
+XCLEAN_FAIL := ./Executable && rm -f ./Executable || echo FAILED
 
 .PHONY: help
 help:
@@ -13,7 +18,7 @@ confirm:
 
 
 # ============================================================================= #
-# DEVELOPMENT  																	#
+# TEST										#
 # ============================================================================= #
 
 ## c00 : Run all tests for C00 project
@@ -23,23 +28,23 @@ c00:
 	@echo "\n** Testing norminette"
 	@norminette ../c00
 	@echo "\n** EX00: ft_putchar"
-	@cc -Wall -Werror -Wextra -oExe ./c00/ex00.c ../c00/ex00/ft_putchar.c && ./Exe && rm -f ./Exe
+	@$(CW) ./c00/ex00.c ../c00/ex00/ft_putchar.c && $(XCLEAN_FAIL)
 	@echo "\n** EX01: ft_print_alphabet"
-	@cc -Wall -Werror -Wextra -oExe ./c00/ex01.c ../c00/ex01/ft_print_alphabet.c && ./Exe && rm -f ./Exe
+	@$(CW) ./c00/ex01.c ../c00/ex01/ft_print_alphabet.c && $(XCLEAN_FAIL)
 	@echo "\n\n** EX02: ft_print_reverse_alphabet"
-	@cc -Wall -Werror -Wextra -oExe ./c00/ex02.c ../c00/ex02/ft_print_reverse_alphabet.c && ./Exe && rm -f ./Exe
+	@$(CW) ./c00/ex02.c ../c00/ex02/ft_print_reverse_alphabet.c && $(XCLEAN_FAIL)
 	@echo "\n\n** EX03:  ft_print_numbers"
-	@cc -Wall -Werror -Wextra -oExe ./c00/ex03.c ../c00/ex03/ft_print_numbers.c && ./Exe && rm -f ./Exe
+	@$(CW) ./c00/ex03.c ../c00/ex03/ft_print_numbers.c && $(XCLEAN_FAIL)
 	@echo "\n\n** EX04: ft_is_negative"
-	@cc -Wall -Werror -Wextra -oExe ./c00/ex04.c ../c00/ex04/ft_is_negative.c && ./Exe && rm -f ./Exe
+	@$(CW) ./c00/ex04.c ../c00/ex04/ft_is_negative.c && $(XCLEAN_FAIL)
 	@echo "\n\n** EX05: ft_print_comb"
-	@cc -Wall -Werror -Wextra -oExe ./c00/ex05.c ../c00/ex05/ft_print_comb.c && ./Exe && rm -f ./Exe
+	@$(CW) ./c00/ex05.c ../c00/ex05/ft_print_comb.c && $(XCLEAN_FAIL)
 	@echo "<- (!) Here there should be no line return"
 	@echo "\n\n** EX06: ft_print_comb2"
-	@cc -Wall -Werror -Wextra -oExe ./c00/ex06.c ../c00/ex06/ft_print_comb2.c && ./Exe && rm -f ./Exe
+	@$(CW) ./c00/ex06.c ../c00/ex06/ft_print_comb2.c && $(XCLEAN_FAIL)
 	@echo "<- (!) Here there should be no line return"
 	@echo "\n\n** EX07: ft_putnbr"
-	@cc -Wall -Werror -Wextra -oExe ./c00/ex07.c ../c00/ex07/ft_putnbr.c && ./Exe && rm -f ./Exe
+	@$(CW) ./c00/ex07.c ../c00/ex07/ft_putnbr.c && $(XCLEAN_FAIL)
 	@echo ""
 
 
