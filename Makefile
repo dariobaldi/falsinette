@@ -35,6 +35,8 @@ c00:
 	@echo "\n\n** EX05: ft_print_comb"
 	@cc -Wall -Werror -Wextra -oExe ./c00/ex05.c ../c00/ex05/ft_print_comb.c && ./Exe && rm -f ./Exe
 	@echo "<- (!) Here there whould be no line return"
+	@echo "\n\n** EX06: ft_print_comb2"
+	@cc -Wall -Werror -Wextra -oExe ./c00/ex06.c ../c00/ex06/ft_print_comb2.c && ./Exe && rm -f ./Exe
 	@echo ""
 
 
