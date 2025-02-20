@@ -34,6 +34,7 @@ c00:
 	@cc -Wall -Werror -Wextra -oExe ./c00/ex04.c ../c00/ex04/ft_is_negative.c && ./Exe && rm -f ./Exe
 	@echo "\n\n** EX05: ft_is_negative"
 	@cc -Wall -Werror -Wextra -oExe ./c00/ex05.c ../c00/ex05/ft_print_comb.c && ./Exe && rm -f ./Exe
+	@echo "<- (!) Here there whould be no line return"
 	@echo ""
 
 
