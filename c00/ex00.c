@@ -8,7 +8,7 @@ int main()
 	char c2 = 'B';
 	char c3 = 'C';
 
-	printf("%c%c%c\n", c1, c2, c3);
+	printf("-Expected/Result:\n%c%c%c\n", c1, c2, c3);
 
 	ft_putchar(c1);
 	ft_putchar(c2);

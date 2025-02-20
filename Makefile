@@ -28,6 +28,8 @@ c00:
 	@cc -Wall -Werror -Wextra -oExe ./c00/ex01.c ../c00/ex01/ft_print_alphabet.c && ./Exe && rm -f ./Exe
 	@echo "\n\n** EX02: ft_print_reverse_alphabet"
 	@cc -Wall -Werror -Wextra -oExe ./c00/ex02.c ../c00/ex02/ft_print_reverse_alphabet.c && ./Exe && rm -f ./Exe
+	@echo "\n\n** EX03:  ft_print_numbers"
+	@cc -Wall -Werror -Wextra -oExe ./c00/ex03.c ../c00/ex03/ft_print_numbers.c && ./Exe && rm -f ./Exe
 	@echo ""
 
 
