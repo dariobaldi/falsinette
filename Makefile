@@ -26,7 +26,7 @@ confirm:
 c00:
 	@echo "\n******   Projet C00  ******"
 	@echo "\n** Testing norminette"
-	@norminette ../c00 || echo "FAILED the Norme"
+	@norminette -R CheckForbiddenSourceHeader ../c00 || echo "FAILED the Norme"
 	@echo "\n** EX00: ft_putchar"
 	@$(CW) ./c00/ex00.c ../c00/ex00/ft_putchar.c && $(XCLEAN_FAIL)
 	@echo "\n** EX01: ft_print_alphabet"
@@ -51,11 +51,21 @@ c00:
 	@echo ""
 
 
+## c01 : Run all tests for C01 project
+.PHONY: c01
+c01:
+	@echo "\n******   Projet C01 : Pointers  ******"
+	@echo "\n** Testing norminette"
+	@norminette -R CheckForbiddenSourceHeader ../c01 || echo "FAILED the Norme"
+	@echo "\n** EX00: ft_ft"
+	@$(CW) ./c01/ex00.c ../c01/ex00/ft_ft.c && $(XCLEAN_FAIL)
+	
+
 ## test : test current exo
 .PHONY: test
 test:
 	@echo "\n** Testing norminette"
-	@norminette ../c00 || echo "FAILED the Norme"
+	@norminette -R CheckForbiddenSourceHeader ../c00 || echo "FAILED the Norme"
 	@echo "\n\n** EX08: ft_putnbr"
 	@cc -Wall -Werror -Wextra -oExe ./c00/ex08.c ../c00/ex08/ft_print_combn.c && ./Exe && rm -f ./Exe
 	@echo ""
