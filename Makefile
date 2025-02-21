@@ -71,6 +71,8 @@ c01:
 	@$(CW) ./c01/ex05.c ../c01/ex05/ft_putstr.c && $(XCLEAN_FAIL)
 	@echo "\n\n** EX06: ft_strlen"
 	@$(CW) ./c01/ex06.c ../c01/ex06/ft_strlen.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX07: ft_rev_int_tab"
+	@$(CW) ./c01/ex07.c ../c01/ex07/ft_rev_int_tab.c && $(XCLEAN_FAIL)
 	@echo ""
 	
 
@@ -79,6 +81,6 @@ c01:
 test:
 	@echo "\n** Testing norminette"
 	@norminette -R CheckForbiddenSourceHeader ../c01 || echo "FAILED the Norme"
-	@echo "\n\n** EX06: ft_strlen"
-	@$(CW) ./c01/ex06.c ../c01/ex06/ft_strlen.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX07: ft_rev_int_tab"
+	@$(CW) ./c01/ex07.c ../c01/ex07/ft_rev_int_tab.c && $(XCLEAN_FAIL)
 	@echo ""
