@@ -45,6 +45,8 @@ c00:
 	@echo "<- (!) Here there should be no line return"
 	@echo "\n\n** EX07: ft_putnbr"
 	@$(CW) ./c00/ex07.c ../c00/ex07/ft_putnbr.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX08: ft_putnbr"
+	@cc -Wall -Werror -Wextra -oExe ./c00/ex08.c ../c00/ex08/ft_print_combn.c && ./Exe && rm -f ./Exe
 	@echo ""
 
 
