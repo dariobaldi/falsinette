@@ -26,7 +26,7 @@ confirm:
 c00:
 	@echo "\n******   Projet C00  ******"
 	@echo "\n** Testing norminette"
-	@norminette ../c00
+	@norminette ../c00 || echo "FAILED the Norme"
 	@echo "\n** EX00: ft_putchar"
 	@$(CW) ./c00/ex00.c ../c00/ex00/ft_putchar.c && $(XCLEAN_FAIL)
 	@echo "\n** EX01: ft_print_alphabet"
@@ -47,6 +47,7 @@ c00:
 	@$(CW) ./c00/ex07.c ../c00/ex07/ft_putnbr.c && $(XCLEAN_FAIL)
 	@echo "\n\n** EX08: ft_putnbr"
 	@cc -Wall -Werror -Wextra -oExe ./c00/ex08.c ../c00/ex08/ft_print_combn.c && ./Exe && rm -f ./Exe
+	@echo "<- (!) Here there should be no line return"
 	@echo ""
 
 
@@ -54,7 +55,7 @@ c00:
 .PHONY: test
 test:
 	@echo "\n** Testing norminette"
-	# @norminette ../c00
+	@norminette ../c00 || echo "FAILED the Norme"
 	@echo "\n\n** EX08: ft_putnbr"
 	@cc -Wall -Werror -Wextra -oExe ./c00/ex08.c ../c00/ex08/ft_print_combn.c && ./Exe && rm -f ./Exe
 	@echo ""
