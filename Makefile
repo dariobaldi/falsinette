@@ -65,6 +65,8 @@ c01:
 	@$(CW) ./c01/ex02.c ../c01/ex02/ft_swap.c && $(XCLEAN_FAIL)
 	@echo "\n\n** EX03: ft_div_mod"
 	@$(CW) ./c01/ex03.c ../c01/ex03/ft_div_mod.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX04: ft_ultimate_div_mod"
+	@$(CW) ./c01/ex04.c ../c01/ex04/ft_ultimate_div_mod.c && $(XCLEAN_FAIL)
 	@echo ""
 	
 
@@ -73,6 +75,6 @@ c01:
 test:
 	@echo "\n** Testing norminette"
 	@norminette -R CheckForbiddenSourceHeader ../c01 || echo "FAILED the Norme"
-	@echo "\n\n** EX02: ft_div_mod"
-	@$(CW) ./c01/ex03.c ../c01/ex03/ft_div_mod.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX04: ft_ultimate_div_mod"
+	@$(CW) ./c01/ex04.c ../c01/ex04/ft_ultimate_div_mod.c && $(XCLEAN_FAIL)
 	@echo ""
