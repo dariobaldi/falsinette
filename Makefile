@@ -59,13 +59,16 @@ c01:
 	@norminette -R CheckForbiddenSourceHeader ../c01 || echo "FAILED the Norme"
 	@echo "\n** EX00: ft_ft"
 	@$(CW) ./c01/ex00.c ../c01/ex00/ft_ft.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX01: ft_ultimate_ft"
+	@$(CW) ./c01/ex01.c ../c01/ex01/ft_ultimate_ft.c && $(XCLEAN_FAIL)
+	@echo ""
 	
 
 ## test : test current exo
 .PHONY: test
 test:
 	@echo "\n** Testing norminette"
-	@norminette -R CheckForbiddenSourceHeader ../c00 || echo "FAILED the Norme"
-	@echo "\n\n** EX08: ft_putnbr"
-	@cc -Wall -Werror -Wextra -oExe ./c00/ex08.c ../c00/ex08/ft_print_combn.c && ./Exe && rm -f ./Exe
+	@norminette -R CheckForbiddenSourceHeader ../c01 || echo "FAILED the Norme"
+	@echo "\n\n** EX01: ft_ultimate_ft"
+	@$(CW) ./c01/ex01.c ../c01/ex01/ft_ultimate_ft.c && $(XCLEAN_FAIL)
 	@echo ""
