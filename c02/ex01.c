@@ -26,4 +26,6 @@ int main()
 		i++;
 	}	
 	printf("OK");
+	free(str2);
+	free(str3);
 }
