@@ -3,7 +3,6 @@
 #include<stdlib.h>
 
 char	*ft_strcpy(char *dest, char *src);
-void	ft_print_str(char *str);
 
 int main()
 {
@@ -20,23 +19,11 @@ int main()
 		if (str3[i] != str2[i])
 		{
 			printf("FAILED. Result/Expected\n");
-			ft_print_str(str2);
-			ft_print_str(str3);
+			printf("%s\n",str2);
+			printf("%s\n",str3);
 			return (0);
 		}
 		i++;
 	}	
 	printf("OK");
-}
-
-void	ft_print_str(char *str)
-{
-	int	i = 0;
-
-	while (str[i])
-	{	
-		printf("%c", str[i]);
-		i++;
-	}
-	printf("\n");
 }
