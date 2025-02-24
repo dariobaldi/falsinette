@@ -89,6 +89,8 @@ c02:
 	@$(CW) ./c02/ex00.c ../c02/ex00/ft_strcpy.c && $(XCLEAN_FAIL)
 	@echo "\n\n** EX01: ft_strncpy"
 	@$(CW) ./c02/ex01.c ../c02/ex01/ft_strncpy.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX02: ft_str_is_alpha"
+	@$(CW) ./c02/ex02.c ../c02/ex02/ft_str_is_alpha.c && $(XCLEAN_FAIL)
 	@echo ""
 
 ## test : test current exo
@@ -96,6 +98,6 @@ c02:
 test:
 	@echo "\n** Testing norminette"
 	@norminette -R CheckForbiddenSourceHeader ../c02 || echo "FAILED the Norme"
-	@echo "\n\n** EX01: ft_strncpy"
-	@$(CW) ./c02/ex01.c ../c02/ex01/ft_strncpy.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX02: ft_str_is_alpha"
+	@$(CW) ./c02/ex02.c ../c02/ex02/ft_str_is_alpha.c && $(XCLEAN_FAIL)
 	@echo ""
