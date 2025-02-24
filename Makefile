@@ -93,6 +93,10 @@ c02:
 	@$(CW) ./c02/ex02.c ../c02/ex02/ft_str_is_alpha.c && $(XCLEAN_FAIL)
 	@echo "\n\n** EX03: ft_str_is_numeric"
 	@$(CW) ./c02/ex03.c ../c02/ex03/ft_str_is_numeric.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX04: ft_str_is_lowercase"
+	@$(CW) ./c02/ex04.c ../c02/ex04/ft_str_is_lowercase.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX05: ft_str_is_uppercase"
+	@$(CW) ./c02/ex05.c ../c02/ex05/ft_str_is_uppercase.c && $(XCLEAN_FAIL)
 	@echo ""
 
 ## test : test current exo
@@ -100,6 +104,6 @@ c02:
 test:
 	@echo "\n** Testing norminette"
 	@norminette -R CheckForbiddenSourceHeader ../c02 || echo "FAILED the Norme"
-	@echo "\n\n** EX03: ft_str_is_numeric"
-	@$(CW) ./c02/ex03.c ../c02/ex03/ft_str_is_numeric.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX05: ft_str_is_uppercase"
+	@$(CW) ./c02/ex05.c ../c02/ex05/ft_str_is_uppercase.c && $(XCLEAN_FAIL)
 	@echo ""
