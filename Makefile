@@ -5,7 +5,9 @@
 CC := cc
 CFLAGS := -Wall -Werror -Wextra
 CW := $(CC) $(CFLAGS) -o Executable
+VCW := $(CC) $(CFLAGS) -g -o Executable
 XCLEAN_FAIL := ./Executable && rm -f ./Executable || echo FAILED
+VXCLEAN_FAIL := valgrind ./Executable && rm -f ./Executable || echo FAILED
 
 .PHONY: help
 help:
@@ -76,13 +78,22 @@ c01:
 	@echo "\n\n** EX08: ft_sort_int_tab"
 	@$(CW) ./c01/ex08.c ../c01/ex08/ft_sort_int_tab.c && $(XCLEAN_FAIL)
 	@echo ""
-	
+
+## c02 : Run all tests for C02 project
+.PHONY: c02
+c02:
+	@echo "\n******   Projet C02 : string manipulation  ******"
+	@echo "\n** Testing norminette"
+	@norminette -R CheckForbiddenSourceHeader ../c02 || echo "FAILED the Norme"
+	@echo "\n** EX00: ft_strcpy"
+	@$(CW) ./c02/ex00.c ../c02/ex00/ft_strcpy.c && $(XCLEAN_FAIL)
+	@echo ""
 
 ## test : test current exo
 .PHONY: test
 test:
 	@echo "\n** Testing norminette"
-	@norminette -R CheckForbiddenSourceHeader ../c01 || echo "FAILED the Norme"
-	@echo "\n\n** EX08: ft_sort_int_tab"
-	@$(CW) ./c01/ex08.c ../c01/ex08/ft_sort_int_tab.c && $(XCLEAN_FAIL)
+	@norminette -R CheckForbiddenSourceHeader ../c02 || echo "FAILED the Norme"
+	@echo "\n\n** EX00: ft_strcpy"
+	@$(CW) ./c02/ex00.c ../c02/ex00/ft_strcpy.c && $(XCLEAN_FAIL)
 	@echo ""
