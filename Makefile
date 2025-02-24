@@ -103,6 +103,8 @@ c02:
 	@$(CW) ./c02/ex07.c ../c02/ex07/ft_strupcase.c && $(XCLEAN_FAIL)
 	@echo "\n\n** EX08: ft_strlowcase"
 	@$(CW) ./c02/ex08.c ../c02/ex08/ft_strlowcase.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX09: ft_strcapitalize"
+	@$(CW) ./c02/ex09.c ../c02/ex09/ft_strcapitalize.c && $(XCLEAN_FAIL)
 	@echo ""
 
 ## test : test current exo
@@ -110,6 +112,6 @@ c02:
 test:
 	@echo "\n** Testing norminette"
 	@norminette -R CheckForbiddenSourceHeader ../c02 || echo "FAILED the Norme"
-	@echo "\n\n** EX08: ft_strlowcase"
-	@$(CW) ./c02/ex08.c ../c02/ex08/ft_strlowcase.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX09: ft_strcapitalize"
+	@$(CW) ./c02/ex09.c ../c02/ex09/ft_strcapitalize.c && $(XCLEAN_FAIL)
 	@echo ""
