@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include <string.h>
+#include<string.h>
 #include<stdlib.h>
 
 char	*ft_strcpy(char *dest, char *src);
@@ -26,4 +26,6 @@ int main()
 		i++;
 	}	
 	printf("OK");
+	free(str2);
+	free(str3);
 }
