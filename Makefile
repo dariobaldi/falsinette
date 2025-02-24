@@ -114,6 +114,6 @@ c02:
 test:
 	@echo "\n** Testing norminette"
 	@norminette -R CheckForbiddenSourceHeader ../c02 || echo "FAILED the Norme"
-	@echo "\n\n** EX10: ft_strlcpy"
-	@$(CW) ./c02/ex10.c ../c02/ex10/ft_strlcpy.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX11: ft_putstr_non_printable"
+	@$(CW) ./c02/ex11.c ../c02/ex11/ft_putstr_non_printable.c && $(XCLEAN_FAIL)
 	@echo ""
