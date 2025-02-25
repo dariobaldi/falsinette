@@ -24,7 +24,9 @@ int main()
 			return (0);
 		}
 		i++;
-	}	
+	}
+	if (str2[i])
+		printf("FAILED: Last character not null\n");
 	printf("OK");
 	free(str2);
 	free(str3);
