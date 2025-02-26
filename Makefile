@@ -125,6 +125,8 @@ C03:
 	@$(CW) ./C03/ex01.c ../C03/ex01/ft_strncmp.c && $(XCLEAN_FAIL)
 	@echo "\n\n** EX02: ft_strcat"
 	@$(CW) ./C03/ex02.c ../C03/ex02/ft_strcat.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX03: ft_strncat"
+	@$(CW) ./C03/ex03.c ../C03/ex03/ft_strncat.c && $(XCLEAN_FAIL)
 	@echo ""
 	
 ## test : test current exo
@@ -132,6 +134,6 @@ C03:
 test:
 	@echo "\n** Testing norminette"
 	@norminette -R CheckForbiddenSourceHeader ../C03 || echo "FAILED the Norme"
-	@echo "\n\n** EX02: ft_strcat"
-	@$(CW) ./C03/ex02.c ../C03/ex02/ft_strcat.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX03: ft_strncat"
+	@$(CW) ./C03/ex03.c ../C03/ex03/ft_strncat.c && $(XCLEAN_FAIL)
 	@echo ""
