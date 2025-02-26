@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include<string.h>
+#include<bsd/string.h>
 
 unsigned int	 ft_strlcpy(char *dest, char *src, unsigned int size);
 unsigned int	ft_check_strlcpy(char *dest, char *src, unsigned int size);
@@ -22,10 +22,12 @@ int main()
 
 unsigned int	ft_check_strlcpy(char *dest, char *src, unsigned int size)
 {
-	unsigned int len;
+	unsigned int result, expected;
 
-	len = ft_strlcpy(dest, src, size);
+	result = ft_strlcpy(dest, src, size);
+	expected = strlcpy(dest, src, size);
 	
+	if 
 	unsigned int i = 0;
 	while (i < size - 1 && dest[i] )
 	{
