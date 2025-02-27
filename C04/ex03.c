@@ -16,6 +16,15 @@ int main()
 		failed = 1;
 	}
 
+
+	str = "\f\n\r\t\v56789";
+	result = ft_atoi(str);
+	if (result != 56789)
+	{
+		printf("FAILED: \"\\f\\n\\r\\t\\v56789\"\n");
+		failed = 1;
+	}
+
 	str = "56789";
 	result = ft_atoi(str);
 	if (result != 56789)
