@@ -132,12 +132,22 @@ C03:
 	@echo "\n\n** EX05: ft_strlcat"
 	@$(CW) ./C03/ex05.c ../C03/ex05/ft_strlcat.c -lbsd && $(XCLEAN_FAIL)
 	@echo ""
-	
+
+## C04 : Run all tests for C04 project
+.PHONY: C04
+C04:
+	@echo "\n******   Projet C04 : putnbr and atoi  ******"
+	@echo "\n** Testing norminette"
+	@norminette -R CheckForbiddenSourceHeader ../C03 || echo "FAILED the Norme"
+	@echo "\n\n** EX00: ft_strlen"
+	@$(CW) ./C04/ex00.c ../C04/ex00/ft_strlen.c && $(XCLEAN_FAIL)
+	@echo ""	
+
 ## test : test current exo
 .PHONY: test
 test:
 	@echo "\n** Testing norminette"
-	@norminette -R CheckForbiddenSourceHeader ../C03 || echo "FAILED the Norme"
-	@echo "\n\n** EX05: ft_strlcat"
-	@$(CW) ./C03/ex05.c ../C03/ex05/ft_strlcat.c -lbsd && $(XCLEAN_FAIL)
+	@norminette -R CheckForbiddenSourceHeader ../C04 || echo "FAILED the Norme"
+	@echo "\n\n** EX00: ft_strlen"
+	@$(CW) ./C04/ex00.c ../C04/ex00/ft_strlen.c && $(XCLEAN_FAIL)
 	@echo ""
