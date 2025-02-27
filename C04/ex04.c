@@ -19,9 +19,9 @@ int main()
 	ft_putnbr_base(0, decimal);
 	printf("\n\n10\n");
 	ft_putnbr_base(10, decimal);
-	printf("\n\nINT_MAX\n");
+	printf("\n\n2147483647(INT_MAX)\n");
 	ft_putnbr_base(INT_MAX, decimal);
-	printf("\n\nINT_MIN\n");
+	printf("\n\n-2147483648(INT_MIN)\n");
 	ft_putnbr_base(INT_MIN, decimal);
 	printf("\n\n1010\n");
 	ft_putnbr_base(10, binaire);
