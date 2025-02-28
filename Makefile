@@ -151,13 +151,23 @@ C04:
 	@$(CW) ./C04/ex04.c ../C04/ex04/ft_putnbr_base.c && $(XCLEAN_FAIL)
 	@echo "\n\n** EX05: ft_atoi_base"
 	@$(CW) ./C04/ex05.c ../C04/ex05/ft_atoi_base.c && $(XCLEAN_FAIL)
+	@echo ""
+
+## C05 : Run all tests for C05 project
+.PHONY: C05
+C05:
+	@echo "\n******   Projet C05 : recursive functions ******"
+	@echo "\n** Testing norminette"
+	@norminette -R CheckForbiddenSourceHeader ../C05 || echo "FAILED the Norme"
+	@echo "\n\n** EX00: ft_iterative_factorial"
+	@$(CW) ./C05/ex00.c ../C05/ex00/ft_iterative_factorial.c && $(XCLEAN_FAIL)
 	@echo ""	
 
 ## test : test current exo
 .PHONY: test
 test:
 	@echo "\n** Testing norminette"
-	@norminette -R CheckForbiddenSourceHeader ../C04 || echo "FAILED the Norme"
-	@echo "\n\n** EX05: ft_atoi_base"
-	@$(CW) ./C04/ex05.c ../C04/ex05/ft_atoi_base.c && $(XCLEAN_FAIL)
+	@norminette -R CheckForbiddenSourceHeader ../C05 || echo "FAILED the Norme"
+	@echo "\n\n** EX00: ft_iterative_factorial"
+	@$(CW) ./C05/ex00.c ../C05/ex00/ft_iterative_factorial.c && $(XCLEAN_FAIL)
 	@echo ""
