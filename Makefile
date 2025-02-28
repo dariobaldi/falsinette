@@ -175,6 +175,8 @@ C05:
 	@$(CW) ./C05/ex06.c ../C05/ex06/ft_is_prime.c && $(XCLEAN_FAIL)
 	@echo "\n\n** EX07: ft_find_next_prime"
 	@$(CW) ./C05/ex07.c ../C05/ex07/ft_find_next_prime.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX08: ft_ten_queens_puzzle"
+	@$(CW) ./C05/ex08.c ../C05/ex08/ft_ten_queens_puzzle.c && ./Executable > ./diff.txt && diff ./diff.txt ./C05/diff_ex08.txt && echo OK && rm -f ./Executable ./diff.txt || echo FAILED
 	@echo ""	
 
 ## test : test current exo
@@ -182,6 +184,6 @@ C05:
 test:
 	@echo "\n** Testing norminette"
 	@norminette -R CheckForbiddenSourceHeader ../C05 || echo "FAILED the Norme"
-	@echo "\n\n** EX07: ft_find_next_prime"
-	@$(CW) ./C05/ex07.c ../C05/ex07/ft_find_next_prime.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX08: ft_ten_queens_puzzle"
+	@$(CW) ./C05/ex08.c ../C05/ex08/ft_ten_queens_puzzle.c && ./Executable > ./diff.txt && diff ./diff.txt ./C05/diff_ex08.txt && echo "OK" && rm -f ./Executable ./diff.txt || echo FAILED
 	@echo ""
