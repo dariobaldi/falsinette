@@ -165,6 +165,10 @@ C05:
 	@$(CW) ./C05/ex01.c ../C05/ex01/ft_recursive_factorial.c && $(XCLEAN_FAIL)
 	@echo "\n\n** EX02: ft_iterative_power"
 	@$(CW) ./C05/ex02.c ../C05/ex02/ft_iterative_power.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX03: ft_recursive_power"
+	@$(CW) ./C05/ex03.c ../C05/ex03/ft_recursive_power.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX04: ft_fibonacci"
+	@$(CW) ./C05/ex04.c ../C05/ex04/ft_fibonacci.c && $(XCLEAN_FAIL)
 	@echo ""	
 
 ## test : test current exo
