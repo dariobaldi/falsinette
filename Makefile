@@ -169,6 +169,8 @@ C05:
 	@$(CW) ./C05/ex03.c ../C05/ex03/ft_recursive_power.c && $(XCLEAN_FAIL)
 	@echo "\n\n** EX04: ft_fibonacci"
 	@$(CW) ./C05/ex04.c ../C05/ex04/ft_fibonacci.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX05: ft_sqrt"
+	@$(CW) ./C05/ex05.c ../C05/ex05/ft_sqrt.c && $(XCLEAN_FAIL)
 	@echo ""	
 
 ## test : test current exo
@@ -176,6 +178,6 @@ C05:
 test:
 	@echo "\n** Testing norminette"
 	@norminette -R CheckForbiddenSourceHeader ../C05 || echo "FAILED the Norme"
-	@echo "\n\n** EX03: ft_recursive_power"
-	@$(CW) ./C05/ex03.c ../C05/ex03/ft_recursive_power.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX05: ft_sqrt"
+	@$(CW) ./C05/ex05.c ../C05/ex05/ft_sqrt.c && $(XCLEAN_FAIL)
 	@echo ""
