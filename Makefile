@@ -173,6 +173,8 @@ C05:
 	@$(CW) ./C05/ex05.c ../C05/ex05/ft_sqrt.c && $(XCLEAN_FAIL)
 	@echo "\n\n** EX06: ft_is_prime"
 	@$(CW) ./C05/ex06.c ../C05/ex06/ft_is_prime.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX07: ft_find_next_prime"
+	@$(CW) ./C05/ex07.c ../C05/ex07/ft_find_next_prime.c && $(XCLEAN_FAIL)
 	@echo ""	
 
 ## test : test current exo
@@ -180,6 +182,6 @@ C05:
 test:
 	@echo "\n** Testing norminette"
 	@norminette -R CheckForbiddenSourceHeader ../C05 || echo "FAILED the Norme"
-	@echo "\n\n** EX06: ft_is_prime"
-	@$(CW) ./C05/ex06.c ../C05/ex06/ft_is_prime.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX07: ft_find_next_prime"
+	@$(CW) ./C05/ex07.c ../C05/ex07/ft_find_next_prime.c && $(XCLEAN_FAIL)
 	@echo ""
