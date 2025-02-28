@@ -161,6 +161,8 @@ C05:
 	@norminette -R CheckForbiddenSourceHeader ../C05 || echo "FAILED the Norme"
 	@echo "\n\n** EX00: ft_iterative_factorial"
 	@$(CW) ./C05/ex00.c ../C05/ex00/ft_iterative_factorial.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX01: ft_recursive_factorial"
+	@$(CW) ./C05/ex01.c ../C05/ex01/ft_recursive_factorial.c && $(XCLEAN_FAIL)
 	@echo ""	
 
 ## test : test current exo
@@ -168,6 +170,6 @@ C05:
 test:
 	@echo "\n** Testing norminette"
 	@norminette -R CheckForbiddenSourceHeader ../C05 || echo "FAILED the Norme"
-	@echo "\n\n** EX00: ft_iterative_factorial"
-	@$(CW) ./C05/ex00.c ../C05/ex00/ft_iterative_factorial.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX01: ft_recursive_factorial"
+	@$(CW) ./C05/ex01.c ../C05/ex01/ft_recursive_factorial.c && $(XCLEAN_FAIL)
 	@echo ""
