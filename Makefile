@@ -189,6 +189,8 @@ C06:
 	@$(CW) ../C06/ex00/ft_print_program_name.c && ./Executable > ./diff.txt && diff ./diff.txt ./C06/diff_ex00.txt && echo "OK" && rm -f ./Executable ./diff.txt || echo FAILED
 	@echo "\n\n** EX01: ft_print_params"
 	@$(CW) ../C06/ex01/ft_print_params.c && ./Executable test1 test2 test 3 > ./diff.txt && diff ./diff.txt ./C06/diff_ex01.txt && echo "OK" && rm -f ./Executable ./diff.txt || echo FAILED
+	@echo "\n\n** EX02: ft_rev_params"
+	@$(CW) ../C06/ex02/ft_rev_params.c && ./Executable test1 test2 test 3 > ./diff.txt && diff ./diff.txt ./C06/diff_ex02.txt && echo "OK" && rm -f ./Executable ./diff.txt || echo FAILED
 	@echo ""
 
 ## test : test current exo
@@ -196,6 +198,6 @@ C06:
 test:
 	@echo "\n** Testing norminette"
 	@norminette -R CheckForbiddenSourceHeader ../C06 || echo "FAILED the Norme"
-	@echo "\n\n** EX01: ft_print_params"
-	@$(CW) ../C06/ex01/ft_print_params.c && ./Executable test1 test2 test 3 > ./diff.txt && diff ./diff.txt ./C06/diff_ex01.txt && echo "OK" && rm -f ./Executable ./diff.txt || echo FAILED
+	@echo "\n\n** EX02: ft_rev_params"
+	@$(CW) ../C06/ex02/ft_rev_params.c && ./Executable test1 test2 test 3 > ./diff.txt && diff ./diff.txt ./C06/diff_ex02.txt && echo "OK" && rm -f ./Executable ./diff.txt || echo FAILED
 	@echo ""
