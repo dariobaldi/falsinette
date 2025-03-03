@@ -179,11 +179,23 @@ C05:
 	@$(CW) ./C05/ex08.c ../C05/ex08/ft_ten_queens_puzzle.c && ./Executable > ./diff.txt && diff ./diff.txt ./C05/diff_ex08.txt && echo OK && rm -f ./Executable ./diff.txt || echo FAILED
 	@echo ""	
 
+## C06 : Run all tests for C05 project
+.PHONY: C06
+C06:
+	@echo "\n******   Projet C06 : main arguments ******"
+	@echo "\n** Testing norminette"
+	@norminette -R CheckForbiddenSourceHeader ../C06 || echo "FAILED the Norme"
+	@echo "\n\n** EX00: ft_print_program_name"
+	@$(CW) ../C06/ex00/ft_print_program_name.c && ./Executable > ./diff.txt && diff ./diff.txt ./C06/diff_ex00.txt && echo "OK" && rm -f ./Executable ./diff.txt || echo FAILED
+	@echo "\n\n** EX01: ft_print_params"
+	@$(CW) ../C06/ex01/ft_print_params.c && ./Executable test1 test2 test 3 > ./diff.txt && diff ./diff.txt ./C06/diff_ex01.txt && echo "OK" && rm -f ./Executable ./diff.txt || echo FAILED
+	@echo ""
+
 ## test : test current exo
 .PHONY: test
 test:
 	@echo "\n** Testing norminette"
-	@norminette -R CheckForbiddenSourceHeader ../C05 || echo "FAILED the Norme"
-	@echo "\n\n** EX08: ft_ten_queens_puzzle"
-	@$(CW) ./C05/ex08.c ../C05/ex08/ft_ten_queens_puzzle.c && ./Executable > ./diff.txt && diff ./diff.txt ./C05/diff_ex08.txt && echo "OK" && rm -f ./Executable ./diff.txt || echo FAILED
+	@norminette -R CheckForbiddenSourceHeader ../C06 || echo "FAILED the Norme"
+	@echo "\n\n** EX01: ft_print_params"
+	@$(CW) ../C06/ex01/ft_print_params.c && ./Executable test1 test2 test 3 > ./diff.txt && diff ./diff.txt ./C06/diff_ex01.txt && echo "OK" && rm -f ./Executable ./diff.txt || echo FAILED
 	@echo ""
