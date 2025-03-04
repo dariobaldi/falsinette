@@ -195,11 +195,21 @@ C06:
 	@$(CW) ../C06/ex03/ft_sort_params.c && ./Executable abcd ab a abc test1 test2 test 3 > ./diff.txt && diff ./diff.txt ./C06/diff_ex03.txt && echo "OK" && rm -f ./Executable ./diff.txt || echo FAILED
 	@echo ""
 
+## C07 : Run all tests for C05 project
+.PHONY: C07
+C07:
+	@echo "\n******   Projet C07 : malloc and free ******"
+	@echo "\n** Testing norminette"
+	@norminette -R CheckForbiddenSourceHeader ../C07 || echo "FAILED the Norme"
+	@echo "\n\n** EX00: ft_strdup"
+	@$(CW) ./C07/ex00.c ../C07/ex00/ft_strdup.c && $(XCLEAN_FAIL)
+	@echo ""
+
 ## test : test current exo
 .PHONY: test
 test:
 	@echo "\n** Testing norminette"
-	@norminette -R CheckForbiddenSourceHeader ../C06 || echo "FAILED the Norme"
-	@echo "\n\n** EX03: ft_sort_params"
-	@$(CW) ../C06/ex03/ft_sort_params.c && ./Executable abcd ab a abc test1 test2 test 3 > ./diff.txt && diff ./diff.txt ./C06/diff_ex03.txt && echo "OK" && rm -f ./Executable ./diff.txt || echo FAILED
+	@norminette -R CheckForbiddenSourceHeader ../C07 || echo "FAILED the Norme"
+	@echo "\n\n** EX00: ft_strdup"
+	@$(CW) ./C07/ex00.c ../C07/ex00/ft_strdup.c && $(XCLEAN_FAIL)
 	@echo ""
