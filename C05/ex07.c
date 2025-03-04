@@ -21,10 +21,10 @@ int main()
 		failed = 1;
 	}
 	
-	result = ft_find_next_prime(999332);
-	if (result != 999359)
+	result = ft_find_next_prime(14572866);
+	if (result != 14572871)
 	{
-		printf("Result/Expected:\n%d\n999359\n", result);
+		printf("Result/Expected:\n%d\n14572871\n", result);
 		failed = 1;
 	}
 
