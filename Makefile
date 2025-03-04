@@ -203,6 +203,8 @@ C07:
 	@norminette -R CheckForbiddenSourceHeader ../C07 || echo "FAILED the Norme"
 	@echo "\n\n** EX00: ft_strdup"
 	@$(CW) ./C07/ex00.c ../C07/ex00/ft_strdup.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX01: ft_range"
+	@$(CW) ./C07/ex01.c ../C07/ex01/ft_range.c && $(XCLEAN_FAIL)
 	@echo ""
 
 ## test : test current exo
@@ -210,6 +212,6 @@ C07:
 test:
 	@echo "\n** Testing norminette"
 	@norminette -R CheckForbiddenSourceHeader ../C07 || echo "FAILED the Norme"
-	@echo "\n\n** EX00: ft_strdup"
-	@$(CW) ./C07/ex00.c ../C07/ex00/ft_strdup.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX02: ft_ultimate_range"
+	@$(CW) ./C07/ex02.c ../C07/ex02/ft_ultimate_range.c && $(XCLEAN_FAIL)
 	@echo ""
