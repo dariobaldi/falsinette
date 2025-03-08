@@ -1,12 +1,24 @@
 # ============================================================================= #
 # HELPERS									#
 # ============================================================================= #
+GREEN="'\033[38;5;84m'"
+RED="'\033[38;5;197m'"
+BLUE="'\033[38;5;45m'"
+PURPLE="'\033[38;5;63m'"
+PINK="'\033[38;5;207m'"
+BLACK="'\033[38;5;0m'"
+BG_GREEN="'\033[48;5;84m'"
+BG_RED="'\033[48;5;197m'"
+GREY="'\033[38;5;8m'"
+BOLD="'\033[1m'"
+DEFAULT="'\033[0m'"
+CHECKMARK="'\xE2\x9C\x93'"
 
 CC := cc
 CFLAGS := -Wall -Werror -Wextra
 CW := $(CC) $(CFLAGS) -o Executable
 VCW := $(CC) $(CFLAGS) -g -o Executable
-XCLEAN_FAIL := ./Executable && rm -f ./Executable || echo FAILED
+XCLEAN_FAIL := ./Executable && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
 VXCLEAN_FAIL := valgrind ./Executable && rm -f ./Executable || echo FAILED
 
 .PHONY: help
@@ -209,6 +221,20 @@ C07:
 	@$(CW) ./C07/ex02.c ../C07/ex02/ft_ultimate_range.c && $(XCLEAN_FAIL)
 	@echo "\n\n** EX03: ft_strjoin"
 	@$(CW) ./C07/ex03.c ../C07/ex03/ft_strjoin.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX04: ft_convert_base"
+	@$(CW) ./C07/ex04.c && $(XCLEAN_FAIL)
+	@echo ""
+
+## C08 : Run all tests for C05 project
+.PHONY: C08
+C08:
+	@echo "\n******   Projet C08 : malloc and free ******"
+	@echo "\n** Testing norminette"
+	@norminette -R CheckForbiddenSourceHeader ../C08 || echo "FAILED the Norme"
+	@echo "\n\n** EX00: ft.h"
+	@cp ../C08/ex00/ft.h ./C08/ft.h || echo "FAILED copying ft.h file"
+	@$(CW) ./C08/ex00.c && $(XCLEAN_FAIL)
+	@rm -f ./C08/ft.h || echo "FAILED removing ft.h file"
 	@echo ""
 
 ## test : test current exo
@@ -216,6 +242,18 @@ C07:
 test:
 	@echo "\n** Testing norminette"
 	@norminette -R CheckForbiddenSourceHeader ../C07 || echo "FAILED the Norme"
-	@echo "\n\n** EX03: ft_strjoin"
-	@$(CW) ./C07/ex03.c ../C07/ex03/ft_strjoin.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX04: ft_convert_base"
+	@$(CW) ./C07/ex04.c && $(XCLEAN_FAIL)
 	@echo ""
+
+## test2 : test current exo
+.PHONY: test2
+test2:
+	@echo "\n** Testing norminette"
+	@norminette -R CheckForbiddenSourceHeader ../C08 || echo "FAILED the Norme"
+	@echo "\n\n** EX00: ft.h"
+	@cp ../C08/ex00/ft.h ./C08/ft.h || echo "FAILED copying ft.h file"
+	@$(CW) ./C08/ex00.c && $(XCLEAN_FAIL)
+	@rm -f ./C08/ft.h || echo "FAILED removing ft.h file"
+	@echo ""
+

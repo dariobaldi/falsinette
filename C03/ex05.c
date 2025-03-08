@@ -21,10 +21,17 @@ int main()
 		failed = 1;
 	}
 
-	result = ft_check_strlcat(dest1, src2, dest2, 17);
+	result = ft_check_strlcat(dest1, src2, dest2, 14);
 	if (!result)
 	{
 		printf("FAILED: empty\n");
+		failed = 1;
+	}
+
+	result = ft_check_strlcat(NULL, src1, dest2, 5);
+	if (!result)
+	{
+		printf("FAILED: NULL destination\n");
 		failed = 1;
 	}
 
