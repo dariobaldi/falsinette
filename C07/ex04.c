@@ -56,6 +56,13 @@ int main()
             .base_to = "5",
             .expected = NULL,
         },
+        {
+            .desc = "Invalid base_to",
+            .nbr = "-+-1410 56",
+            .base_from = "0123456789",
+            .base_to = "0123456",
+            .expected = "4053",
+        },
     };
     int count = sizeof(tests) / sizeof(tests[0]);
 

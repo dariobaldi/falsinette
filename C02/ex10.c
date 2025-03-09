@@ -22,12 +22,11 @@ int main()
 
 unsigned int	ft_check_strlcpy(char *dest, char *src, unsigned int size)
 {
-	unsigned int result, expected;
+	unsigned int result;
 
 	result = ft_strlcpy(dest, src, size);
-	expected = strlcpy(dest, src, size);
 	
-	if 
+	 
 	unsigned int i = 0;
 	while (i < size - 1 && dest[i] )
 	{
@@ -43,5 +42,5 @@ unsigned int	ft_check_strlcpy(char *dest, char *src, unsigned int size)
 		printf("FAILED: no line return\n");
 		return (0);
 	}
-	return (len);
+	return (result);
 }
