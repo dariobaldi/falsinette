@@ -19,6 +19,7 @@ CFLAGS := -Wall -Werror -Wextra
 CW := $(CC) $(CFLAGS) -o Executable
 VCW := $(CC) $(CFLAGS) -g -o Executable
 XCLEAN_FAIL := ./Executable && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+XCLEAN_FAIL_OK := ./Executable && echo OK && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
 VXCLEAN_FAIL := valgrind ./Executable && rm -f ./Executable || echo FAILED
 
 .PHONY: help
@@ -230,11 +231,36 @@ C07:
 C08:
 	@echo "\n******   Projet C08 : malloc and free ******"
 	@echo "\n** Testing norminette"
-	@norminette -R CheckForbiddenSourceHeader ../C08 || echo "FAILED the Norme"
+	@norminette -R CheckDefine ../C08 || echo "FAILED the Norme"
 	@echo "\n\n** EX00: ft.h"
 	@cp ../C08/ex00/ft.h ./C08/ft.h || echo "FAILED copying ft.h file"
 	@$(CW) ./C08/ex00.c && $(XCLEAN_FAIL)
 	@rm -f ./C08/ft.h || echo "FAILED removing ft.h file"
+	@echo "\n\n** EX01: ft_boolean"
+	@cp ../C08/ex01/ft_boolean.h ./C08/ex01/ft_boolean.h || echo "FAILED copying ft.h file"
+	@$(CW) ./C08/ex01/main.c
+	@./Executable > test1.diff && diff ./test1.diff ./C08/ex01/test1.diff && echo OK: no arguments && rm -f ./test1.diff || printf "${BG_RED}${BOLD} FAILED: no arguments ${DEFAULT}"
+	@./Executable arg1 > test2.diff && diff ./test2.diff ./C08/ex01/test2.diff && echo OK: 1 argument && rm -f ./test2.diff || printf "${BG_RED}${BOLD} FAILED: 1 argument ${DEFAULT}"
+	@./Executable arg1 arg2 > test3.diff && diff ./test3.diff ./C08/ex01/test3.diff && echo OK: 2 arguments && rm -f ./test3.diff || printf "${BG_RED}${BOLD} FAILED: 2 arguments ${DEFAULT}"
+	@rm -f ./C08/ex01/ft_boolean.h ./Executable || echo "FAILED removing ft_boolean files"
+	@echo "\n\n** EX02: ft_abs.h"
+	@cp ../C08/ex02/ft_abs.h ./C08/ex02/ft_abs.h || echo "FAILED copying ft_abs.h file"
+	@$(CW) ./C08/ex02/main.c
+	@./Executable 42 > test1.diff && diff ./test1.diff ./C08/ex02/test.diff && echo OK: positive number && rm -f ./test1.diff || printf "${BG_RED}${BOLD} FAILED: positive number ${DEFAULT}"
+	@./Executable -42 > test2.diff && diff ./test2.diff ./C08/ex02/test.diff && echo OK: negative number && rm -f ./test2.diff || printf "${BG_RED}${BOLD} FAILED: negative number ${DEFAULT}"
+	@rm -f ./C08/ex02/ft_abs.h ./Executable || echo "FAILED removing ft_abs files"
+	@echo "\n\n** EX03: ft_point.h"
+	@cp ../C08/ex03/ft_point.h ./C08/ex03/ft_point.h || echo "FAILED copying ft_point.h file"
+	@$(CW) ./C08/ex03/main.c && $(XCLEAN_FAIL_OK)
+	@rm -f ./C08/ex03/ft_point.h || echo "FAILED removing ft_point.h"
+	@echo "\n\n** EX04: ft_strs_to_tab"
+	@cp ../C08/ex04/ft_strs_to_tab.c ./C08/ex04/ft_strs_to_tab.c || echo "FAILED copying ft_strs_to_tab.c file"
+	@$(CW) ./C08/ex04/*.c && ./Executable test coso cuestion > ./diff.txt && diff ./diff.txt ./C08/ex05/diff_ex05.txt && echo OK && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+	@rm -f ./C08/ex04/ft_strs_to_tab.c || echo "FAILED removing ft.h file"
+	@echo "\n\n** EX05: ft_show_tab.c"
+	@cp ../C08/ex05/ft_show_tab.c ./C08/ex05/ft_show_tab.c || echo "FAILED copying ft_strs_to_tab.c file"
+	@$(CW) ./C08/ex05/*.c && ./Executable test coso cuestion > ./diff.txt && diff ./diff.txt ./C08/ex05/diff_ex05.txt && echo OK && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+	@rm -f ./C08/ex05/ft_show_tab.c || echo "FAILED removing ft.h file"
 	@echo ""
 
 ## test : test current exo
@@ -250,10 +276,10 @@ test:
 .PHONY: test2
 test2:
 	@echo "\n** Testing norminette"
-	@norminette -R CheckForbiddenSourceHeader ../C08 || echo "FAILED the Norme"
-	@echo "\n\n** EX00: ft.h"
-	@cp ../C08/ex00/ft.h ./C08/ft.h || echo "FAILED copying ft.h file"
-	@$(CW) ./C08/ex00.c && $(XCLEAN_FAIL)
-	@rm -f ./C08/ft.h || echo "FAILED removing ft.h file"
+	@norminette -R CheckDefine ../C08 || echo "FAILED the Norme"
+	@echo "\n\n** EX04: ft_strs_to_tab"
+	@cp ../C08/ex04/ft_strs_to_tab.c ./C08/ex04/ft_strs_to_tab.c || echo "FAILED copying ft_strs_to_tab.c file"
+	@$(CW) ./C08/ex04/*.c && ./Executable test coso cuestion > ./diff.txt && diff ./diff.txt ./C08/ex05/diff_ex05.txt && echo OK && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+	@rm -f ./C08/ex04/ft_strs_to_tab.c || echo "FAILED removing ft.h file"
 	@echo ""
 

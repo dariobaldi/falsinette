@@ -1,0 +1,13 @@
+./Executable
+12
+./Executable
+test
+4
+test
+coso
+4
+coso
+cuestion
+8
+cuestion
+str= (nil) copy=(nil) size=0
