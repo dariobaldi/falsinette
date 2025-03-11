@@ -28,7 +28,7 @@ int main()
 		failed = 1;
 	}
 
-	result = ft_check_strlcat(NULL, src1, dest2, 5);
+	result = ft_check_strlcat(NULL, src1, NULL, 5);
 	if (!result)
 	{
 		printf("FAILED: NULL destination\n");

@@ -63,6 +63,20 @@ int main()
             .base_to = "0123456",
             .expected = "4053",
         },
+        {
+            .desc = "Int min en Hex",
+            .nbr = "-+---80000000",
+            .base_from = "0123456789ABCDEF",
+            .base_to = "0123456789",
+            .expected = "-2147483648",
+        },
+        {
+            .desc = "Int min en Hex",
+            .nbr = "-+-2147483647",
+            .base_from = "0123456789",
+            .base_to = "0123456789ABCDEF",
+            .expected = "7FFFFFFF",
+        },
     };
     int count = sizeof(tests) / sizeof(tests[0]);
 
