@@ -70,7 +70,7 @@ int run_tests(t_test *tests, int count)
         result = ft_strlcat(dest, tests[i].src, tests[i].size);
 		expected = strlcat(dest2, tests[i].src, tests[i].size);
 
-        if (strcmp(dest, dest2) != 0)
+        if (strcmp(dest, dest2) == 0)
         {
             printf("    " RED "[%d] %s Expected \"%s\" output \"%s\"\n" DEFAULT, i + 1, tests[i].desc, dest2, dest);
             error -= 1;
