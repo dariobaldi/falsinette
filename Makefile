@@ -225,6 +225,8 @@ C07:
 	@$(CW) ./C07/ex03.c ../C07/ex03/ft_strjoin.c && $(XCLEAN_FAIL)
 	@echo "\n\n** EX04: ft_convert_base"
 	@$(CW) ./C07/ex04.c && $(XCLEAN_FAIL)
+	@echo "\n\n** EX07: ft_split"
+	@$(CW) ../C07/ex05/ft_split.c ./C07/ex05.c && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} PERFECTO ${DEFAULT}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
 	@echo ""
 
 ## C08 : Run all tests for C05 project
