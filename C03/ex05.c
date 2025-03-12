@@ -1,63 +1,85 @@
 #include<stdio.h>
+#include<string.h>
 #include<bsd/string.h>
+#include "../utils/constants.h"
 
 unsigned int    ft_strlcat(char *dest, char *src, unsigned int size);
-unsigned int	ft_check_strlcat(char *dest1, char *src, char *dest2, unsigned int size);
 
-int main()
+typedef struct s_test
 {
-	int result;
-	int failed = 0;
-	char src1[] = "working?";
-	char src2[] = "";
-	char dest1[50] = "Is this ";
-	char dest2[50] = "Is this ";
+    char *desc;
+    char *src;
+    char *dest;
+    int size;
+} t_test;
 
+int run_tests(t_test *tests, int count);
 
-	result = ft_check_strlcat(dest1, src1, dest2, 17);
-	if (!result)
-	{
-		printf("FAILED: basic\n");
-		failed = 1;
-	}
+int main(void)
+{
+    t_test tests[] = {
+        {
+            .desc = "Concatenate two strings",
+            .src = " clavo un palito",
+            .dest = "Pablito",
+            .size = 22,
+        },
+        {
+            .desc = "Concatenate empty strings",
+            .src = "",
+            .dest = "",
+            .size = 10,
+        },
+        {
+            .desc = "Append to an empty string",
+            .src = "hello",
+            .dest = "",
+            .size = 10,
+        },
+        {
+            .desc = "Concatenate with string larger than size",
+            .src = " clavo Pablito",
+            .dest = "Cuantos palitos",
+            .size = 7,
+        },
+        {
+            .desc = "Concatenate same strings with size larger than sum of their lengths",
+            .src = "Test",
+            .dest = "Test",
+            .size = 15,
+        },
+    };
+    int count = sizeof(tests) / sizeof(tests[0]);
 
-	result = ft_check_strlcat(dest1, src2, dest2, 14);
-	if (!result)
-	{
-		printf("FAILED: empty\n");
-		failed = 1;
-	}
-
-	result = ft_check_strlcat(NULL, src1, NULL, 5);
-	if (!result)
-	{
-		printf("FAILED: NULL destination\n");
-		failed = 1;
-	}
-
-	// char dest3[] = "0123456789";
-	// char dest4[] = "0123456789";
-	// dest3[10] = '0';
-	// dest4[10] = '0';
-	// result = ft_check_strlcat(dest3, src1, dest4, 0);
-	// if (!result)
-	// {
-	// 	printf("FAILED: dest not NUL terminated\n");
-	// 	failed = 1;
-	// }
-
-	if (!failed)
-		printf("OK");
-
+    return run_tests(tests, count);
 }
 
-unsigned int	ft_check_strlcat(char *dest1, char *src, char *dest2, unsigned int size)
+int run_tests(t_test *tests, int count)
 {
-	int expected, result;
+    int i;
+    int error = 0;
+	int result, expected;
 
-	result = ft_strlcat(dest1, src, size);
-	expected = strlcat(dest2, src, size);
-	
-	printf("\nstrlcat:\t%s\nft_strlcat:\t%s\n", dest2, dest1);
-	return (result == expected);
+    for (i = 0; i < count; i++)
+    {
+        char dest[100];
+        char dest2[100];
+        strcpy(dest, tests[i].dest);
+        strcpy(dest2, tests[i].dest);
+
+        result = ft_strlcat(dest, tests[i].src, tests[i].size);
+		expected = strlcat(dest2, tests[i].src, tests[i].size);
+
+        if (strcmp(dest, dest2) != 0)
+        {
+            printf("    " RED "[%d] %s Expected \"%s\" output \"%s\"\n" DEFAULT, i + 1, tests[i].desc, dest2, dest);
+            error -= 1;
+        }
+        else
+        {
+            printf("  " GREEN CHECKMARK GREY " [%d] %s Expected \"%s\" output \"%s\"\n" DEFAULT, i + 1, tests[i].desc, dest2, dest);
+        }
+    }
+
+    return error;
 }

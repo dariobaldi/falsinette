@@ -7,7 +7,8 @@
           "command": "cc",
           "args": [
               "-g", 
-              "test.c",
+              "C03/ex05.c",
+              "../C03/ex05/ft_strlcat.c",
           ],
           "group": {
               "kind": "build",
