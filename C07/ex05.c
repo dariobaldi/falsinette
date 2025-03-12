@@ -1,60 +1,52 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../../C07/ex04/ft_convert_base.c"
-#if __has_include("../../C07/ex04/ft_convert_base2.c")
-# include "../../C07/ex04/ft_convert_base2.c"
-#endif
 #include "../utils/constants.h"
+
+char	**ft_split(char *str, char *charset);
 
 typedef struct s_test
 {
     char *desc;
-    char *nbr;
-    char *base_from;
-    char *base_to;
-    char expected[][];
+    char *str;
+    char *charset;
+    char **expected;
 } t_test;
 
 int run_tests(t_test *tests, int count);
 
-int main()
+int main(void)
 {
-	t_test tests[] = {
-        {
-            .desc = "Convert positive decimal to binary",
-            .nbr = "42",
-            .base_from = "0123456789",
-            .base_to = "01",
-            .expected = "101010",
+    t_test tests[] = {
+       {
+            .desc = "Empty string with empty charset",
+            .str = "",
+            .charset = "",
+            .expected = (char *[1]) {0},
         },
         {
-            .desc = "Convert negative decimal to binary",
-            .nbr = "-42",
-            .base_from = "0123456789",
-            .base_to = "01",
-            .expected = "-101010",
+            .desc = "Single-word string with empty charset",
+            .str = "hello",
+            .charset = "",
+            .expected = (char *[2]) {"hello", 0},
         },
         {
-            .desc = "Convert binary to hexadecimal",
-            .nbr = "101010",
-            .base_from = "01",
-            .base_to = "0123456789ABCDEF",
-            .expected = "2A",
+            .desc = "String with leading and trailing separators",
+            .str = ",,hello,world,,",
+            .charset = ",",
+            .expected = (char *[3]) {"hello", "world", 0},
         },
         {
-            .desc = "Invalid base_from",
-            .nbr = "42",
-            .base_from = "01234567899",
-            .base_to = "01",
-            .expected = NULL,
+            .desc = "String with multiple consecutive separators",
+            .str = "hello,,,,world",
+            .charset = ",",
+            .expected = (char *[3]) {"hello", "world", 0},
         },
         {
-            .desc = "Invalid base_to",
-            .nbr = "42",
-            .base_from = "0123456789",
-            .base_to = "5",
-            .expected = NULL,
+            .desc = "String with repeated separators",
+            .str = "aaabbbaaaccc",
+            .charset = "ab",
+            .expected = (char *[]){ "ccc", 0 },
         },
     };
     int count = sizeof(tests) / sizeof(tests[0]);
@@ -69,7 +61,7 @@ int run_tests(t_test *tests, int count)
 
     for (i = 0; i < count; i++)
     {
-        char *result = ft_convert_base(tests[i].nbr, tests[i].base_from, tests[i].base_to);
+        char **result = ft_split(tests[i].str, tests[i].charset);
 
         if (!result && !tests[i].expected)
         {
@@ -77,22 +69,106 @@ int run_tests(t_test *tests, int count)
         }
         else if (!result || !tests[i].expected)
         {
-            printf(RED "[%d] %s got1 \"%s\" instead of \"%s\"\n" DEFAULT, i + 1, tests[i].desc, result, tests[i].expected);
-            error -= 1;
-        }
-        else if (strcmp(result, tests[i].expected) != 0)
-        {
-			printf("%s\n%s\n%d\n%d\n", result, tests[i].expected, result[2],tests[i].expected[2]);
-            printf(RED "[%d] %s got2 \"%s\" instead of \"%s\"\n" DEFAULT, i + 1, tests[i].desc, result, tests[i].expected);
+            printf(RED "[%d] %s got \"", i + 1, tests[i].desc);
+            if (result)
+            {
+                printf("%s", result[0]);
+                for (int j = 1; result[j]; j++)
+                {
+                    printf("\", \"%s", result[j]);
+                }
+            }
+            else
+            {
+                printf("(null)");
+            }
+            printf("\" instead of \"");
+            if (tests[i].expected)
+            {
+                printf("%s", tests[i].expected[0]);
+                for (int j = 1; tests[i].expected[j]; j++)
+                {
+                    printf("\", \"%s", tests[i].expected[j]);
+                }
+            }
+            else
+            {
+                printf("(null)");
+            }
+            printf("\"\n" DEFAULT);
             error -= 1;
         }
         else
         {
-            printf(GREEN CHECKMARK GREY " [%d] %s got \"%s\" as expected\n" DEFAULT, i + 1, tests[i].desc, result);
+            int j = 0;
+            while (tests[i].expected[j] && result[j])
+            {
+                if (strcmp(tests[i].expected[j], result[j]) != 0)
+                {
+                    printf(RED "[%d] %s Element %d: expected \"%s\", got \"%s\"\n" DEFAULT, i + 1, tests[i].desc, j, tests[i].expected[j], result[j]);
+                    error -= 1;
+                    break;
+                }
+                j++;
+            }
+
+            if (tests[i].expected[j] != result[j])
+            {
+                printf(RED "[%d] %s got \"", i + 1, tests[i].desc);
+                if (result)
+                {
+                    printf("%s", result[0]);
+                    for (int j = 1; result[j]; j++)
+                    {
+                        printf("\", \"%s", result[j]);
+                    }
+                }
+                else
+                {
+                    printf("(null)");
+                }
+                printf("\" instead of \"");
+                if (tests[i].expected)
+                {
+                    printf("%s", tests[i].expected[0]);
+                    for (int j = 1; tests[i].expected[j]; j++)
+                    {
+                        printf("\", \"%s", tests[i].expected[j]);
+                    }
+                }
+                else
+                {
+                    printf("(null)");
+                }
+                printf("\"\n" DEFAULT);
+                error -= 1;
+            }
+            else
+            {
+                printf(GREEN CHECKMARK GREY " [%d] %s got \"", i + 1, tests[i].desc);
+                if (result)
+                {
+                    printf("%s", result[0]);
+                    for (int j = 1; result[j]; j++)
+                    {
+                        printf("\", \"%s", result[j]);
+                    }
+                }
+                printf("\" as expected\n" DEFAULT);
+            }
         }
 
-        free(result);
+        if (result)
+        {
+            int j = 0;
+            while (result[j])
+            {
+                free(result[j]);
+                j++;
+            }
+            free(result);
+        }
     }
 
-    return error;
+    return (error);
 }

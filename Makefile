@@ -282,7 +282,7 @@ C11:
 .PHONY: test
 test:
 	@echo "\n** Testing norminette"
-	@norminette -R CheckForbiddenSourceHeader ../C11 && printf "${BG_GREEN}${BOLD}${BLACK} DE 10 ${DEFAULT}" || printf "${BG_RED}${BOLD} FAILED Norm ${DEFAULT}"
-	@echo "\n\n** EX02: ft_any"
-	@$(CW) ../C11/ex02/ft_any.c ./C11/ex02.c && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} PERFECTO ${DEFAULT}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+	@norminette -R CheckForbiddenSourceHeader ../C07 && printf "${BG_GREEN}${BOLD}${BLACK} DE 10 ${DEFAULT}" || printf "${BG_RED}${BOLD} FAILED Norm ${DEFAULT}"
+	@echo "\n\n** EX07: ft_split"
+	@$(CW) ../C07/ex05/ft_split.c ./C07/ex05.c && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} PERFECTO ${DEFAULT}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
 	@echo ""
