@@ -34,16 +34,16 @@ int main()
 	array[2] = NULL;
 	
     result = ft_any(array, &ft_str_is_alpha);
-	if (result != 1)
+	if (result != 0)
 	{
-		printf(RED "Error: got \"%d\" instead of \"%d\"\n" DEFAULT, result, 1);
+		printf(RED "Error: got \"%d\" instead of \"%d\"\n" DEFAULT, result, 0);
 		failed = -42;
 	}
 
 	array[0] = "Test";
 	array[1] = "Tests";
 	    result = ft_any(array, &ft_str_is_alpha);
-	if (result != 0)
+	if (result != 1)
 	{
 		printf(RED "Error: got \"%d\" instead of \"%d\"\n" DEFAULT, result, 1);
 		failed = -42;
