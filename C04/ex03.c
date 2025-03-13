@@ -10,7 +10,7 @@ int main()
 
 	failed = 0;
 	result = ft_atoi(str);
-	if (result != -1234)
+	if (result != -1235)
 	{
 		printf("FAILED: \" ---+--+1234ab567\"\n");
 		failed = 1;

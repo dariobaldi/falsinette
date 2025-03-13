@@ -22,6 +22,13 @@ int main()
 {
 	t_test tests[] = {
         {
+            .desc = "La muerte",
+            .nbr = " -+-11230 56",
+            .base_from = "0123456789",
+            .base_to = "0123456",
+            .expected = "44512",
+        },
+        {
             .desc = "Convert positive decimal to binary",
             .nbr = "42",
             .base_from = "0123456789",

@@ -7,8 +7,7 @@
           "command": "cc",
           "args": [
               "-g", 
-              "../C11/ex02/ft_any.c",
-              "./C11/ex02.c",
+              "./C07/ex04.c",
           ],
           "group": {
               "kind": "build",
