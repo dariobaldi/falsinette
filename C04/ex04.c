@@ -9,6 +9,10 @@ int main()
 	char binaire[] = "01";
 	char hex[] = "0123456789ABCDEF";
 	char ecole[] = "#@!";
+	char wrong_base1[] = "0";
+	char wrong_base2[] = "01234567890";
+	char wrong_base3[] = "012345+6789";
+	char wrong_base4[] = "012345-67";
 
 	printf("-Expected/Result:\n");
 	printf("\n7\n");
@@ -29,6 +33,11 @@ int main()
 	ft_putnbr_base(1263, hex);
 	printf("\n\n@@!#\n");
 	ft_putnbr_base(42, ecole);
-	printf("\n");
+	printf("\n\n-Wrong bases, no value should be printed after this:\n");
+	ft_putnbr_base(42, wrong_base1);
+	ft_putnbr_base(42, wrong_base2);
+	ft_putnbr_base(42, wrong_base3);
+	ft_putnbr_base(42, wrong_base4);
+	printf("-Finished wrong bases.\n");
 }
 
