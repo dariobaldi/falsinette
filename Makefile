@@ -44,7 +44,7 @@ C00:
 	@echo "\n******   Projet C00  ******"
 	@echo "\n** Testing norminette"
 	@norminette -R CheckForbiddenSourceHeader ../C00 && $(GOOD) || $(FAILED)
-	@echo "\n** EX00: ft_putchar"
+	@echo "\n\n** EX00: ft_putchar"
 	@$(CW) ./C00/ex00.c ../C00/ex00/ft_putchar.c && ./Executable > ./diff.txt && diff ./diff.txt ./C00/diff00 && $(GOOD) && rm -f ./Executable ./diff.txt || $(FAILED)
 	@echo "\n** EX01: ft_print_alphabet"
 	@$(CW) ./C00/ex01.c ../C00/ex01/ft_print_alphabet.c && ./Executable > ./diff.txt && diff ./diff.txt ./C00/diff01 && $(GOOD) && rm -f ./Executable ./diff.txt || $(FAILED)
@@ -99,33 +99,33 @@ C01:
 C02:
 	@echo "\n******   Projet C02 : string manipulation  ******"
 	@echo "\n** Testing norminette"
-	@norminette -R CheckForbiddenSourceHeader ../C02 || $(FAILED)
-	@echo "\n** EX00: ft_strcpy"
-	@$(CW) ./C02/ex00.c ../C02/ex00/ft_strcpy.c && $(XCLEAN_FAIL)
+	@norminette -R CheckForbiddenSourceHeader ../C02 && $(GOOD) || $(FAILED)
+	@echo "\n\n** EX00: ft_strcpy"
+	@$(CW) ./C02/ex00.c ../C02/ex00/ft_strcpy.c && $(XCLEAN_FAIL_OK)
 	@echo "\n\n** EX01: ft_strncpy"
-	@$(CW) ./C02/ex01.c ../C02/ex01/ft_strncpy.c && $(XCLEAN_FAIL)
+	@$(CW) ./C02/ex01.c ../C02/ex01/ft_strncpy.c && $(XCLEAN_FAIL_OK)
 	@echo "\n\n** EX02: ft_str_is_alpha"
-	@$(CW) ./C02/ex02.c ../C02/ex02/ft_str_is_alpha.c && $(XCLEAN_FAIL)
+	@$(CW) ./C02/ex02.c ../C02/ex02/ft_str_is_alpha.c && $(XCLEAN_FAIL_OK)
 	@echo "\n\n** EX03: ft_str_is_numeric"
-	@$(CW) ./C02/ex03.c ../C02/ex03/ft_str_is_numeric.c && $(XCLEAN_FAIL)
+	@$(CW) ./C02/ex03.c ../C02/ex03/ft_str_is_numeric.c && $(XCLEAN_FAIL_OK)
 	@echo "\n\n** EX04: ft_str_is_lowercase"
-	@$(CW) ./C02/ex04.c ../C02/ex04/ft_str_is_lowercase.c && $(XCLEAN_FAIL)
+	@$(CW) ./C02/ex04.c ../C02/ex04/ft_str_is_lowercase.c && $(XCLEAN_FAIL_OK)
 	@echo "\n\n** EX05: ft_str_is_uppercase"
-	@$(CW) ./C02/ex05.c ../C02/ex05/ft_str_is_uppercase.c && $(XCLEAN_FAIL)
+	@$(CW) ./C02/ex05.c ../C02/ex05/ft_str_is_uppercase.c && $(XCLEAN_FAIL_OK)
 	@echo "\n\n** EX06: ft_str_is_printable"
-	@$(CW) ./C02/ex06.c ../C02/ex06/ft_str_is_printable.c && $(XCLEAN_FAIL)
+	@$(CW) ./C02/ex06.c ../C02/ex06/ft_str_is_printable.c && $(XCLEAN_FAIL_OK)
 	@echo "\n\n** EX07: ft_strupcase"
-	@$(CW) ./C02/ex07.c ../C02/ex07/ft_strupcase.c && $(XCLEAN_FAIL)
+	@$(CW) ./C02/ex07.c ../C02/ex07/ft_strupcase.c && $(XCLEAN_FAIL_OK)
 	@echo "\n\n** EX08: ft_strlowcase"
-	@$(CW) ./C02/ex08.c ../C02/ex08/ft_strlowcase.c && $(XCLEAN_FAIL)
+	@$(CW) ./C02/ex08.c ../C02/ex08/ft_strlowcase.c && $(XCLEAN_FAIL_OK)
 	@echo "\n\n** EX09: ft_strcapitalize"
-	@$(CW) ./C02/ex09.c ../C02/ex09/ft_strcapitalize.c && $(XCLEAN_FAIL)
+	@$(CW) ./C02/ex09.c ../C02/ex09/ft_strcapitalize.c && $(XCLEAN_FAIL_OK)
 	@echo "\n\n** EX10: ft_strlcpy"
-	@$(CW) ./C02/ex10.c ../C02/ex10/ft_strlcpy.c && $(XCLEAN_FAIL)
+	@$(CW) ./C02/ex10.c ../C02/ex10/ft_strlcpy.c && $(XCLEAN_FAIL_OK)
 	@echo "\n\n** EX11: ft_putstr_non_printable"
-	@$(CW) ./C02/ex11.c ../C02/ex11/ft_putstr_non_printable.c && $(XCLEAN_FAIL)
+	@$(CW) ./C02/ex11.c ../C02/ex11/ft_putstr_non_printable.c && ./Executable > ./diff.txt && diff ./diff.txt ./C02/diff11 && $(GOOD) && rm -f ./Executable ./diff.txt || $(FAILED)
 	@echo "\n\n** EX12: ft_print_memory"
-	@$(CW) ./C02/ex12.c ../C02/ex12/ft_print_memory.c && $(XCLEAN_FAIL)
+	@$(CW) ./C02/ex12.c ../C02/ex12/ft_print_memory.c && ./Executable && diff ./diff_expected ./diff_result && $(GOOD) && rm -f ./Executable ./diff_expected ./diff_result || $(FAILED) && rm -f ./Executable ./diff_expected ./diff_result
 	@echo ""
 
 ## C03 : Run all tests for C03 project
@@ -284,8 +284,6 @@ C11:
 ## test : test current exo
 .PHONY: test
 test:
-	@echo "\n** Testing norminette"
-	@norminette -R CheckForbiddenSourceHeader ../C07 && printf "${BG_GREEN}${BOLD}${BLACK} DE 10 ${DEFAULT}" || $(FAILED)
-	@echo "\n\n** EX07: ft_split"
-	@$(CW) ../C07/ex05/ft_split.c ./C07/ex05.c && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+	@echo "\n\n** EX12: ft_print_memory"
+	@$(CW) ./C02/ex12.c ../C02/ex12/ft_print_memory.c && ./Executable && diff ./diff_expected ./diff_result && $(GOOD) && rm -f ./Executable ./diff_expected ./diff_result || $(FAILED) && rm -f ./Executable ./diff_expected ./diff_result
 	@echo ""

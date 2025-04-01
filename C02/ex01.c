@@ -9,33 +9,32 @@ int main()
 	char *str1 = "This is the source";
 	char *str2 = (char *) malloc(sizeof(char) * 20);
 	char *str3 = (char *) malloc(sizeof(char) * 20);
-	unsigned int	len = 6;
+	unsigned int	len = 19;
 
 	ft_strncpy(str2, str1, len);
-	strncpy(str3, str1, 6);
+	strncpy(str3, str1, len);
 	
-	int i = 0;
-	while (str1[i])
+	unsigned int i = 0;
+	while (str1[i] && i < len)
 	{
 		if (str3[i] != str2[i])
 		{
-			printf("FAILED. Result/Expected\n");
+			printf("Result/Expected\n");
 			printf("%s\n",str2);
 			printf("%s\n",str3);
-			return (0);
+			return (42);
 		}
 		i++;
 	}
-	while (i < 20)
+	while (i < len)
 	{
 		if (str2[i])
 		{
-			printf("FAILED: characters are not null after len");
-			return (0);
+			printf("characters are not null after len");
+			return (42);
 		}
 		i++;
 	}
-	printf("OK");
 	free(str2);
 	free(str3);
 }

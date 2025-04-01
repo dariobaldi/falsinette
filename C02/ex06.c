@@ -23,10 +23,9 @@ int main()
 		t1 = ft_str_is_printable(str1);
 		if ((t1 && i < 32) || (!t1 && i > 31))
 		{
-			printf("FAILED. Result/value\n");
+			printf("Result/value\n");
 			printf("%s: %d/%d\n", str1, t1, i);
-			return (0);
+			return (42);
 		}
 	}
-	printf("OK");
 }

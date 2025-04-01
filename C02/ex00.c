@@ -21,13 +21,15 @@ int main()
 			printf("FAILED. Result/Expected\n");
 			printf("%s\n",str2);
 			printf("%s\n",str3);
-			return (0);
+			return (42);
 		}
 		i++;
 	}
 	if (str2[i])
+	{
 		printf("FAILED: Last character not null\n");
-	printf("OK");
+		return (42);
+	}
 	free(str2);
 	free(str3);
 }

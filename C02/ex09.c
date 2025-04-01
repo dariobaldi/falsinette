@@ -15,17 +15,16 @@ int main()
 	t1 = strcmp(str1, str2);
 	if (t1)
 	{
-		printf("FAILED. Result/Expected\n");
+		printf("Result/Expected\n");
 		printf("%s\n%s", str1, str2);
-		return (0);
+		return (42);
 	}
 	ft_strcapitalize(str3);
 	t1 = strcmp(str4, str3);
 	if (t1)
 	{
-		printf("FAILED. Result/Expected\n");
+		printf("Result/Expected\n");
 		printf("%s\n%s", str3, str4);
-		return (0);
+		return (42);
 	}
-	printf("OK");
 }

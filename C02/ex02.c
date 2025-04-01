@@ -14,11 +14,10 @@ int main()
 	t3 = ft_str_is_alpha(str3);
 	if (!t1 && t2 && t3)
 	{
-		printf("FAILED. Result/Expected\n");
+		printf("Result/Expected\n");
 		printf("%s: %d/%d\n", str1, 1, t1);
 		printf("%s: %d/%d\n", str2, 0, t2);
 		printf("%s: %d/%d\n", str3, 0, t3);
-		return (0);
+		return (42);
 	}
-	printf("OK");
 }
