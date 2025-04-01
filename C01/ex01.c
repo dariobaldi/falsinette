@@ -16,10 +16,9 @@ int main()
 	int********* nbr = &ptr8;
 
 	ft_ultimate_ft(nbr);
-	if (a == 42)
+	if (a != 42)
 	{
-		printf("OK");
-		return (0);
+		printf("FAILED. Value returned: %d\n", a);
+		return (42);
 	}
-	printf("FAILED. Value returned: %d\n", a);
 }

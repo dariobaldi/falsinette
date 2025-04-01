@@ -19,7 +19,6 @@ int main()
 		&& tab[8] == 8
 		&& tab[9] == 9)
 	{
-		printf("OK");
 		return (0);
 	}
 	printf("FAILED. Result/Expected\n");
@@ -30,4 +29,5 @@ int main()
 		printf("%d", tab[i]);
 	}
 	printf("\n0123456789\n");
+	return (42);
 }

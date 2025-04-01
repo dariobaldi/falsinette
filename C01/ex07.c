@@ -14,8 +14,8 @@ int main()
 	&& a2[0] == 7 && a2[1] == 6 && a2[2] == 5 && a2[3] == 4
 	&& a2[4] == 3 && a2[5] == 2 && a2[6] == 1)
 	{
-		printf("OK");
 		return (0);
 	}
 	printf("FAILED");
+	return (42);
 }

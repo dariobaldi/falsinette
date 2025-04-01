@@ -7,10 +7,9 @@ int main()
 	int a = 3;
 
 	ft_ft(&a);
-	if (a == 42)
+	if (a != 42)
 	{
-		printf("OK");
-		return (0);
+		printf("FAILED. Value returned: %d\n", a);
+		return (42);
 	}
-	printf("FAILED. Value returned: %d\n", a);
 }

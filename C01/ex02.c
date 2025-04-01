@@ -9,9 +9,7 @@ int main()
 
 	ft_swap(&a, &b);
 	if (a == 4 && b == 2)
-	{
-		printf("OK");
 		return (0);
-	}
-	printf("FAILED. Value returned: %d\n", a);
+	printf("FAILED. Value returned: a=%d b=%d\n", a, b);
+	return (42);
 }

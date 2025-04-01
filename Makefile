@@ -43,7 +43,7 @@ confirm:
 C00:
 	@echo "\n******   Projet C00  ******"
 	@echo "\n** Testing norminette"
-	@norminette -R CheckForbiddenSourceHeader ../C00 || $(FAILED)
+	@norminette -R CheckForbiddenSourceHeader ../C00 && $(GOOD) || $(FAILED)
 	@echo "\n** EX00: ft_putchar"
 	@$(CW) ./C00/ex00.c ../C00/ex00/ft_putchar.c && ./Executable > ./diff.txt && diff ./diff.txt ./C00/diff00 && $(GOOD) && rm -f ./Executable ./diff.txt || $(FAILED)
 	@echo "\n** EX01: ft_print_alphabet"
@@ -73,25 +73,25 @@ C00:
 C01:
 	@echo "\n******   Projet C01 : Pointers  ******"
 	@echo "\n** Testing norminette"
-	@norminette -R CheckForbiddenSourceHeader ../C01 || $(FAILED)
-	@echo "\n** EX00: ft_ft"
-	@$(CW) ./C01/ex00.c ../C01/ex00/ft_ft.c && $(XCLEAN_FAIL)
+	@norminette -R CheckForbiddenSourceHeader ../C01 && $(GOOD) || $(FAILED)
+	@echo "\n\n** EX00: ft_ft"
+	@$(CW) ./C01/ex00.c ../C01/ex00/ft_ft.c && $(XCLEAN_FAIL_OK)
 	@echo "\n\n** EX01: ft_ultimate_ft"
-	@$(CW) ./C01/ex01.c ../C01/ex01/ft_ultimate_ft.c && $(XCLEAN_FAIL)
+	@$(CW) ./C01/ex01.c ../C01/ex01/ft_ultimate_ft.c && $(XCLEAN_FAIL_OK)
 	@echo "\n\n** EX02: ft_swap"
-	@$(CW) ./C01/ex02.c ../C01/ex02/ft_swap.c && $(XCLEAN_FAIL)
+	@$(CW) ./C01/ex02.c ../C01/ex02/ft_swap.c && $(XCLEAN_FAIL_OK)
 	@echo "\n\n** EX03: ft_div_mod"
-	@$(CW) ./C01/ex03.c ../C01/ex03/ft_div_mod.c && $(XCLEAN_FAIL)
+	@$(CW) ./C01/ex03.c ../C01/ex03/ft_div_mod.c && $(XCLEAN_FAIL_OK)
 	@echo "\n\n** EX04: ft_ultimate_div_mod"
-	@$(CW) ./C01/ex04.c ../C01/ex04/ft_ultimate_div_mod.c && $(XCLEAN_FAIL)
+	@$(CW) ./C01/ex04.c ../C01/ex04/ft_ultimate_div_mod.c && $(XCLEAN_FAIL_OK)
 	@echo "\n\n** EX05: ft_putstr"
-	@$(CW) ./C01/ex05.c ../C01/ex05/ft_putstr.c && $(XCLEAN_FAIL)
+	@$(CW) ./C01/ex05.c ../C01/ex05/ft_putstr.c && ./Executable > ./diff.txt && diff ./diff.txt ./C01/diff05 && $(GOOD) && rm -f ./Executable ./diff.txt || $(FAILED)
 	@echo "\n\n** EX06: ft_strlen"
-	@$(CW) ./C01/ex06.c ../C01/ex06/ft_strlen.c && $(XCLEAN_FAIL)
+	@$(CW) ./C01/ex06.c ../C01/ex06/ft_strlen.c && $(XCLEAN_FAIL_OK)
 	@echo "\n\n** EX07: ft_rev_int_tab"
-	@$(CW) ./C01/ex07.c ../C01/ex07/ft_rev_int_tab.c && $(XCLEAN_FAIL)
+	@$(CW) ./C01/ex07.c ../C01/ex07/ft_rev_int_tab.c && $(XCLEAN_FAIL_OK)
 	@echo "\n\n** EX08: ft_sort_int_tab"
-	@$(CW) ./C01/ex08.c ../C01/ex08/ft_sort_int_tab.c && $(XCLEAN_FAIL)
+	@$(CW) ./C01/ex08.c ../C01/ex08/ft_sort_int_tab.c && $(XCLEAN_FAIL_OK)
 	@echo ""
 
 ## C02 : Run all tests for C02 project

@@ -11,9 +11,7 @@ int main()
 
 	ft_div_mod(a, b, &div, &mod);	
 	if (div == 8 && mod == 2)
-	{
-		printf("OK");
 		return (0);
-	}
 	printf("FAILED. Result/Expected - div: %d =? %d - mod %d =? %d\n", div, 8, mod, 2);
+	return (42);
 }
