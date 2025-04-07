@@ -39,6 +39,18 @@ int main()
 					.expected = 1,
 			},
 			{
+					.desc = "Basic invers: 1-5",
+					.tab = (int[]){5, 4, 3, 2, 1},
+					.length = 5,
+					.expected = 1,
+			},
+			{
+					.desc = "Sorted inv with repeated middle",
+					.tab = (int[]){5, 4, 3, 3, 3, 2, 1},
+					.length = 7,
+					.expected = 1,
+			},
+			{
 					.desc = "Basic unsorted",
 					.tab = (int[]){4, 2, 5, 2, 9},
 					.length = 8,

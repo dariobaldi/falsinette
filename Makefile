@@ -292,5 +292,5 @@ test:
 	@echo "\n** Testing norminette"
 	@norminette -R CheckForbiddenSourceHeader ../C11 && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}"  || $(FAILED)
 	@echo "\n\n** EX04: ft_is_sort"
-	@$(CW) ../C11/ex04/ft_is_sort.c ./C11/ex04.c && ./Executable && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+	@$(CW) ../C11/ex04/ft_is_sort.c ./C11/ex04.c && ./Executable && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}" && rm -f ./Executable
 	@echo ""
