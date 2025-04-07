@@ -281,6 +281,8 @@ C11:
 	@$(CW) ../C11/ex02/ft_any.c ./C11/ex02.c && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
 	@echo "\n\n** EX03: ft_count_if"
 	@$(CW) ../C11/ex03/ft_count_if.c ./C11/ex03.c -g && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+	@echo "\n\n** EX04: ft_is_sort"
+	@$(CW) ../C11/ex04/ft_is_sort.c ./C11/ex04.c -g && ./Executable && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
 	@echo ""
 
 ## test : test current exo
@@ -289,6 +291,6 @@ test:
 	@echo "\n******   Projet C11 : pointer to function ******"
 	@echo "\n** Testing norminette"
 	@norminette -R CheckForbiddenSourceHeader ../C11 && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}"  || $(FAILED)
-	@echo "\n\n** EX03: ft_count_if"
-	@$(CW) ../C11/ex03/ft_count_if.c ./C11/ex03.c -g && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+	@echo "\n\n** EX04: ft_is_sort"
+	@$(CW) ../C11/ex04/ft_is_sort.c ./C11/ex04.c -g && ./Executable && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
 	@echo ""
