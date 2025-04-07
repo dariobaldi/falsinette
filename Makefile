@@ -272,18 +272,23 @@ C08:
 C11:
 	@echo "\n******   Projet C11 : pointer to function ******"
 	@echo "\n** Testing norminette"
-	@norminette -R CheckForbiddenSourceHeader ../C11 && printf "${BG_GREEN}${BOLD}${BLACK} DE 10 ${DEFAULT}"  || $(FAILED)
+	@norminette -R CheckForbiddenSourceHeader ../C11 && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}"  || $(FAILED)
 	@echo "\n\n** EX00: ft_foreach"
 	@$(CW) ../C11/ex00/ft_foreach.c ./C11/ex00.c && ./Executable > ./diff.txt && diff ./diff.txt ./C11/diff_ex00.txt && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
 	@echo "\n\n** EX01: ft_map"
 	@$(CW) ../C11/ex01/ft_map.c ./C11/ex01.c && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
 	@echo "\n\n** EX02: ft_any"
 	@$(CW) ../C11/ex02/ft_any.c ./C11/ex02.c && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+	@echo "\n\n** EX03: ft_count_if"
+	@$(CW) ../C11/ex03/ft_count_if.c ./C11/ex03.c -g && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
 	@echo ""
 
 ## test : test current exo
 .PHONY: test
 test:
-	@echo "\n\n** EX12: ft_print_memory"
-	@$(CW) ./C02/ex12.c ../C02/ex12/ft_print_memory.c && ./Executable && diff ./diff_expected ./diff_result && $(GOOD) && rm -f ./Executable ./diff_expected ./diff_result || $(FAILED) && rm -f ./Executable ./diff_expected ./diff_result
+	@echo "\n******   Projet C11 : pointer to function ******"
+	@echo "\n** Testing norminette"
+	@norminette -R CheckForbiddenSourceHeader ../C11 && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}"  || $(FAILED)
+	@echo "\n\n** EX03: ft_count_if"
+	@$(CW) ../C11/ex03/ft_count_if.c ./C11/ex03.c -g && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
 	@echo ""

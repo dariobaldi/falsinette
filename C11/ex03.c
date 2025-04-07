@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "../utils/constants.h"
 
-int	ft_any(char **tab, int (*f)(char*));
+int ft_count_if(char **tab, int length, int(*f)(char*));
 
 int	ft_str_is_alpha(char *str)
 {
@@ -23,7 +23,7 @@ int	ft_str_is_alpha(char *str)
 
 int main()
 {
-	int result;
+	int result, expected;
 	int failed = 0;
 	
 	char **array = (char **)malloc(sizeof(char *) * 3);
@@ -31,21 +31,23 @@ int main()
 		return (-42);
 	array[0] = "Test1";
 	array[1] = "Test2";
-	array[2] = NULL;
+	array[2] = "Test3";
 	
-  result = ft_any(array, &ft_str_is_alpha);
-	if (result != 0)
+  result = ft_count_if(array, 3, &ft_str_is_alpha);
+	expected = 0;
+	if (result != expected)
 	{
-		printf(RED "Error: got \"%d\" instead of \"%d\"\n" DEFAULT, result, 0);
+		printf(RED "Error: got \"%d\" instead of \"%d\"\n" DEFAULT, result, expected);
 		failed = -42;
 	}
 
 	array[0] = "Test";
 	array[1] = "Tests";
-	result = ft_any(array, &ft_str_is_alpha);
-	if (result != 1)
+	result = ft_count_if(array, 3, &ft_str_is_alpha);
+	expected = 2;
+	if (result != expected)
 	{
-		printf(RED "Error: got \"%d\" instead of \"%d\"\n" DEFAULT, result, 1);
+		printf(RED "Error: got \"%d\" instead of \"%d\"\n" DEFAULT, result, expected);
 		failed = -42;
 	}
 	return (failed);

@@ -38,14 +38,12 @@ int main()
 	int *array;
 	int min;
 	int max;
-	int i;
 
 	min = -42;
 	max = 42;
 	length = ft_ultimate_range(&array, min, max);
-	i = 0;
 
-    ft_foreach(array, length, &ft_putnbr);
+  ft_foreach(array, length, &ft_putnbr);
 
 	free(array);
 }
