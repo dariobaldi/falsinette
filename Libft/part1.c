@@ -3,23 +3,23 @@
 #include <libft.h>
 #include "../utils/constants.h"
 
-int ft_test_isalpha(){
+int ft_test_1(int (*f)(int), int (*original)(int), char *name){
     char    c = 0;
     int     result, expected;
 
     while (c < 127)
     {
-        result = ft_isalpha(c);
-        expected = isalpha(c);
+        result = (*f)(c);
+        expected = (*original)(c);
 
-        if (result != expected)
+        if ((!result && expected) || (result && !expected))
         {
-			printf(RED "isalpha: For %c got %d instead of %d\n" DEFAULT, c, result, expected);
+			printf(RED "%s: For %c got %d instead of %d\n" DEFAULT, name, c, result, expected);
             return (1);
         }
         c++;
     }
-    printf(GREEN "isalpha: OK\n" DEFAULT);
+    printf(GREEN "%s: OK\n" DEFAULT, name);
     return (0);
 }
 
@@ -42,7 +42,9 @@ int main()
     int errors = 0;
 
     // ft_print();
-    errors += ft_test_isalpha();
+    errors += ft_test_1(&ft_isalpha, &isalpha, "isalpha");
+    errors += ft_test_1(&ft_isdigit, &isdigit, "isdigit");
+    errors += ft_test_1(&ft_isalnum, &isalnum, "isalnum");
 
     return (errors);
 }

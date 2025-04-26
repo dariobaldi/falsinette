@@ -1,6 +1,8 @@
 # ============================================================================= #
 # HELPERS									#
 # ============================================================================= #
+TITLE="'\033[1;30;45m'"
+SUBTITLE="'\033[1;35;40m'"
 GREEN="'\033[38;5;84m'"
 RED="'\033[38;5;197m'"
 BLUE="'\033[38;5;45m'"
@@ -11,11 +13,11 @@ BG_GREEN="'\033[48;5;84m'"
 BG_RED="'\033[48;5;197m'"
 GREY="'\033[38;5;8m'"
 BOLD="'\033[1m'"
-DEFAULT="'\033[0m'"
+RESET="'\033[0m'"
 CHECKMARK="'\xE2\x9C\x93'"
 
-GOOD = printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}"
-FAILED = printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+GOOD = printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${RESET}"
+FAILED = printf "${BG_RED}${BOLD} FAILED ${RESET}"
 CC := cc
 CFLAGS := -Wall -Werror -Wextra
 CW := $(CC) $(CFLAGS) -o Executable
@@ -61,10 +63,10 @@ C00:
 	@echo "\n\n** EX07: ft_putnbr"
 	@$(CW) ./C00/ex07.c ../C00/ex07/ft_putnbr.c && ./Executable 2 > ./diff.txt && diff ./diff.txt ./C00/diff07 && $(GOOD) && rm -f ./Executable ./diff.txt || $(FAILED)
 	@echo "\n\n** EX08: ft_print_combn"
-	@$(CW) ./C00/ex08.c ../C00/ex08/ft_print_combn.c && ./Executable 2 > ./diff.txt && diff ./diff.txt ./C00/diff08_2 && $(GOOD) && rm -f ./Executable ./diff.txt || printf "${BG_RED}${BOLD} FAILED: n=2 ${DEFAULT}"
-	@$(CW) ./C00/ex08.c ../C00/ex08/ft_print_combn.c && ./Executable 3 > ./diff.txt && diff ./diff.txt ./C00/diff08_3 && $(GOOD) && rm -f ./Executable ./diff.txt || printf "${BG_RED}${BOLD} FAILED: n=3 ${DEFAULT}"
-	@$(CW) ./C00/ex08.c ../C00/ex08/ft_print_combn.c && ./Executable 7 > ./diff.txt && diff ./diff.txt ./C00/diff08_7 && $(GOOD) && rm -f ./Executable ./diff.txt || printf "${BG_RED}${BOLD} FAILED: n=7 ${DEFAULT}"
-	@$(CW) ./C00/ex08.c ../C00/ex08/ft_print_combn.c && ./Executable 9 > ./diff.txt && diff ./diff.txt ./C00/diff08_9 && $(GOOD) && rm -f ./Executable ./diff.txt || printf "${BG_RED}${BOLD} FAILED: n=9 ${DEFAULT}"
+	@$(CW) ./C00/ex08.c ../C00/ex08/ft_print_combn.c && ./Executable 2 > ./diff.txt && diff ./diff.txt ./C00/diff08_2 && $(GOOD) && rm -f ./Executable ./diff.txt || printf "${BG_RED}${BOLD} FAILED: n=2 ${RESET}"
+	@$(CW) ./C00/ex08.c ../C00/ex08/ft_print_combn.c && ./Executable 3 > ./diff.txt && diff ./diff.txt ./C00/diff08_3 && $(GOOD) && rm -f ./Executable ./diff.txt || printf "${BG_RED}${BOLD} FAILED: n=3 ${RESET}"
+	@$(CW) ./C00/ex08.c ../C00/ex08/ft_print_combn.c && ./Executable 7 > ./diff.txt && diff ./diff.txt ./C00/diff08_7 && $(GOOD) && rm -f ./Executable ./diff.txt || printf "${BG_RED}${BOLD} FAILED: n=7 ${RESET}"
+	@$(CW) ./C00/ex08.c ../C00/ex08/ft_print_combn.c && ./Executable 9 > ./diff.txt && diff ./diff.txt ./C00/diff08_9 && $(GOOD) && rm -f ./Executable ./diff.txt || printf "${BG_RED}${BOLD} FAILED: n=9 ${RESET}"
 	@echo ""
 
 
@@ -227,7 +229,7 @@ C07:
 	@echo "\n\n** EX04: ft_convert_base"
 	@$(CW) ./C07/ex04.c && $(XCLEAN_FAIL)
 	@echo "\n\n** EX07: ft_split"
-	@$(CW) ../C07/ex05/ft_split.c ./C07/ex05.c && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+	@$(CW) ../C07/ex05/ft_split.c ./C07/ex05.c && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${RESET}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${RESET}"
 	@echo ""
 
 ## C08 : Run all tests for C05 project
@@ -243,15 +245,15 @@ C08:
 	@echo "\n\n** EX01: ft_boolean"
 	@cp ../C08/ex01/ft_boolean.h ./C08/ex01/ft_boolean.h || echo "FAILED copying ft.h file"
 	@$(CW) ./C08/ex01/main.c
-	@./Executable > test1.diff && diff ./test1.diff ./C08/ex01/test1.diff && $(GOOD): no arguments && rm -f ./test1.diff || printf "${BG_RED}${BOLD} FAILED: no arguments ${DEFAULT}"
-	@./Executable arg1 > test2.diff && diff ./test2.diff ./C08/ex01/test2.diff && $(GOOD): 1 argument && rm -f ./test2.diff || printf "${BG_RED}${BOLD} FAILED: 1 argument ${DEFAULT}"
-	@./Executable arg1 arg2 > test3.diff && diff ./test3.diff ./C08/ex01/test3.diff && $(GOOD): 2 arguments && rm -f ./test3.diff || printf "${BG_RED}${BOLD} FAILED: 2 arguments ${DEFAULT}"
+	@./Executable > test1.diff && diff ./test1.diff ./C08/ex01/test1.diff && $(GOOD): no arguments && rm -f ./test1.diff || printf "${BG_RED}${BOLD} FAILED: no arguments ${RESET}"
+	@./Executable arg1 > test2.diff && diff ./test2.diff ./C08/ex01/test2.diff && $(GOOD): 1 argument && rm -f ./test2.diff || printf "${BG_RED}${BOLD} FAILED: 1 argument ${RESET}"
+	@./Executable arg1 arg2 > test3.diff && diff ./test3.diff ./C08/ex01/test3.diff && $(GOOD): 2 arguments && rm -f ./test3.diff || printf "${BG_RED}${BOLD} FAILED: 2 arguments ${RESET}"
 	@rm -f ./C08/ex01/ft_boolean.h ./Executable || echo "FAILED removing ft_boolean files"
 	@echo "\n\n** EX02: ft_abs.h"
 	@cp ../C08/ex02/ft_abs.h ./C08/ex02/ft_abs.h || echo "FAILED copying ft_abs.h file"
 	@$(CW) ./C08/ex02/main.c
-	@./Executable 42 > test1.diff && diff ./test1.diff ./C08/ex02/test.diff && $(GOOD): positive number && rm -f ./test1.diff || printf "${BG_RED}${BOLD} FAILED: positive number ${DEFAULT}"
-	@./Executable -42 > test2.diff && diff ./test2.diff ./C08/ex02/test.diff && $(GOOD): negative number && rm -f ./test2.diff || printf "${BG_RED}${BOLD} FAILED: negative number ${DEFAULT}"
+	@./Executable 42 > test1.diff && diff ./test1.diff ./C08/ex02/test.diff && $(GOOD): positive number && rm -f ./test1.diff || printf "${BG_RED}${BOLD} FAILED: positive number ${RESET}"
+	@./Executable -42 > test2.diff && diff ./test2.diff ./C08/ex02/test.diff && $(GOOD): negative number && rm -f ./test2.diff || printf "${BG_RED}${BOLD} FAILED: negative number ${RESET}"
 	@rm -f ./C08/ex02/ft_abs.h ./Executable || echo "FAILED removing ft_abs files"
 	@echo "\n\n** EX03: ft_point.h"
 	@cp ../C08/ex03/ft_point.h ./C08/ex03/ft_point.h || echo "FAILED copying ft_point.h file"
@@ -259,11 +261,11 @@ C08:
 	@rm -f ./C08/ex03/ft_point.h || echo "FAILED removing ft_point.h"
 	@echo "\n\n** EX04: ft_strs_to_tab"
 	@cp ../C08/ex04/ft_strs_to_tab.c ./C08/ex04/ft_strs_to_tab.c || echo "FAILED copying ft_strs_to_tab.c file"
-	@$(CW) ./C08/ex04/*.c && ./Executable test coso cuestion > ./diff.txt && diff ./diff.txt ./C08/ex05/diff_ex05.txt && $(GOOD) && rm -f ./Executable ./diff.txt || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+	@$(CW) ./C08/ex04/*.c && ./Executable test coso cuestion > ./diff.txt && diff ./diff.txt ./C08/ex05/diff_ex05.txt && $(GOOD) && rm -f ./Executable ./diff.txt || printf "${BG_RED}${BOLD} FAILED ${RESET}"
 	@rm -f ./C08/ex04/ft_strs_to_tab.c || echo "FAILED removing ft.h file"
 	@echo "\n\n** EX05: ft_show_tab.c"
 	@cp ../C08/ex05/ft_show_tab.c ./C08/ex05/ft_show_tab.c || echo "FAILED copying ft_strs_to_tab.c file"
-	@$(CW) ./C08/ex05/*.c && ./Executable test coso cuestion > ./diff.txt && diff ./diff.txt ./C08/ex05/diff_ex05.txt && $(GOOD) && rm -f ./Executable ./diff.txt || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+	@$(CW) ./C08/ex05/*.c && ./Executable test coso cuestion > ./diff.txt && diff ./diff.txt ./C08/ex05/diff_ex05.txt && $(GOOD) && rm -f ./Executable ./diff.txt || printf "${BG_RED}${BOLD} FAILED ${RESET}"
 	@rm -f ./C08/ex05/ft_show_tab.c || echo "FAILED removing ft.h file"
 	@echo ""
 
@@ -272,40 +274,41 @@ C08:
 C11:
 	@echo "\n******   Projet C11 : pointer to function ******"
 	@echo "\n** Testing norminette"
-	@norminette -R CheckForbiddenSourceHeader ../C11 && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}"  || $(FAILED)
+	@norminette -R CheckForbiddenSourceHeader ../C11 && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${RESET}"  || $(FAILED)
 	@echo "\n\n** EX00: ft_foreach"
-	@$(CW) ../C11/ex00/ft_foreach.c ./C11/ex00.c && ./Executable > ./diff.txt && diff ./diff.txt ./C11/diff_ex00.txt && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+	@$(CW) ../C11/ex00/ft_foreach.c ./C11/ex00.c && ./Executable > ./diff.txt && diff ./diff.txt ./C11/diff_ex00.txt && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${RESET}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${RESET}"
 	@echo "\n\n** EX01: ft_map"
-	@$(CW) ../C11/ex01/ft_map.c ./C11/ex01.c && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+	@$(CW) ../C11/ex01/ft_map.c ./C11/ex01.c && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${RESET}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${RESET}"
 	@echo "\n\n** EX02: ft_any"
-	@$(CW) ../C11/ex02/ft_any.c ./C11/ex02.c && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+	@$(CW) ../C11/ex02/ft_any.c ./C11/ex02.c && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${RESET}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${RESET}"
 	@echo "\n\n** EX03: ft_count_if"
-	@$(CW) ../C11/ex03/ft_count_if.c ./C11/ex03.c && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+	@$(CW) ../C11/ex03/ft_count_if.c ./C11/ex03.c && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${RESET}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${RESET}"
 	@echo "\n\n** EX04: ft_is_sort"
-	@$(CW) ../C11/ex04/ft_is_sort.c ./C11/ex04.c && ./Executable && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+	@$(CW) ../C11/ex04/ft_is_sort.c ./C11/ex04.c && ./Executable && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${RESET}"
 	@echo ""
 
 ## Libft : Run all tests for Libft
 .PHONY: Libft
 Libft:
-	@echo "\n******   Projet Libft : Your very first own library ******"
-	@echo "\n** Testing norminette"
-	@norminette ../Libft && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${DEFAULT}\n\n"  || $(FAILED)
-	@if find ../Libft -type f -name "*.o" | grep -q .; then printf "${BG_RED}${BOLD} *.o files already exist in project directory ${DEFAULT}\n\n"; fi
-	@if [ -f "../Libft/libft.a" ]; then printf "${BG_RED}${BOLD} File libft.a already exists ${DEFAULT}\n\n"; fi
+	@printf "\n\t${TITLE}Projet Libft${RESET} : Your very first own library\n\n"
+	@printf "${SUBTITLE}Testing norminette${RESET}\n"
+	@norminette ../Libft && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}\n\n"  || $(FAILED)
+	@if find ../Libft -type f -name "*.o" | grep -q .; then printf "${BG_RED}${BOLD} *.o files already exist in project directory ${RESET}\n\n"; fi
+	@if [ -f "../Libft/libft.a" ]; then printf "${BG_RED}${BOLD} File libft.a already exists ${RESET}\n\n"; fi
 	@make -C ../Libft -s fclean
 	@make -C ../Libft -s all
-	@if [ ! -f "../Libft/libft.a" ]; then printf "${BG_RED}${BOLD} File libft.a was not creaded ${DEFAULT}\n\n"; exit 1; fi
-	@tree ../Libft
-	@$(CW) ./Libft/part1.c -I ../Libft/ -L ../Libft/ -lft && ./Executable && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+	@if [ ! -f "../Libft/libft.a" ]; then printf "${BG_RED}${BOLD} File libft.a was not creaded ${RESET}\n\n"; exit 1; fi
+	@printf "${SUBTITLE}Part 1 - Libc functions${RESET}\n"
+	@$(CW) ./Libft/part1.c -I ../Libft/ -L ../Libft/ -lft && ./Executable && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${RESET}"
 	@make -C ../Libft -s fclean
 
 ## test : test current exo
 .PHONY: test
 test:
+	@printf "${TITLE} GOOD ${RESET}"
 	@echo "\n******   Projet C11 : pointer to function ******"
 	@echo "\n** Testing norminette"
-	@norminette -R CheckForbiddenSourceHeader ../C11 && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${DEFAULT}"  || $(FAILED)
+	@norminette -R CheckForbiddenSourceHeader ../C11 && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${RESET}"  || $(FAILED)
 	@echo "\n\n** EX04: ft_is_sort"
-	@$(CW) ../C11/ex04/ft_is_sort.c ./C11/ex04.c && ./Executable && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}" && rm -f ./Executable
+	@$(CW) ../C11/ex04/ft_is_sort.c ./C11/ex04.c && ./Executable && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${RESET}" && rm -f ./Executable
 	@echo ""
