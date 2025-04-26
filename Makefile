@@ -267,7 +267,7 @@ C08:
 	@rm -f ./C08/ex05/ft_show_tab.c || echo "FAILED removing ft.h file"
 	@echo ""
 
-## C11 : Run all tests for C05 project
+## C11 : Run all tests for C11 project
 .PHONY: C11
 C11:
 	@echo "\n******   Projet C11 : pointer to function ******"
@@ -284,6 +284,21 @@ C11:
 	@echo "\n\n** EX04: ft_is_sort"
 	@$(CW) ../C11/ex04/ft_is_sort.c ./C11/ex04.c && ./Executable && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
 	@echo ""
+
+## Libft : Run all tests for Libft
+.PHONY: Libft
+Libft:
+	@echo "\n******   Projet Libft : Your very first own library ******"
+	@echo "\n** Testing norminette"
+	@norminette ../Libft && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${DEFAULT}\n\n"  || $(FAILED)
+	@if find ../Libft -type f -name "*.o" | grep -q .; then printf "${BG_RED}${BOLD} *.o files already exist in project directory ${DEFAULT}\n\n"; fi
+	@if [ -f "../Libft/libft.a" ]; then printf "${BG_RED}${BOLD} File libft.a already exists ${DEFAULT}\n\n"; fi
+	@make -C ../Libft -s fclean
+	@make -C ../Libft -s all
+	@if [ ! -f "../Libft/libft.a" ]; then printf "${BG_RED}${BOLD} File libft.a was not creaded ${DEFAULT}\n\n"; exit 1; fi
+	@tree ../Libft
+	@$(CW) ./Libft/part1.c -I ../Libft/ -L ../Libft/ -lft && ./Executable && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${DEFAULT}"
+	@make -C ../Libft -s fclean
 
 ## test : test current exo
 .PHONY: test
