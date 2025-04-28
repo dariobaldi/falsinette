@@ -34,7 +34,12 @@ int main()
     errors += ft_test_strlcat();
     errors += ft_test_1(&ft_toupper, &toupper, "toupper");
     errors += ft_test_1(&ft_tolower, &tolower, "tolower");
+    errors += ft_test_strchr();
+    errors += ft_test_strrchr();
     errors += ft_test_strncmp();
+    errors += ft_test_memchr();
+    errors += ft_test_memcmp();
+    errors += ft_test_strnstr();
     errors += ft_test_atoi();
 
     return (errors);
@@ -85,9 +90,9 @@ int ft_test_strlen()
 
 int ft_test_memset()
 {
-    int     i, cmp;
-    void     *expected, *result;
-    char    dst1[10], dst2[10];
+    int i, cmp;
+    void *expected, *result;
+    char dst1[10], dst2[10];
 
     i = 42;
     while (i < 127)
@@ -109,8 +114,8 @@ int ft_test_memset()
 
 int ft_test_bzero()
 {
-    int     cmp;
-    char    dst1[10], dst2[10];
+    int cmp;
+    char dst1[10], dst2[10];
 
     memset(dst1, 21, 10);
     memset(dst2, 42, 10);
@@ -131,8 +136,8 @@ int ft_test_bzero()
 int ft_test_memcpy()
 {
     int i, len, n, cmp;
-    void     *expected, *result;
-    char    dst1[10], dst2[10];
+    void *expected, *result;
+    char dst1[10], dst2[10];
 
     i = 0;
     while (strs[i])
@@ -160,9 +165,9 @@ int ft_test_memcpy()
 int ft_test_memmove()
 {
     int cmp;
-    void     *expected, *result;
-    char    dst1[] = "Hello World";
-    char    dst2[] = "Hello World";
+    void *expected, *result;
+    char dst1[] = "Hello World";
+    char dst2[] = "Hello World";
 
     result = ft_memmove(dst1 + 3, dst1, 5);
     expected = memmove(dst2 + 3, dst2, 5);
@@ -243,6 +248,62 @@ int ft_test_strlcat()
     return (0);
 }
 
+int ft_test_strchr()
+{
+    int i, c;
+    char *expected, *result;
+
+    i = 0;
+    while (strs[i])
+    {
+         // Looking for the first appearence of a and then \0
+         c = 97;
+         while (c >= 0)
+         {
+             result = ft_strchr(strs[i], c);
+             expected = strchr(strs[i], c);
+     
+             if (result != expected)
+             {
+                 printf(RED "strchr: KO\tFor \"%s\" and c=%d got %p instead of %p\n" DEFAULT, strs[i],c, result, expected);
+                 return (1);
+             }
+             c -= 97;
+         }
+         i++;
+    }
+    printf(GREEN "strchr: OK\n" DEFAULT);
+    return (0);
+}
+
+int ft_test_strrchr()
+{
+    int i, c;
+    char *expected, *result;
+
+    i = 0;
+    while (strs[i])
+    {
+         // Looking for the first appearence of a and then \0
+         c = 97;
+         while (c >= 0)
+         {
+             result = ft_strrchr(strs[i], c);
+             expected = strrchr(strs[i], c);
+     
+             if (result != expected)
+             {
+                 printf(RED "strrchr: KO\tFor \"%s\" and c=%d got %p instead of %p\n" DEFAULT, strs[i],c, result, expected);
+                 return (1);
+             }
+             c -= 97;
+         }
+         i++;
+    }
+    printf(GREEN "strrchr: OK\n" DEFAULT);
+    return (0);
+}
+
 int ft_test_strncmp()
 {
     int i, j;
@@ -267,6 +328,90 @@ int ft_test_strncmp()
         i++;
     }
     printf(GREEN "strncmp: OK\n" DEFAULT);
+    return (0);
+}
+
+int ft_test_memchr()
+{
+    int i, c, len;
+    char *expected, *result;
+
+    i = 0;
+    while (strs[i])
+    {
+        len = strlen(strs[i]);
+         // Looking for the first appearence of a and then \0
+         c = 97;
+         while (c >= 0)
+         {
+             result = ft_memchr(strs[i], c, len + 1);
+             expected = memchr(strs[i], c, len + 1);
+     
+             if (result != expected)
+             {
+                 printf(RED "memchr: KO\tFor \"%s\" and c=%d got %p instead of %p\n" DEFAULT, strs[i],c, result, expected);
+                 return (1);
+             }
+             c -= 97;
+         }
+         i++;
+    }
+    printf(GREEN "memchr: OK\n" DEFAULT);
+    return (0);
+}
+
+int ft_test_memcmp()
+{
+    int i, j, len, ilen, jlen;
+    int expected, result;
+
+    i = 0;
+    while (strs[i])
+    {
+        j = 0;
+        while (strs[j])
+        {
+            ilen = strlen(strs[i]);
+            jlen = strlen(strs[j]);
+            len = ilen;
+            if (ilen > jlen)
+                len = jlen;
+            result = ft_memcmp(strs[i], strs[j], len);
+            expected = memcmp(strs[i], strs[j], len);
+
+            if (result != expected)
+            {
+                printf(RED "memcmp: KO\tFor \"%s\" got %d instead of %d\n" DEFAULT, strs[i], result, expected);
+                return (1);
+            }
+            j++;
+        }
+        i++;
+    }
+    printf(GREEN "memcmp: OK\n" DEFAULT);
+    return (0);
+}
+
+int ft_test_strnstr()
+{
+    int     i;
+    char    *expected, *result;
+    char    *ref = "an";
+
+    i = 0;
+    while (strs[i])
+    {
+        result = ft_strnstr(strs[i], ref, 22);
+        expected = strnstr(strs[i], ref, 22);
+
+        if (result != expected)
+        {
+            printf(RED "strnstr: KO\tFor \"%s\" got %p instead of %p\n" DEFAULT, strs[i], result, expected);
+            return (1);
+        }
+        i++;
+    }
+    printf(GREEN "strnstr: OK\n" DEFAULT);
     return (0);
 }
 
@@ -301,8 +446,7 @@ int ft_test_atoi()
         "-2147483648",     // INT_MIN
         "2147483648",      // INT_MAX + 1
         "-2147483649",     // INT_MIN - 1
-        NULL
-    };
+        NULL};
 
     i = 0;
     while (tests[i])

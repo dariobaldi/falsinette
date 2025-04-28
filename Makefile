@@ -293,13 +293,13 @@ Libft:
 	@clear
 	@printf "\n\t${TITLE}Project Libft${RESET} : Your very first own library\n\n"
 	@printf "${SUBTITLE}Run norminette${RESET}\n"
-	@norminette ../Libft && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}\n\n"  || $(FAILED)
-	@if find ../Libft -type f -name "*.o" | grep -q .; then printf "${BG_RED}${BOLD} *.o files already exist in project directory ${RESET}\n\n"; fi
-	@if [ -f "../Libft/libft.a" ]; then printf "${BG_RED}${BOLD} File libft.a already exists ${RESET}\n\n"; fi
+	@norminette ../Libft && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}"  || $(FAILED)
+	@if find ../Libft -type f -name "*.o" | grep -q .; then printf "\n\n${BG_RED}${BOLD} *.o files already exist in project directory ${RESET}\n\n"; fi
+	@if [ -f "../Libft/libft.a" ]; then printf "\n\n${BG_RED}${BOLD} File libft.a already exists ${RESET}"; fi
 	@make -C ../Libft -s fclean
 	@make -C ../Libft -s all
-	@if [ ! -f "../Libft/libft.a" ]; then printf "${BG_RED}${BOLD} File libft.a was not creaded ${RESET}\n\n"; exit 1; fi
-	@printf "${SUBTITLE}Part 1 - Libc functions${RESET}\n"
+	@if [ ! -f "../Libft/libft.a" ]; then printf "\n\n${BG_RED}${BOLD} File libft.a was not creaded ${RESET}"; exit 1; fi
+	@printf "\n\n${SUBTITLE}Part 1 - Libc functions${RESET}\n"
 	@$(CW) ./Libft/part1.c -I ../Libft/ -L ../Libft/ -lft && ./Executable && $(GOOD) && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${RESET}"
 	@make -C ../Libft -s fclean
 

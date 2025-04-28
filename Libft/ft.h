@@ -9,7 +9,12 @@ int ft_test_memcpy();
 int ft_test_memmove();
 int ft_test_strlcpy();
 int ft_test_strlcat();
+int ft_test_strchr();
+int ft_test_strrchr();
 int ft_test_strncmp();
+int ft_test_memchr();
+int ft_test_memcmp();
+int ft_test_strnstr();
 int ft_test_atoi();
 
 #endif
