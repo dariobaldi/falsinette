@@ -475,19 +475,21 @@ int ft_test_calloc()
     void *p;
 
     p = ft_calloc(0, sizeof(int));
-    if(p != NULL)
+    if(p == NULL)
     {
         printf(RED "calloc: KO\tcount == 0 not managed\n" DEFAULT);
         failed++;
-        free(p);
 	}
+    else
+        free(p);
     p = ft_calloc(5, 0);
-    if(p != NULL)
+    if(p == NULL)
     {
         printf(RED "calloc: KO\tsize == 0 not managed\n" DEFAULT);
         failed++;
-        free(p);
 	}
+    else
+        free(p);
 	p = ft_calloc(5, sizeof(int));
     if(p == NULL)
     {
