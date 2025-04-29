@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+#include <limits.h>
 #include "libft.h"
 #include "../utils/constants.h"
 #include "ft.h"
@@ -41,6 +42,8 @@ int main()
     errors += ft_test_memcmp();
     errors += ft_test_strnstr();
     errors += ft_test_atoi();
+    errors += ft_test_calloc();
+    errors += ft_test_strdup();
 
     return (errors);
 }
@@ -463,4 +466,84 @@ int ft_test_atoi()
     }
     printf(GREEN "atoi: OK\n" DEFAULT);
     return (0);
+}
+
+int ft_test_calloc()
+{
+    int failed = 0;
+    int i;
+    void *p;
+
+    p = ft_calloc(0, sizeof(int));
+    if(p != NULL)
+    {
+        printf(RED "calloc: KO\tcount == 0 not managed\n" DEFAULT);
+        failed++;
+        free(p);
+	}
+    p = ft_calloc(5, 0);
+    if(p != NULL)
+    {
+        printf(RED "calloc: KO\tsize == 0 not managed\n" DEFAULT);
+        failed++;
+        free(p);
+	}
+	p = ft_calloc(5, sizeof(int));
+    if(p == NULL)
+    {
+        printf(RED "calloc: KO\tcouldn't allocate memory for 5 ints\n" DEFAULT);
+        failed++;
+	}
+    else
+    {
+        i = 0;
+        while (i < 5)
+        {
+            if (*(int *)(p + i) != 0)
+            {
+                printf(RED "calloc: KO\tmemory is not set to 0\n" DEFAULT);
+                failed++;
+                break;
+            }
+            i++;
+        }
+        free(p);
+    }
+	p = ft_calloc(INT_MAX, sizeof(int));
+    if(p != NULL)
+    {
+        printf(RED "calloc: KO\tint overflow is not verified\n" DEFAULT);
+        free(p);
+        failed++;
+	}
+
+    if (!failed)
+        printf(GREEN "calloc: OK\n" DEFAULT);
+	return (failed);
+}
+
+int ft_test_strdup()
+{
+	int failed = 0;
+	char src[] = "This is the same";
+	char *dest;
+
+	dest = ft_strdup(src);
+	if (dest == src && !strcmp(src, dest))
+	{
+        printf(RED "strdup: KO\treturned same pointer as src\n" DEFAULT);
+        failed = 1;
+
+	}
+	if (strcmp(src, dest))
+	{
+        printf(RED "strdup: KO\tcopied string is not the same\nExpected:%s\nResult:%s\n" DEFAULT, src, dest);
+		failed = 1;
+	}
+
+	free(dest);
+    if (!failed)
+        printf(GREEN "strdup: OK\n" DEFAULT);
+
+	return (failed);
 }

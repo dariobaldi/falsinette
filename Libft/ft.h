@@ -16,5 +16,7 @@ int ft_test_memchr();
 int ft_test_memcmp();
 int ft_test_strnstr();
 int ft_test_atoi();
+int ft_test_calloc();
+int ft_test_strdup();
 
 #endif
