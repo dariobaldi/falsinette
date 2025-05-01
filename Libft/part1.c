@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+#include <bsd/string.h>
 #include <limits.h>
 #include "libft.h"
 #include "../utils/constants.h"
@@ -20,7 +21,6 @@ int main()
 {
     int errors = 0;
 
-    // ft_print();
     errors += ft_test_1(&ft_isalpha, &isalpha, "isalpha");
     errors += ft_test_1(&ft_isdigit, &isdigit, "isdigit");
     errors += ft_test_1(&ft_isalnum, &isalnum, "isalnum");
@@ -489,8 +489,11 @@ int ft_test_calloc()
         failed++;
 	}
     else
+    {
         free(p);
-	p = ft_calloc(5, sizeof(int));
+    }
+    
+    p = ft_calloc(5, sizeof(int));
     if(p == NULL)
     {
         printf(RED "calloc: KO\tcouldn't allocate memory for 5 ints\n" DEFAULT);
@@ -520,7 +523,9 @@ int ft_test_calloc()
 	}
 
     if (!failed)
+    {
         printf(GREEN "calloc: OK\n" DEFAULT);
+    }
 	return (failed);
 }
 
@@ -545,7 +550,9 @@ int ft_test_strdup()
 
 	free(dest);
     if (!failed)
+    {
         printf(GREEN "strdup: OK\n" DEFAULT);
+    }
 
 	return (failed);
 }

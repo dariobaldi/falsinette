@@ -55,7 +55,8 @@ Libft:
 	@make -C ../Libft -s all
 	@if [ ! -f "../Libft/libft.a" ]; then printf "\n\n${BG_RED}${BOLD} File libft.a was not creaded ${RESET}"; exit 1; fi
 	@printf "\n\n${SUBTITLE}Part 1 - Libc functions${RESET}\n"
-	@$(CW) ./Libft/part1.c -I ../Libft/ -L ../Libft/ -lft && ./Executable && $(GOOD) && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${RESET}"
+	@$(CW) ./Libft/part1.c -I ../Libft/ -L ../Libft/ -lft -lbsd && ./Executable && $(GOOD) || printf "${BG_RED}${BOLD} FAILED ${RESET}"
+	@rm -f ./Executable
 	@make -C ../Libft -s fclean
 
 ## test : test current exo
