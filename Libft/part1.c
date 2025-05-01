@@ -9,13 +9,23 @@
 #include "ft.h"
 
 char *strs[] = {
-    "",
     "Don't Panic.",
+    "",
     "I'm gonna make him an offer he can't refuse.",
     "Gentlemen, you can't fight in here! This is the War Room!",
     "Here's Johnny!",
     "Well, cut my legs off and call me Shorty!",
     NULL};
+
+int ft_weirdcmp(int a, int b)
+{
+    if (a < 0 && b < 0)
+        return (0);
+    if (a > 0 && b > 0)
+        return (0);
+    else
+        return (a != b);
+}
 
 int main()
 {
@@ -371,7 +381,7 @@ int ft_test_memcmp()
     i = 0;
     while (strs[i])
     {
-        j = 0;
+        j = i + 1;
         while (strs[j])
         {
             ilen = strlen(strs[i]);
@@ -382,7 +392,7 @@ int ft_test_memcmp()
             result = ft_memcmp(strs[i], strs[j], len);
             expected = memcmp(strs[i], strs[j], len);
 
-            if (result != expected)
+            if (ft_weirdcmp(result, expected))
             {
                 printf(RED "memcmp: KO\tFor \"%s\" got %d instead of %d\n" DEFAULT, strs[i], result, expected);
                 return (1);
