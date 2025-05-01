@@ -18,6 +18,7 @@ CHECKMARK="'\xE2\x9C\x93'"
 
 GOOD = printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${RESET}"
 FAILED = printf "${BG_RED}${BOLD} FAILED ${RESET}"
+FAILED_NORM = printf "${BG_RED}${BOLD} FAILED NORM ${RESET}\n"
 CC := cc
 CFLAGS := -Wall -Werror -Wextra
 CW := $(CC) $(CFLAGS) -o Executable
@@ -40,7 +41,33 @@ confirm:
 # TEST										#
 # ============================================================================= #
 
-## C00 : Run all tests for C00 project
+## Libft : Your very first own library
+.PHONY: Libft
+Libft:
+	@clear
+	@printf "\n\t${TITLE}Project Libft${RESET} : Your very first own library\n\n"
+	@printf "${SUBTITLE}Run norminette${RESET}\n"
+	@norminette ../Libft > norm_file && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}" || ($(FAILED_NORM) && grep Error norm_file)
+	@rm -f norm_file
+	@if find ../Libft -type f -name "*.o" | grep -q .; then printf "\n\n${BG_RED}${BOLD} *.o files already exist in project directory ${RESET}\n\n"; fi
+	@if [ -f "../Libft/libft.a" ]; then printf "\n\n${BG_RED}${BOLD} File libft.a already exists ${RESET}"; fi
+	@make -C ../Libft -s fclean
+	@make -C ../Libft -s all
+	@if [ ! -f "../Libft/libft.a" ]; then printf "\n\n${BG_RED}${BOLD} File libft.a was not creaded ${RESET}"; exit 1; fi
+	@printf "\n\n${SUBTITLE}Part 1 - Libc functions${RESET}\n"
+	@$(CW) ./Libft/part1.c -I ../Libft/ -L ../Libft/ -lft && ./Executable && $(GOOD) && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${RESET}"
+	@make -C ../Libft -s fclean
+
+## test : test current exo
+.PHONY: test
+test:
+	@clear
+	@printf "\n\t${TITLE}Project Libft${RESET} : Your very first own library\n\n"
+	@printf "${SUBTITLE}Run norminette${RESET}\n"
+	@norminette ../Libft > norm_file && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}" || ($(FAILED_NORM) && grep Error norm_file)
+	@rm -f norm_file
+
+## C00 : So it begins
 .PHONY: C00
 C00:
 	@echo "\n******   Projet C00  ******"
@@ -70,7 +97,7 @@ C00:
 	@echo ""
 
 
-## C01 : Run all tests for C01 project
+## C01 : Pointers
 .PHONY: C01
 C01:
 	@echo "\n******   Projet C01 : Pointers  ******"
@@ -96,7 +123,7 @@ C01:
 	@$(CW) ./C01/ex08.c ../C01/ex08/ft_sort_int_tab.c && $(XCLEAN_FAIL_OK)
 	@echo ""
 
-## C02 : Run all tests for C02 project
+## C02 : string manipulation
 .PHONY: C02
 C02:
 	@echo "\n******   Projet C02 : string manipulation  ******"
@@ -130,7 +157,7 @@ C02:
 	@$(CW) ./C02/ex12.c ../C02/ex12/ft_print_memory.c && ./Executable && diff ./diff_expected ./diff_result && $(GOOD) && rm -f ./Executable ./diff_expected ./diff_result || $(FAILED) && rm -f ./Executable ./diff_expected ./diff_result
 	@echo ""
 
-## C03 : Run all tests for C03 project
+## C03 : string manipulation 2
 .PHONY: C03
 C03: confirm
 	@echo "\n******   Projet C03 : string manipulation 2  ******"
@@ -150,7 +177,7 @@ C03: confirm
 	@$(CW) ./C03/ex05.c ../C03/ex05/ft_strlcat.c -lbsd && $(XCLEAN_FAIL)
 	@echo ""
 
-## C04 : Run all tests for C04 project
+## C04 : putnbr and atoi
 .PHONY: C04
 C04:
 	@echo "\n******   Projet C04 : putnbr and atoi  ******"
@@ -170,7 +197,7 @@ C04:
 	@$(CW) ./C04/ex05.c ../C04/ex05/ft_atoi_base.c && $(XCLEAN_FAIL)
 	@echo ""
 
-## C05 : Run all tests for C05 project
+## C05 : recursive functions
 .PHONY: C05
 C05:
 	@echo "\n******   Projet C05 : recursive functions ******"
@@ -196,7 +223,7 @@ C05:
 	@$(CW) ./C05/ex08.c ../C05/ex08/ft_ten_queens_puzzle.c && ./Executable > ./diff.txt && diff ./diff.txt ./C05/diff_ex08.txt && $(GOOD) && rm -f ./Executable ./diff.txt || $(FAILED)
 	@echo ""	
 
-## C06 : Run all tests for C05 project
+## C06 : main arguments
 .PHONY: C06
 C06:
 	@echo "\n******   Projet C06 : main arguments ******"
@@ -212,7 +239,7 @@ C06:
 	@$(CW) ../C06/ex03/ft_sort_params.c && ./Executable abcd ab a abc test1 test2 test 3 > ./diff.txt && diff ./diff.txt ./C06/diff_ex03.txt && echo "OK" && rm -f ./Executable ./diff.txt || $(FAILED)
 	@echo ""
 
-## C07 : Run all tests for C05 project
+## C07 : malloc and free
 .PHONY: C07
 C07:
 	@echo "\n******   Projet C07 : malloc and free ******"
@@ -232,10 +259,10 @@ C07:
 	@$(CW) ../C07/ex05/ft_split.c ./C07/ex05.c && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${RESET}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${RESET}"
 	@echo ""
 
-## C08 : Run all tests for C05 project
+## C08 : Header files
 .PHONY: C08
 C08:
-	@echo "\n******   Projet C08 : malloc and free ******"
+	@echo "\n******   Projet C08 : Header files ******"
 	@echo "\n** Testing norminette"
 	@norminette -R CheckForbiddenSourceHeader ../C08 || $(FAILED)
 	@echo "\n\n** EX00: ft.h"
@@ -269,7 +296,7 @@ C08:
 	@rm -f ./C08/ex05/ft_show_tab.c || echo "FAILED removing ft.h file"
 	@echo ""
 
-## C11 : Run all tests for C11 project
+## C11 : pointer to function
 .PHONY: C11
 C11:
 	@echo "\n******   Projet C11 : pointer to function ******"
@@ -287,29 +314,4 @@ C11:
 	@$(CW) ../C11/ex04/ft_is_sort.c ./C11/ex04.c && ./Executable && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${RESET}"
 	@echo ""
 
-## Libft : Run all tests for Libft
-.PHONY: Libft
-Libft:
-	@clear
-	@printf "\n\t${TITLE}Project Libft${RESET} : Your very first own library\n\n"
-	@printf "${SUBTITLE}Run norminette${RESET}\n"
-	@norminette ../Libft && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}"  || $(FAILED)
-	@if find ../Libft -type f -name "*.o" | grep -q .; then printf "\n\n${BG_RED}${BOLD} *.o files already exist in project directory ${RESET}\n\n"; fi
-	@if [ -f "../Libft/libft.a" ]; then printf "\n\n${BG_RED}${BOLD} File libft.a already exists ${RESET}"; fi
-	@make -C ../Libft -s fclean
-	@make -C ../Libft -s all
-	@if [ ! -f "../Libft/libft.a" ]; then printf "\n\n${BG_RED}${BOLD} File libft.a was not creaded ${RESET}"; exit 1; fi
-	@printf "\n\n${SUBTITLE}Part 1 - Libc functions${RESET}\n"
-	@$(CW) ./Libft/part1.c -I ../Libft/ -L ../Libft/ -lft && ./Executable && $(GOOD) && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${RESET}"
-	@make -C ../Libft -s fclean
 
-## test : test current exo
-.PHONY: test
-test:
-	@printf "${TITLE} GOOD ${RESET}"
-	@echo "\n******   Projet C11 : pointer to function ******"
-	@echo "\n** Testing norminette"
-	@norminette -R CheckForbiddenSourceHeader ../C11 && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${RESET}"  || $(FAILED)
-	@echo "\n\n** EX04: ft_is_sort"
-	@$(CW) ../C11/ex04/ft_is_sort.c ./C11/ex04.c && ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} GOOD ${RESET}" && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${RESET}" && rm -f ./Executable
-	@echo ""
