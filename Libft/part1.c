@@ -209,6 +209,8 @@ int ft_test_strlcpy()
     int expected, result;
     char dst1[45], dst2[45];
 
+    memset(dst1, '4', 45);
+    memset(dst2, '2', 45);
     i = 0;
     while (strs[i])
     {
@@ -225,6 +227,8 @@ int ft_test_strlcpy()
             printf(RED "strlcpy: KO\tFor \"%s\" comparison got %d\n" DEFAULT, strs[i], strcmp(dst1, dst2));
             return (1);
         }
+        memset(dst1, '4', 45);
+        memset(dst2, '2', 45);
         i++;
     }
     printf(GREEN "strlcpy: OK\n" DEFAULT);
@@ -269,8 +273,7 @@ int ft_test_strchr()
     i = 0;
     while (strs[i])
     {
-         // Looking for the first appearence of a and then \0
-         c = 97;
+         c = 'a' + 256;
          while (c >= 0)
          {
              result = ft_strchr(strs[i], c);
@@ -297,8 +300,7 @@ int ft_test_strrchr()
     i = 0;
     while (strs[i])
     {
-         // Looking for the first appearence of a and then \0
-         c = 97;
+         c = 'a' + 256;
          while (c >= 0)
          {
              result = ft_strrchr(strs[i], c);
@@ -331,9 +333,9 @@ int ft_test_strncmp()
             result = ft_strncmp(strs[i], strs[j], 30);
             expected = strncmp(strs[i], strs[j], 30);
 
-            if (result != expected)
+            if (ft_weirdcmp(result, expected))
             {
-                printf(RED "strncmp: KO\tFor \"%s\" got %d instead of %d\n" DEFAULT, strs[i], result, expected);
+                printf(RED "strncmp: KO\tFor \"%s\" and \"%s\" got %d instead of %d\n" DEFAULT, strs[i], strs[j], result, expected);
                 return (1);
             }
             j++;
@@ -414,8 +416,8 @@ int ft_test_strnstr()
     i = 0;
     while (strs[i])
     {
-        result = ft_strnstr(strs[i], ref, 22);
-        expected = strnstr(strs[i], ref, 22);
+        result = ft_strnstr(strs[i], ref, 23);
+        expected = strnstr(strs[i], ref, 23);
 
         if (result != expected)
         {
@@ -524,7 +526,7 @@ int ft_test_calloc()
         }
         free(p);
     }
-	p = ft_calloc(INT_MAX, sizeof(int));
+	p = ft_calloc(~0UL, ~0UL);
     if(p != NULL)
     {
         printf(RED "calloc: KO\tint overflow is not verified\n" DEFAULT);

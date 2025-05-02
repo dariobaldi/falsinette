@@ -25,7 +25,7 @@ CW := $(CC) $(CFLAGS) -o Executable
 VCW := $(CC) $(CFLAGS) -g -o Executable
 XCLEAN_FAIL := ./Executable && rm -f ./Executable || $(FAILED)
 XCLEAN_FAIL_OK := ./Executable && $(GOOD) && rm -f ./Executable || $(FAILED)
-VXCLEAN_FAIL := valgrind ./Executable && rm -f ./Executable || $(FAILED)
+VXCLEAN_FAIL := valgrind -q --leak-check=full ./Executable && rm -f ./Executable || $(FAILED)
 
 .PHONY: help
 help:
@@ -55,7 +55,8 @@ Libft:
 	@make -C ../Libft -s all
 	@if [ ! -f "../Libft/libft.a" ]; then printf "\n\n${BG_RED}${BOLD} File libft.a was not created ${RESET}"; exit 1; fi
 	@printf "\n\n${SUBTITLE}Part 1 - Libc functions${RESET}\n"
-	@$(CW) ./Libft/part1.c -I ../Libft/ -L ../Libft/ -lft -lbsd && ./Executable && $(GOOD) || printf "${BG_RED}${BOLD} FAILED ${RESET}"
+	@$(VCW) ./Libft/part1.c -I ../Libft/ -L ../Libft/ -lft -lbsd
+	@valgrind -q --leak-check=full ./Executable && $(GOOD) || printf "${BG_RED}${BOLD} FAILED ${RESET}"
 	@rm -f ./Executable
 	@make -C ../Libft -s fclean
 
@@ -64,9 +65,9 @@ Libft:
 test:
 	@clear
 	@printf "\n\t${TITLE}Project Libft${RESET} : Your very first own library\n\n"
-	@printf "${SUBTITLE}Run norminette${RESET}\n"
-	@norminette ../Libft > norm_file && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}" || ($(FAILED_NORM) && grep Error norm_file)
-	@rm -f norm_file
+	@make -C ../Libft -s all
+	@$(VCW) ./Libft/part1.c -I ../Libft/ -L ../Libft/ -lft -lbsd || printf "${BG_RED}${BOLD} FAILED COMPILATION ${RESET}"
+	@valgrind -q ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} 0 LEAKS ${RESET}" || printf "${BG_RED}${BOLD} FAILED MEMORY CHECK ${RESET}"
 
 ## C00 : So it begins
 .PHONY: C00
