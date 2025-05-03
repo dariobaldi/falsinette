@@ -32,7 +32,7 @@ int ft_putendl_fd_test()
         i++;
     }
     if (errors == 0)
-        printf(GREEN "OK\n" DEFAULT);
+        printf(GREEN "OK" DEFAULT);
     return (errors);
 }
 
@@ -71,11 +71,14 @@ int run_test(t_test *test) {
 
     if (!output) output = strdup(""); // Handle NULL case safely
 
-    if (strcmp(output, test->expected) == 0) {
+    if (strcmp(output, test->expected) == 0)
+    {
         free(output);
         return (0);
-    } else {
-        printf(RED "KO:\tFor input string '%s'\n" DEFAULT, test->str);
+    }
+    else
+    {
+        printf(RED "\nKO: For input string '%s'" DEFAULT, test->str);
         free(output);
         return (1);
     }

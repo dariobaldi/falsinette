@@ -37,7 +37,7 @@ int ft_lstsize_test()
 
    int errors = run_tests(tests, count);
     if (errors == 0)
-        printf(GREEN "OK\n" DEFAULT);
+        printf(GREEN "OK" DEFAULT);
     return (errors);
 }
 
@@ -57,7 +57,7 @@ static int run_tests(t_test *tests, int count)
         if (result != tests[i].expected)
         {
             errors++;
-            printf(RED "[%d] expected %d got %d\n" DEFAULT, i + 1, tests[i].expected, result);
+            printf(RED "\n[%d] expected %d got %d" DEFAULT, i + 1, tests[i].expected, result);
         }
         // else
         // {

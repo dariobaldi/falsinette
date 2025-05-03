@@ -62,7 +62,7 @@ int ft_putnbr_fd_test()
         i++;
     }
     if (errors == 0)
-        printf(GREEN "OK\n" DEFAULT);
+        printf(GREEN "OK" DEFAULT);
     return (errors);
 }
 
@@ -104,8 +104,10 @@ int run_test(t_test *test) {
     if (strcmp(output, test->expected) == 0) {
         free(output);
         return (0);
-    } else {
-        printf(RED "KO:\tFor '%s' got '%s'\n" DEFAULT, test->expected, output);
+    }
+    else
+    {
+        printf(RED "\nKO: For '%s' got '%s'" DEFAULT, test->expected, output);
         free(output);
         return (1);
     }

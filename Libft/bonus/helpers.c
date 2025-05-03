@@ -137,6 +137,11 @@ void del(void *content)
     content++;
 };
 
+void del2(void *content)
+{
+    free(content);
+};
+
 int strslen(char **strs)
 {
     int i;
@@ -162,4 +167,29 @@ t_list	*ft_getitem(t_list *lst, int index)
         i++;
 	}
 	return (NULL);
+}
+
+void ft_f(void *value)
+{
+    char *c = (char *)value;
+    while (*c)
+    {
+    if (*c % 2 != 0)
+        *c = toupper(*c);
+    else
+        *c = tolower(*c);
+    c++;
+    }
+}
+
+void *ft_f2(void *value)
+{
+    char *str = (char *)value;
+    int len = strlen(str);
+    char *result = malloc (sizeof(char) * (len + 1));
+    if (!result)
+        return (NULL);
+    strlcpy(result, str, len + 1);
+    ft_f(result);
+    return (result);
 }

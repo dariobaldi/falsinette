@@ -37,7 +37,7 @@ int ft_lstadd_front_test()
 
    int errors = run_tests(tests, count);
     if (errors == 0)
-        printf(GREEN "OK\n" DEFAULT);
+        printf(GREEN "OK" DEFAULT);
     return (errors);
 }
 
@@ -58,7 +58,7 @@ static int run_tests(t_test *tests, int count)
         if (!is_valid_list(&lst, tests[i].expected))
         {
             errors++;
-            printf(RED "[%d]" DEFAULT "\nExpected:\n", i + 1);
+            printf(RED "\n[%d]" DEFAULT "\nExpected:\n", i + 1);
             putarray(tests[i].expected);
             printf("Got:\n");
             putlist(&lst);

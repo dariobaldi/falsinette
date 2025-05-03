@@ -1,6 +1,15 @@
 #ifndef FT_H
 # define FT_H
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#include <bsd/string.h>
+#include <limits.h>
+#include "libft.h"
+#include "../../utils/constants.h"
+
 int ft_weirdcmp(int a, int b);
 int ft_test_1(int (*f)(int), int (*original)(int), char *name);
 

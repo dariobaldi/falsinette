@@ -15,7 +15,7 @@ int ft_putchar_fd_test()
     }
 
     if (errors == 0)
-        printf(GREEN "OK\n" DEFAULT);
+        printf(GREEN "OK" DEFAULT);
     return (errors);
 }
 
@@ -42,10 +42,13 @@ int run_test(char c, char *expected)
 
     buffer[bytes_read] = '\0'; // Null-terminate for string comparison
 
-    if (strcmp(buffer, expected) == 0) {
+    if (strcmp(buffer, expected) == 0)
+    {
         return (0);
-    } else {
-        printf(RED "KO:\tFor '%s' got '%s'\n" DEFAULT, expected, buffer);
+    }
+    else
+    {
+        printf(RED "\nKO:\tFor '%s' got '%s'" DEFAULT, expected, buffer);
         return (1);
     }
 }

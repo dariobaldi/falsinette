@@ -32,6 +32,8 @@ int ft_lstnew_test()
     for (size_t i = 0; i < count; i++) {
         errors += run_test(tests[i], i);
     }
+    if (errors == 0)
+        printf(GREEN "OK" DEFAULT);
 
     free(str);
     return 0;
@@ -42,26 +44,26 @@ int run_test(t_test test, int i)
     int error = 0;
     t_list *node = ft_lstnew(test.input);
 
-    if (!node) {
-        printf(RED "[%d] %s returned NULL\n" DEFAULT, i + 1, test.desc);
+    if (!node ) {
+        printf(RED "\n[%d] %s returned NULL" DEFAULT, i + 1, test.desc);
         return (1);
     }
 
 
     if (test.input != node->content) {
-        printf(RED "[%d] %s content pointer mismatch\n" DEFAULT, i + 1, test.desc);
+        printf(RED "\n[%d] %s content pointer mismatch" DEFAULT, i + 1, test.desc);
         error++;
     }
 
     if (node->next != NULL) {
-        printf(RED "[%d] %s → next is not NULL\n" DEFAULT, i + 1, test.desc);
+        printf(RED "\n[%d] %s → next is not NULL" DEFAULT, i + 1, test.desc);
         error++;
     }
 
-    if (!error) {
-        printf(GREEN CHECKMARK GREY " [%d] %s\n" DEFAULT, i + 1, test.desc);
-    }
+    // if (!error) {
+    //     printf(GREEN CHECKMARK GREY "\n [%d] %s" DEFAULT, i + 1, test.desc);
+    // }
 
-    free(node); // Only free the node, not the content (depends on ownership)
+    free(node);
     return (error);
 }

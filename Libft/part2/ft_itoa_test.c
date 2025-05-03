@@ -64,26 +64,27 @@ static int run_tests(t_test *tests, int count)
 
         if (!result && !tests[i].expected)
         {
-            printf(GREEN CHECKMARK GREY " [%d] %s\n" DEFAULT, i + 1, tests[i].desc);
+            // printf(GREEN CHECKMARK GREY "\n [%d] %s" DEFAULT, i + 1, tests[i].desc);
         }
         else if (!result || !tests[i].expected)
         {
-            printf(RED "[%d] %s got \"%s\" instead of \"%s\"\n" DEFAULT, i + 1, tests[i].desc, result, tests[i].expected);
+            printf(RED "\n[%d] %s got \"%s\" instead of \"%s\"" DEFAULT, i + 1, tests[i].desc, result, tests[i].expected);
             error++;
         }
         else if (strcmp(result, tests[i].expected) != 0)
         {
-            printf(RED "[%d] %s got \"%s\" instead of \"%s\"\n" DEFAULT, i + 1, tests[i].desc, result, tests[i].expected);
+            printf(RED "\n[%d] %s got \"%s\" instead of \"%s\"" DEFAULT, i + 1, tests[i].desc, result, tests[i].expected);
             error++;
         }
         else
         {
-            printf(GREEN CHECKMARK GREY " [%d] %s got \"%s\" as expected\n" DEFAULT, i + 1, tests[i].desc, result);
+            // printf(GREEN CHECKMARK GREY "\n [%d] %s got \"%s\" as expected" DEFAULT, i + 1, tests[i].desc, result);
         }
 
         if (result)
             free(result);
     }
-
+    if (error == 0)
+        printf(GREEN "OK" DEFAULT);
     return (error);
 }

@@ -30,7 +30,7 @@ int ft_lstdelone_test()
 
    int errors = run_tests(tests);
     if (errors == 0)
-        printf(GREEN "OK\n" DEFAULT);
+        printf(GREEN "OK" DEFAULT);
     return (errors);
 }
 
@@ -52,7 +52,7 @@ static int run_tests(t_test *tests)
         if (!is_valid_list(&lst, tests[i].expected))
         {
             errors++;
-            printf(RED "[%d] FAILED" DEFAULT "\nExpected:\n", i + 1);
+            printf(RED "\n[%d] FAILED" DEFAULT "\nExpected:\n", i + 1);
             putarray(tests[i].expected);
             printf("Got:\n");
             putlist(&lst);

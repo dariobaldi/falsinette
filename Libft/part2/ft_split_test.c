@@ -93,11 +93,11 @@ static int run_tests(t_test *tests, int count)
 
         if (!result && !tests[i].expected)
         {
-            printf(GREEN CHECKMARK GREY " [%d] %s\n" DEFAULT, i + 1, tests[i].desc);
+            // printf(GREEN CHECKMARK GREY "\n [%d] %s\n" DEFAULT, i + 1, tests[i].desc);
         }
         else if (!result || !tests[i].expected)
         {
-            printf(RED "[%d] %s got \"", i + 1, tests[i].desc);
+            printf(RED "\n[%d] %s got \"", i + 1, tests[i].desc);
             if (result)
             {
                 printf("%s", result[0]);
@@ -123,7 +123,7 @@ static int run_tests(t_test *tests, int count)
             {
                 printf("(null)");
             }
-            printf("\"\n" DEFAULT);
+            printf("\"" DEFAULT);
             error++;
         }
         else
@@ -133,15 +133,15 @@ static int run_tests(t_test *tests, int count)
             {
                 if (strcmp(tests[i].expected[j], result[j]) != 0)
                 {
-                    printf(RED "[%d] %s Element %d: expected \"%s\", got \"%s\"\n" DEFAULT, i + 1, tests[i].desc, j, tests[i].expected[j], result[j]);
+                    printf(RED "\n[%d] %s Element %d: expected \"%s\", got \"%s\"" DEFAULT, i + 1, tests[i].desc, j, tests[i].expected[j], result[j]);
                     error++;
                 }
                 j++;
             }
         }
 
-        if (error == 0)
-            printf(GREEN CHECKMARK GREY " [%d] %s\n" DEFAULT, i + 1, tests[i].desc);
+        // if (error == 0)
+        //     printf(GREEN CHECKMARK GREY "\n [%d] %s\n" DEFAULT, i + 1, tests[i].desc);
 
         if (result)
         {
@@ -155,6 +155,7 @@ static int run_tests(t_test *tests, int count)
         }
         errors += error;
     }
-
+    if (error == 0)
+        printf(GREEN "OK" DEFAULT);
     return (errors);
 }

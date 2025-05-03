@@ -75,13 +75,13 @@ Libft:
 	@rm -f ./Executable
 	@printf "\n\n${SUBTITLE}Part 2 - Additional functions${RESET}\n"
 	@$(VCW) ./Libft/part2/*.c -I ../Libft/ -L ../Libft -lft -lbsd
-	@valgrind -q --leak-check=full ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} FANTASTIC ! ${RESET}\n" || printf "${RESET}${BG_RED}${BOLD} FAILED ${RESET}"
+	@valgrind -q --leak-check=full ./Executable && printf "\n${BG_GREEN}${BOLD}${BLACK} FANTASTIC ! ${RESET}\n" || printf "\n${RESET}${BG_RED}${BOLD} FAILED ${RESET}"
 	@rm -f ./Executable
 	@make -C ../Libft -s fclean
 	@make -C ../Libft -s bonus
 	@printf "\n\n${SUBTITLE}Bonus part${RESET}\n"
 	@$(VCW) ./Libft/bonus/*.c -I ../Libft/ -L ../Libft -lft -lbsd
-	@valgrind -q --leak-check=full ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} THAT'S A BINGO ! ${RESET}\n" || printf "${RESET}${BG_RED}${BOLD} PUREE DE POMME DE TERRE ${RESET}"
+	@valgrind -q --leak-check=full ./Executable && printf "\n${BG_GREEN}${BOLD}${BLACK} THAT'S A BINGO ! ${RESET}\n" || printf "\n${RESET}${BG_RED}${BOLD} PUREE DE POMME DE TERRE ${RESET}"
 	@rm -f ./Executable
 	@make -C ../Libft -s fclean
 
@@ -89,12 +89,9 @@ Libft:
 .PHONY: test
 test:
 	@clear
-	@make -C ../Libft -s bonus
-	@printf "\n\n${SUBTITLE}Bonus part${RESET}\n"
-	@$(VCW) ./Libft/bonus/*.c -I ../Libft/ -L ../Libft -lft -lbsd
-	@valgrind -q --leak-check=full ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} THAT'S A BINGO ! ${RESET}\n" || printf "${RESET}${BG_RED}${BOLD} PUREE DE POMME DE TERRE ${RESET}"
-	@rm -f ./Executable
-	@make -C ../Libft -s fclean
+	@printf "\n\n${SUBTITLE}Part 2 - Additional functions${RESET}\n"
+	@$(VCW) ./Libft/part2/*.c -I ../Libft/ -L ../Libft -lft -lbsd
+	@valgrind -q --leak-check=full ./Executable && printf "\n${BG_GREEN}${BOLD}${BLACK} FANTASTIC ! ${RESET}\n" || printf "\n${RESET}${BG_RED}${BOLD} FAILED ${RESET}"
 
 
 

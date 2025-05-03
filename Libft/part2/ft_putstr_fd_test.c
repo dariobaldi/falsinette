@@ -25,7 +25,7 @@ int ft_putstr_fd_test()
         i++;
     }
     if (errors == 0)
-        printf(GREEN "OK\n" DEFAULT);
+        printf(GREEN "OK" DEFAULT);
     return (errors);
 }
 
@@ -64,12 +64,15 @@ int run_test(char *str) {
 
     if (!output) output = strdup(""); // Handle NULL case safely
 
-    if (strcmp(output, str) == 0) {
+    if (strcmp(output, str) == 0)
+    {
         free(output);
         return (0);
-    } else {
+    }
+    else
+    {
+        printf(RED "\nKO:\tFor '%s' got '%s'" DEFAULT, str, output);
         free(output);
-        printf(RED "KO:\tFor '%s' got '%s'\n" DEFAULT, str, output);
         return (1);
     }
 }

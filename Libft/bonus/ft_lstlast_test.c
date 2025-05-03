@@ -35,9 +35,9 @@ int ft_lstlast_test()
     
     int count = sizeof(tests) / sizeof(tests[0]);
 
-   int errors = run_tests(tests, count);
+    int errors = run_tests(tests, count);
     if (errors == 0)
-        printf(GREEN "OK\n" DEFAULT);
+        printf(GREEN "OK" DEFAULT);
     return (errors);
 }
 
@@ -58,17 +58,17 @@ static int run_tests(t_test *tests, int count)
         if (!result)
         {
             errors++;
-            printf(RED "[%d] Returned NULL element\n" DEFAULT, i + 1);
+            printf(RED "\n[%d] Returned NULL element" DEFAULT, i + 1);
         }
         else if (!result->content)
         {
             errors++;
-            printf(RED "[%d] Empty content\n" DEFAULT, i + 1);
+            printf(RED "\n[%d] Empty content" DEFAULT, i + 1);
         }
         else if (strcmp(tests[i].expected, (char *)result->content))
         {
             errors++;
-            printf(RED "[%d] expected \"%s\" got \"%s\"\n" DEFAULT, i + 1, tests[i].expected, (char *)result->content);
+            printf(RED "\n[%d] expected \"%s\" got \"%s\"" DEFAULT, i + 1, tests[i].expected, (char *)result->content);
         }
         else
         // {
