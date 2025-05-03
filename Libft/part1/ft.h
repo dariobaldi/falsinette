@@ -1,7 +1,9 @@
 #ifndef FT_H
 # define FT_H
 
+int ft_weirdcmp(int a, int b);
 int ft_test_1(int (*f)(int), int (*original)(int), char *name);
+
 int ft_test_strlen();
 int ft_test_memset();
 int ft_test_bzero();

@@ -5,7 +5,7 @@
 #include <bsd/string.h>
 #include <limits.h>
 #include "libft.h"
-#include "../utils/constants.h"
+#include "../../utils/constants.h"
 #include "ft.h"
 
 char *strs[] = {

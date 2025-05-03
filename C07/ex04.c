@@ -175,13 +175,13 @@ int run_tests(t_test *tests, int count)
         }
         else if (!result || !tests[i].expected)
         {
-            printf(RED "[%d] %s got1 \"%s\" instead of \"%s\"\n" DEFAULT, i + 1, tests[i].desc, result, tests[i].expected);
+            printf(RED "[%d] %s got \"%s\" instead of \"%s\"\n" DEFAULT, i + 1, tests[i].desc, result, tests[i].expected);
             error -= 1;
         }
         else if (strcmp(result, tests[i].expected) != 0)
         {
 			printf("%s\n%s\n%d\n%d\n", result, tests[i].expected, result[2],tests[i].expected[2]);
-            printf(RED "[%d] %s got2 \"%s\" instead of \"%s\"\n" DEFAULT, i + 1, tests[i].desc, result, tests[i].expected);
+            printf(RED "[%d] %s got \"%s\" instead of \"%s\"\n" DEFAULT, i + 1, tests[i].desc, result, tests[i].expected);
             error -= 1;
         }
         else

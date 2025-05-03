@@ -11,6 +11,7 @@ PINK="'\033[38;5;207m'"
 BLACK="'\033[38;5;0m'"
 BG_GREEN="'\033[48;5;84m'"
 BG_RED="'\033[48;5;197m'"
+BG_YELLOW="'\033[48;5;11m'"
 GREY="'\033[38;5;8m'"
 BOLD="'\033[1m'"
 RESET="'\033[0m'"
@@ -49,14 +50,32 @@ Libft:
 	@printf "${SUBTITLE}Run norminette${RESET}\n"
 	@norminette ../Libft > norm_file && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}" || ($(FAILED_NORM) && grep Error norm_file)
 	@rm -f norm_file
-	@if find ../Libft -type f -name "*.o" | grep -q .; then printf "\n\n${BG_RED}${BOLD} *.o files already exist in project directory ${RESET}\n\n"; fi
-	@if [ -f "../Libft/libft.a" ]; then printf "\n\n${BG_RED}${BOLD} File libft.a already exists ${RESET}"; fi
+	@printf "\n\n${SUBTITLE}Checking files${RESET}\n"
+	@find ../Libft -type f -not -name "*_bonus.c" -not -path "../Libft/.git/*" | sort > files && diff ./files ./Libft/part1/files && $(GOOD)|| printf "${BG_RED}${BOLD} KO: mismatched files (Mandatory) ${RESET}"
+	@find ../Libft -type f -name "*_bonus.c" -not -path "../Libft/.git/*" | sort > files && diff ./files ./Libft/bonus/files || printf "${BG_YELLOW}${BOLD} KO: Bonus Files ${RESET}"
+	@printf "\n\n${SUBTITLE}Checking make commands${RESET}\n"
+	@make -C ../Libft -s libft.a
+	@find ../Libft -type f -not -name "*_bonus.c" -not -path "../Libft/.git/*" | sort > files && diff ./files ./Libft/part1/files_all && printf "libft.a:${GREEN}${BOLD} OK ${RESET}\n"|| printf "libft.a:${BG_RED}${BOLD} KO ${RESET}\n"
+	@make -C ../Libft -s fclean
+	@find ../Libft -type f -not -name "*_bonus.c" -not -path "../Libft/.git/*" | sort > files && diff ./files ./Libft/part1/files && printf "fclean:${GREEN}${BOLD} OK ${RESET}\n"|| printf "fclean:${BG_RED}${BOLD} KO ${RESET}\n"
+	@make -C ../Libft -s all
+	@find ../Libft -type f -not -name "*_bonus.c" -not -path "../Libft/.git/*" | sort > files && diff ./files ./Libft/part1/files_all && printf "all:${GREEN}${BOLD} OK ${RESET}\n"|| printf "all:${BG_RED}${BOLD} KO ${RESET}\n"
+	@make -C ../Libft -s clean
+	@find ../Libft -type f -not -name "*_bonus.c" -not -path "../Libft/.git/*" | sort > files && diff ./files ./Libft/part1/files_clean && printf "clean:${GREEN}${BOLD} OK ${RESET}\n"|| printf "clean:${BG_RED}${BOLD} KO ${RESET}\n"
+	@make -C ../Libft -s fclean
+	@make -C ../Libft -np | awk '/^re:/ {print; exit}' > files && diff ./files ./Libft/part1/files_re && printf "re:${GREEN}${BOLD} OK ${RESET}\n"|| printf "re:${BG_RED}${BOLD} KO ${RESET}\n"
+	@make -C ../Libft -s bonus \
+		&& find ../Libft -type f -not -path "../Libft/.git/*" | sort > files && diff ./files ./Libft/bonus/files_bonus && printf "bonus:${GREEN}${BOLD} GREAT JOB ${RESET}\n"|| printf "bonus:${BG_RED}${BOLD} KO ${RESET}\n"
+	@rm -f ./files
 	@make -C ../Libft -s fclean
 	@make -C ../Libft -s all
-	@if [ ! -f "../Libft/libft.a" ]; then printf "\n\n${BG_RED}${BOLD} File libft.a was not created ${RESET}"; exit 1; fi
 	@printf "\n\n${SUBTITLE}Part 1 - Libc functions${RESET}\n"
-	@$(VCW) ./Libft/part1.c -I ../Libft/ -L ../Libft/ -lft -lbsd
+	@$(VCW) ./Libft/part1/*.c -I ../Libft/ -L ../Libft -lft -lbsd
 	@valgrind -q --leak-check=full ./Executable && $(GOOD) || printf "${BG_RED}${BOLD} FAILED ${RESET}"
+	@rm -f ./Executable
+	@printf "\n\n${SUBTITLE}Part 2 - Additional functions${RESET}\n"
+	@$(VCW) ./Libft/part2/*.c -I ../Libft/ -L ../Libft -lft -lbsd
+	@valgrind -q --leak-check=full ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} FANTASTIC ! ${RESET}\n" || printf "${RESET}${BG_RED}${BOLD} FAILED ${RESET}"
 	@rm -f ./Executable
 	@make -C ../Libft -s fclean
 
@@ -64,10 +83,15 @@ Libft:
 .PHONY: test
 test:
 	@clear
-	@printf "\n\t${TITLE}Project Libft${RESET} : Your very first own library\n\n"
 	@make -C ../Libft -s all
-	@$(VCW) ./Libft/part1.c -I ../Libft/ -L ../Libft/ -lft -lbsd || printf "${BG_RED}${BOLD} FAILED COMPILATION ${RESET}"
-	@valgrind -q ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} 0 LEAKS ${RESET}" || printf "${BG_RED}${BOLD} FAILED MEMORY CHECK ${RESET}"
+	@printf "\n\n${SUBTITLE}Part 2 - Additional functions${RESET}\n"
+	@$(VCW) ./Libft/part2/*.c -I ../Libft/ -L ../Libft -lft -lbsd
+	@valgrind -q --leak-check=full ./Executable && $(GOOD) || printf "${RESET}${BG_RED}${BOLD} FAILED ${RESET}"
+	@rm -f ./Executable
+	@make -C ../Libft -s fclean
+
+
+
 
 ## C00 : So it begins
 .PHONY: C00
