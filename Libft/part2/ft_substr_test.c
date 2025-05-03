@@ -69,7 +69,7 @@ int ft_substr_test()
     return run_tests(tests, count);
 }
 
-int run_tests(t_test *tests, int count)
+static int run_tests(t_test *tests, int count)
 {
     int i;
     int error = 0;

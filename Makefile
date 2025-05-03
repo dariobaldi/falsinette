@@ -78,6 +78,12 @@ Libft:
 	@valgrind -q --leak-check=full ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} FANTASTIC ! ${RESET}\n" || printf "${RESET}${BG_RED}${BOLD} FAILED ${RESET}"
 	@rm -f ./Executable
 	@make -C ../Libft -s fclean
+	@make -C ../Libft -s bonus
+	@printf "\n\n${SUBTITLE}Bonus part${RESET}\n"
+	@$(VCW) ./Libft/bonus/*.c -I ../Libft/ -L ../Libft -lft -lbsd
+	@valgrind -q --leak-check=full ./Executable && printf "${BG_GREEN}${BOLD}${BLACK} THAT'S A BINGO ! ${RESET}\n" || printf "${RESET}${BG_RED}${BOLD} PUREE DE POMME DE TERRE ${RESET}"
+	@rm -f ./Executable
+	@make -C ../Libft -s fclean
 
 ## test : test current exo
 .PHONY: test

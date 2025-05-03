@@ -8,7 +8,7 @@ typedef struct s_test
     char **expected;
 } t_test;
 
-int run_tests(t_test *tests, int count);
+static int run_tests(t_test *tests, int count);
 
 int ft_split_test()
 {
@@ -80,7 +80,7 @@ int ft_split_test()
     return run_tests(tests, count);
 }
 
-int run_tests(t_test *tests, int count)
+static int run_tests(t_test *tests, int count)
 {
     int i, j;
     int errors = 0;
