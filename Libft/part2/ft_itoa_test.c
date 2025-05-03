@@ -33,6 +33,11 @@ int ft_itoa_test()
             .expected = "-5",
         },
         {
+            .desc = "All Numbers:",
+            .n = 1234567890,
+            .expected = "1234567890",
+        },
+        {
             .desc = "INT MAX",
             .n = 2147483647,
             .expected = "2147483647",

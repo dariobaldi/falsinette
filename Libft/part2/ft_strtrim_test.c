@@ -33,15 +33,27 @@ int ft_strtrim_test()
         },
         {
             .desc = "String is fully made of trim characters:",
-            .s1 = "0123456789",
-            .set = "",
-            .expected = "0123456789",
+            .s1 = "165324845016487984500164451",
+            .set = "0123456789",
+            .expected = "",
         },
         {
             .desc = "Empty input string:",
             .s1 = "",
             .set = "0123456789",
             .expected = "",
+        },
+        {
+            .desc = "Both Empty:",
+            .s1 = "",
+            .set = "",
+            .expected = "",
+        },
+        {
+            .desc = "One character in the middle",
+            .s1 = "130840a2084021",
+            .set = "0123456789",
+            .expected = "a",
         },
         {
             .desc = "s1 NULL",

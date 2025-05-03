@@ -12,11 +12,13 @@
 int ft_substr_test();
 int ft_strjoin_test();
 int ft_strtrim_test();
-// split
+int ft_split_test();
 int ft_itoa_test();
 int ft_strmapi_test();
 int ft_striteri_test();
 int ft_putchar_fd_test();
 int ft_putstr_fd_test();
+int ft_putendl_fd_test();
+int ft_putnbr_fd_test();
 
 #endif
