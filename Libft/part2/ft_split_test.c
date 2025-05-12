@@ -73,6 +73,12 @@ int ft_split_test()
             .c = ';',
             .expected = (char *[1]){0},
         },
+        {
+            .desc = "Francinette",
+            .str = "\0aa\0bbb",
+            .c = '\0',
+            .expected = (char *[1]){0},
+        },
     };
     
     int count = sizeof(tests) / sizeof(tests[0]);
@@ -97,33 +103,39 @@ static int run_tests(t_test *tests, int count)
         }
         else if (!result || !tests[i].expected)
         {
-            printf(RED "\n[%d] %s got \"", i + 1, tests[i].desc);
+            printf(RED "\n[%d] %s got ", i + 1, tests[i].desc);
             if (result)
             {
-                printf("%s", result[0]);
-                for (j = 1; result[j]; j++)
+                printf("[");
+                for (j = 0; result[j]; j++)
                 {
-                    printf("\", \"%s", result[j]);
+                    if (j > 0)
+                        printf(" , ");
+                    printf("\"%s\"", result[j]);
                 }
+                printf("]");
             }
             else
             {
                 printf("(null)");
             }
-            printf("\" instead of \"");
+            printf(" instead of ");
             if (tests[i].expected)
             {
-                printf("%s", tests[i].expected[0]);
-                for (j = 1; tests[i].expected[j]; j++)
+                printf("[");
+                for (j = 0; tests[i].expected[j]; j++)
                 {
-                    printf("\", \"%s", tests[i].expected[j]);
+                    if (j > 0)
+                        printf(" , ");
+                    printf("\"%s\"", tests[i].expected[j]);
                 }
+                printf("]");
             }
             else
             {
                 printf("(null)");
             }
-            printf("\"" DEFAULT);
+            printf(DEFAULT);
             error++;
         }
         else

@@ -24,6 +24,7 @@ CC := cc
 CFLAGS := -Wall -Werror -Wextra
 CW := $(CC) $(CFLAGS) -o Executable
 VCW := $(CC) $(CFLAGS) -g -o Executable
+VC := $(CC) -g -o Executable
 XCLEAN_FAIL := ./Executable && rm -f ./Executable || $(FAILED)
 XCLEAN_FAIL_OK := ./Executable && $(GOOD) && rm -f ./Executable || $(FAILED)
 VXCLEAN_FAIL := valgrind -q --leak-check=full ./Executable && rm -f ./Executable || $(FAILED)
@@ -41,6 +42,35 @@ confirm:
 # ============================================================================= #
 # TEST										#
 # ============================================================================= #
+
+## ft_printf : Because ft_putnbr() and ft_putstr() aren’t enough
+.PHONY: ft_printf
+ft_printf:
+	@clear
+	@printf "\n\t${TITLE}Project ft_printf${RESET} : Because ft_putnbr() and ft_putstr() aren’t enough\n\n"
+	@printf "${SUBTITLE}Run norminette${RESET}\n"
+	@norminette ../ft_printf > norm_file && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}" || ($(FAILED_NORM) && grep Error norm_file)
+	@rm -f norm_file
+	@printf "\n\n${SUBTITLE}Checking files${RESET}\n"
+	@printf "${BG_YELLOW}${BOLD} TODO ${RESET}"
+	@printf "\n\n${SUBTITLE}Checking make commands${RESET}\n"
+	@printf "${BG_YELLOW}${BOLD} TODO ${RESET}"
+	@make -C ../ft_printf -s all
+	@printf "\n\n${SUBTITLE}Mandatory part${RESET}\n"
+	@$(VC) ./ft_printf/*.c -I ../ft_printf/ -L ../ft_printf/ -lftprintf
+	@valgrind -q --leak-check=full ./Executable && printf "\n${BG_GREEN}${BOLD}${BLACK} FANTASTIC ! ${RESET}\n" || printf "\n${RESET}${BG_RED}${BOLD} FAILED ${RESET}"
+	@rm -f ./Executable
+
+## test : test current exo
+.PHONY: test
+test:
+	@clear
+	@make -C ../ft_printf -s all
+	@printf "\n\n${SUBTITLE}Part  - Additional functions${RESET}\n"
+	@$(VCW) ./Libft/part2/*.c -I ../Libft/ -L ../Libft -lft -lbsd
+	@valgrind -q --leak-check=full ./Executable && printf "\n${BG_GREEN}${BOLD}${BLACK} FANTASTIC ! ${RESET}\n" || printf "\n${RESET}${BG_RED}${BOLD} FAILED ${RESET}"
+	@rm -f ./Executable
+	@make -C ../Libft -s fclean
 
 ## Libft : Your very first own library
 .PHONY: Libft
@@ -84,17 +114,6 @@ Libft:
 	@valgrind -q --leak-check=full ./Executable && printf "\n${BG_GREEN}${BOLD}${BLACK} THAT'S A BINGO ! ${RESET}\n" || printf "\n${RESET}${BG_RED}${BOLD} PUREE DE POMME DE TERRE ${RESET}"
 	@rm -f ./Executable
 	@make -C ../Libft -s fclean
-
-## test : test current exo
-.PHONY: test
-test:
-	@clear
-	@printf "\n\n${SUBTITLE}Part 2 - Additional functions${RESET}\n"
-	@$(VCW) ./Libft/part2/*.c -I ../Libft/ -L ../Libft -lft -lbsd
-	@valgrind -q --leak-check=full ./Executable && printf "\n${BG_GREEN}${BOLD}${BLACK} FANTASTIC ! ${RESET}\n" || printf "\n${RESET}${BG_RED}${BOLD} FAILED ${RESET}"
-
-
-
 
 ## C00 : So it begins
 .PHONY: C00
