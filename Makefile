@@ -60,17 +60,18 @@ ft_printf:
 	@$(VC) ./ft_printf/*.c -I ../ft_printf/ -L ../ft_printf/ -lftprintf
 	@valgrind -q --leak-check=full ./Executable && printf "\n${BG_GREEN}${BOLD}${BLACK} FANTASTIC ! ${RESET}\n" || printf "\n${RESET}${BG_RED}${BOLD} FAILED ${RESET}"
 	@rm -f ./Executable
+	@make -C ../ft_printf -s fclean
 
 ## test : test current exo
 .PHONY: test
 test:
 	@clear
 	@make -C ../ft_printf -s all
-	@printf "\n\n${SUBTITLE}Part  - Additional functions${RESET}\n"
-	@$(VCW) ./Libft/part2/*.c -I ../Libft/ -L ../Libft -lft -lbsd
+	@printf "\n\n${SUBTITLE}Mandatory part${RESET}\n"
+	@$(VC) ./ft_printf/*.c -I ../ft_printf/ -L ../ft_printf/ -lftprintf
 	@valgrind -q --leak-check=full ./Executable && printf "\n${BG_GREEN}${BOLD}${BLACK} FANTASTIC ! ${RESET}\n" || printf "\n${RESET}${BG_RED}${BOLD} FAILED ${RESET}"
 	@rm -f ./Executable
-	@make -C ../Libft -s fclean
+	@make -C ../ft_printf -s fclean
 
 ## Libft : Your very first own library
 .PHONY: Libft
