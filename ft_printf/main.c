@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <limits.h>
-#include "ft_printf.h"
+#include "../ft_printf/ft_printf.h"
 
 void test_section(const char *desc) {
     printf("\n--- %s ---\n", desc);
@@ -13,59 +13,84 @@ int main(void) {
 
     int og, ft;
 
-    test_section("1. Literal and %%");
-    ft = ft_printf("ft: Hello, world!\n");
-    og = printf ("og: Hello, world!\n");
-    printf ("og=%d ft=%d\n", og, ft);
-    ft = ft_printf("ft: %%\n");
-    og = printf ("og: %%\n");
-    printf ("og=%d ft=%d\n", og, ft);
+    // test_section("0. printf(0)");
+    // ft = ft_printf(0);
+    // og = printf (0);
+    // printf ("og=%d ft=%d\n", og, ft);
 
-    test_section("2. %c");
-    ft = ft_printf("ft: %c\n", 'A');
-    og = printf ("og: %c\n", 'A');
-    printf ("og=%d ft=%d\n", og, ft);
-    ft = ft_printf("ft: %c\n", '\0');
-    og = printf ("og: %c\n", '\0');
-    printf ("og=%d ft=%d\n", og, ft);
-    ft = ft_printf("ft: %c\n", '4');
-    og = printf ("og: %c\n", '4');
-    printf ("og=%d ft=%d\n", og, ft);
+    // test_section("1. Literal and %%");
+    // ft = ft_printf("ft: Hello, world!\n");
+    // og = printf ("og: Hello, world!\n");
+    // printf ("og=%d ft=%d\n", og, ft);
+    // ft = ft_printf("ft: %%\n");
+    // og = printf ("og: %%\n");
+    // printf ("og=%d ft=%d\n", og, ft);
 
-    test_section("3. %s");
-    ft = ft_printf("ft: %s\n", "Hello");
-    og = printf ("og: %s\n", "Hello");
-    printf ("og=%d ft=%d\n", og, ft);
-    ft = ft_printf("ft Null char *: %s\n", null_str);
-    og = printf ("og Null char *: %s\n", null_str);
-    printf ("og=%d ft=%d\n", og, ft);
-    ft = ft_printf("ft Empty string: %s\n", "");
-    og = printf ("og Empty string: %s\n", "");
-    printf ("og=%d ft=%d\n", og, ft);
+    // test_section("2. %c");
+    // ft = ft_printf("ft: %c\n", 'A');
+    // og = printf ("og: %c\n", 'A');
+    // printf ("og=%d ft=%d\n", og, ft);
+    // ft = ft_printf("ft: %c\n", '\0');
+    // og = printf ("og: %c\n", '\0');
+    // printf ("og=%d ft=%d\n", og, ft);
+    // ft = ft_printf("ft: %c\n", '4');
+    // og = printf ("og: %c\n", '4');
+    // printf ("og=%d ft=%d\n", og, ft);
 
-    // test_section("4. %p");
-    // ft = ft_printf("ft: %p\n", ptr);
-    // og = printf ("og: %p\n", ptr);
-    // ft = ft_printf("ft: %p\n", NULL);
-    // og = printf ("og: %p\n", NULL);
+    // test_section("3. %s");
+    // ft = ft_printf("ft: %s\n", "Hello");
+    // og = printf ("og: %s\n", "Hello");
+    // printf ("og=%d ft=%d\n", og, ft);
+    // ft = ft_printf("ft Null char *: %s\n", null_str);
+    // og = printf ("og Null char *: %s\n", null_str);
+    // printf ("og=%d ft=%d\n", og, ft);
+    // ft = ft_printf("ft Empty string: %s\n", "");
+    // og = printf ("og Empty string: %s\n", "");
+    // printf ("og=%d ft=%d\n", og, ft);
+
+    test_section("4. %p");
+    ft = ft_printf("ft: %p\n", ptr);
+    og = printf ("og: %p\n", ptr);
+    printf ("og=%d ft=%d\n", og, ft);
+    ft = ft_printf("ft: %p %p\n", 7, 15);
+    og = printf ("og: %p %p\n", 7, 15);
+    printf ("og=%d ft=%d\n", og, ft);
+    ft = ft_printf("ft: %p %p\n", LONG_MIN, LONG_MAX);
+    og = printf ("og: %p %p\n", LONG_MIN, LONG_MAX);
+    printf ("og=%d ft=%d\n", og, ft);
+    ft = ft_printf("ft: %p %p\n", ULONG_MAX, -ULONG_MAX);
+    og = printf ("og: %p %p\n", ULONG_MAX, -ULONG_MAX);
+    printf ("og=%d ft=%d\n", og, ft);
+    ft = ft_printf("ft: %p\n", NULL);
+    og = printf ("og: %p\n", NULL);
+    printf ("og=%d ft=%d\n", og, ft);
 
     // test_section("5. %d / %i");
     // ft = ft_printf("ft: %d %d %d %d\n", 42, -42, 0, INT_MAX);
     // og = printf ("og: %d %d %d %d\n", 42, -42, 0, INT_MAX);
+    // printf ("og=%d ft=%d\n", og, ft);
     // ft = ft_printf("ft: %i %i\n", INT_MIN, 0);
     // og = printf ("og: %i %i\n", INT_MIN, 0);
+    // printf ("og=%d ft=%d\n", og, ft);
 
     // test_section("6. %u");
     // ft = ft_printf("ft: %u %u\n", 42u, 0u);
     // og = printf ("og: %u %u\n", 42u, 0u);
+    // printf ("og=%d ft=%d\n", og, ft);
     // ft = ft_printf("ft: %u\n", UINT_MAX);
     // og = printf ("og: %u\n", UINT_MAX);
+    // printf ("og=%d ft=%d\n", og, ft);
 
     // test_section("7. %x / %X");
     // ft = ft_printf("ft: %x %X\n", 255, 255);
     // og = printf ("og: %x %X\n", 255, 255);
+    // printf ("og=%d ft=%d\n", og, ft);
+    // ft = ft_printf("ft: %x %X\n", INT_MAX, -42);
+    // og = printf ("og: %x %X\n", INT_MAX, -42);
+    // printf ("og=%d ft=%d\n", og, ft);
     // ft = ft_printf("ft: %x %X\n", 0, UINT_MAX);
     // og = printf ("og: %x %X\n", 0, UINT_MAX);
+    // printf ("og=%d ft=%d\n", og, ft);
 
     // test_section("8. Flags: -");
     // ft = ft_printf("ft: %-10s!\n", "left");
