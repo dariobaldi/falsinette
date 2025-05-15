@@ -8,7 +8,7 @@
       "program": "${workspaceFolder}/a.out",
       "args": [],
       "cwd": "${workspaceFolder}",
-      "preLaunchTask": "Build",
+      "preLaunchTask": "build ft_printf",
     }
   ]
 }

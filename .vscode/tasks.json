@@ -1,18 +1,22 @@
 {
   "version": "2.0.0",
   "tasks": [
-      {
-          "label": "Build",
-          "type": "shell",
-          "command": "cc",
-          "args": [
-              "-g", 
-              "./C07/ex04.c",
-          ],
-          "group": {
-              "kind": "build",
-              "isDefault": true
-          },
+    {
+      "label": "build ft_printf",
+      "type": "shell",
+      "command": "cc",
+      "args": [
+        "-g",
+        "./ft_printf/*.c",
+        "-I", "../ft_printf/",
+        "-L", "../ft_printf/",
+        "-lftprintf"
+      ],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
       }
+    }
   ]
 }
