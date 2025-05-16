@@ -70,8 +70,8 @@ test:
 	@printf "\n\n${SUBTITLE}Mandatory part${RESET}\n"
 	@$(VC) ./ft_printf/*.c -I ../ft_printf/ -L ../ft_printf/ -lftprintf
 	@valgrind -q --leak-check=full ./Executable && printf "\n${BG_GREEN}${BOLD}${BLACK} FANTASTIC ! ${RESET}\n" || printf "\n${RESET}${BG_RED}${BOLD} FAILED ${RESET}"
-	@rm -f ./Executable
-	@make -C ../ft_printf -s fclean
+	# @rm -f ./Executable
+	@make -C ../ft_printf -s clean
 
 ## Libft : Your very first own library
 .PHONY: Libft
