@@ -3,189 +3,97 @@
 #include "../ft_printf/ft_printf.h"
 #include "../utils/constants.h"
 
-typedef struct s_test_input {
-    char    *str;
-} t_test_input;
-
-void test_func(const char *name, t_test_input *input, int (*f)(const char *str, ...))
+void test_func(const char *name, int (*f)(const char *str, ...))
 {
     int result;
 
     freopen(name, "w", stdout);
-    result = f("- flag c %-15c!\n", 'A');
-    f("- flag c result = %d\n", result);
-    result = f("- flag string %-10s!\n", "left");
-    f("- flag string result = %d\n", result);
+    result = f("- Char basic |%c|\n", 'A');
+    f("- Char basic result = %d\n", result);
+    result = f("- Char with dash |%-3c|\n", 'B');
+    f("- Char with dash result = %d\n", result);
+    result = f("- Char with dot (ignored) |%.3c|\n", 'D');
+    f("- Char with dot result = %d\n", result);
 
-    result = f("- flag number %-5d!\n", 123);
-    f("- flag number result = %d\n", result);
-    result = f("- flag bigger number than width %-5d!\n", 1231111);
-    f("- flag bigger number than width result = %d\n", result);
+    result = f("- String basic |%s|\n", "hello");
+    f("- String basic result = %d\n", result);
+    result = f("- String NULL |%s|\n", NULL);
+    f("- String NULL result = %d\n", result);
+    result = f("- String with precision |%.3s|\n", "world");
+    f("- String with precision result = %d\n", result);
+    result = f("- String with dash and precision |%-10.4s|\n", "format");
+    f("- String dash/precision result = %d\n", result);
 
-    result = f("- flag number %-5i!\n", 123);
-    f("- flag number result = %i\n", result);
-    result = f("- flag bigger number than width %-5i!\n", 1231111);
-    f("- flag bigger number than width result = %i\n", result);
+    result = f("- Pointer basic |%p|\n", (void*)1231111);
+    f("- Pointer basic result = %d\n", result);
+    result = f("- Pointer NULL |%p|\n", NULL);
+    f("- Pointer NULL result = %d\n", result);
+    result = f("- Pointer with dash |%-20p|\n", (void*)1234);
+    f("- Pointer with dash result = %d\n", result);
 
-    result = f("- flag number %-5u!\n", 123);
-    f("- flag number result = %u\n", result);
-    result = f("- flag bigger number than width %-5u!\n", 1231111);
-    f("- flag bigger number than width result = %u\n", result);
+    result = f("- Int basic |%d|\n", 42);
+    f("- Int basic result = %d\n", result);
+    result = f("- Int negative |%d|\n", -42);
+    f("- Int negative result = %d\n", result);
+    result = f("- Int zero |%d|\n", 0);
+    f("- Int zero result = %d\n", result);
+    result = f("- Int INT_MAX |%d|\n", 2147483647);
+    f("- Int INT_MAX result = %d\n", result);
+    result = f("- Int INT_MIN |%d|\n", -2147483648);
+    f("- Int INT_MIN result = %d\n", result);
+    result = f("- Int precision |%.5d|\n", 42);
+    f("- Int precision result = %d\n", result);
+    result = f("- Int width + zero |%05d|\n", 42);
+    f("- Int width + zero result = %d\n", result);
+    result = f("- Int width + dash |%-5d|\n", 42);
+    f("- Int width + dash result = %d\n", result);
+    result = f("- Int width + zero + precision |%08.3d|\n", 42);
+    f("- Int width + zero + precision result = %d\n", result);
 
-    result = f("- flag pointer %-15p!\n", 1231111);
-    f("- flag pointer result = %d\n", result);
-    
-    result = f("- flag x %-15x!\n", 1231111);
-    f("- flag x result = %d\n", result);
-    result = f("- flag X %-15X!\n", 1231111);
-    f("- flag X result = %d\n", result);
+    result = f("- Unsigned basic |%u|\n", 42);
+    f("- Unsigned basic result = %d\n", result);
+    result = f("- Unsigned zero |%u|\n", 0);
+    f("- Unsigned zero result = %d\n", result);
+    result = f("- Unsigned max |%u|\n", 4294967295u);
+    f("- Unsigned max result = %d\n", result);
+    result = f("- Unsigned precision |%.6u|\n", 123);
+    f("- Unsigned precision result = %d\n", result);
+    result = f("- Unsigned dash |%-8u|\n", 123);
+    f("- Unsigned dash result = %d\n", result);
+    result = f("- Unsigned zero flag |%010u|\n", 123);
+    f("- Unsigned zero flag result = %d\n", result);
+    result = f("- Unsigned all flags |%-010.5u|\n", 123);
+    f("- Unsigned all flags result = %d\n", result);
+
+    result = f("- Hex lowercase |%x|\n", 255);
+    f("- Hex lowercase result = %d\n", result);
+    result = f("- Hex uppercase |%X|\n", 255);
+    f("- Hex uppercase result = %d\n", result);
+    result = f("- Hex zero |%x|\n", 0);
+    f("- Hex zero result = %d\n", result);
+    result = f("- Hex precision |%.4x|\n", 42);
+    f("- Hex precision result = %d\n", result);
+    result = f("- Hex dash |%-8x|\n", 42);
+    f("- Hex dash result = %d\n", result);
+    result = f("- Hex zero flag |%08x|\n", 42);
+    f("- Hex zero flag result = %d\n", result);
+    result = f("- Hex all flags |%-08.5x|\n", 42);
+    f("- Hex all flags result = %d\n", result);
+
+    result = f("- Percent basic |%%|\n");
+    f("- Percent basic result = %d\n", result);
+    result = f("- Percent with width |%5%|\n");
+    f("- Percent with width result = %d\n", result);
+    result = f("- Percent with dash |%-5%|\n");
+    f("- Percent with dash result = %d\n", result);
+    result = f("- Percent with zero |%05%|\n");
+    f("- Percent with zero result = %d\n", result);
 }
 
 int main(void) {
-    t_test_input input;
 
-    input.str = "Lo viejo funciona, Juan\n";
-
-    test_func("diff_expected", &input, &printf);
-    test_func("diff_result", &input, &ft_printf);
-
-    // test_section("9. Flags: 0");
-    // ft = ft_printf("ft: %05d!\n", 42);
-    // og = printf ("og: %05d!\n", 42);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: %05x!\n", 42);
-    // og = printf ("og: %05x!\n", 42);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-
-    // test_section("10. Flags: . precision");
-    // ft = ft_printf("ft: %-8.5d!\n", -42);
-    // og = printf ("og: %-8.5d!\n", -42);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: %-8.5d!\n", 4242);
-    // og = printf ("og: %-8.5d!\n", 4242);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: %-8.5d!\n", 0);
-    // og = printf ("og: %-8.5d!\n", 0);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: %.5d!\n", 21);
-    // og = printf ("og: %.5d!\n", 21);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: %8.5d!\n", 123);
-    // og = printf ("og: %8.5d!\n", 123);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: %5d!\n", 7891);
-    // og = printf ("og: %5d!\n", 7891);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: %.3s!\n", "hello");
-    // og = printf ("og: %.3s!\n", "hello");
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: %.0d!\n", 0);
-    // og = printf ("og: %.0d!\n", 0);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-
-    // test_section("11. Field width");
-    // ft = ft_printf("ft: %10s!\n", "test");
-    // og = printf ("og: %10s!\n", "test");
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: %4d!\n", 123);
-    // og = printf ("og: %4d!\n", 123);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-
-    // test_section("12. Flag: #");
-    // ft = ft_printf("ft: %#x %#X %#x %#X\n", 255, 255, 0, 0);
-    // og = printf ("og: %#x %#X %#x %#X\n", 255, 255, 0, 0);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-
-    // test_section("13. Flag: +");
-    // ft = ft_printf("ft: %+d %+d %+d\n", 42, 0, -42);
-    // og = printf ("og: %+d %+d %+d\n", 42, 0, -42);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-
-    // test_section("14. Flag: space");
-    // ft = ft_printf("ft: % d % d % d\n", 42, 0, -42);
-    // og = printf ("og: % d % d % d\n", 42, 0, -42);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-
-    // test_section("15. Flag combinations");
-    // ft = ft_printf("ft: %-+10d!\n", 42);
-    // og = printf ("og: %-+10d!\n", 42);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: %+010d!\n", 42);
-    // og = printf ("og: %+010d!\n", 42);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: % 010d!\n", 42);
-    // og = printf ("og: % 010d!\n", 42);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: %-08d!\n", 42);  // '-' overrides '0'
-    // og = printf ("og: %-08d!\n", 42);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-
-    // test_section("16. Multiple arguments");
-    // ft = ft_printf("ft: %s %d %#x\n", "Number", 42, 255);
-    // og = printf ("og: %s %d %#x\n", "Number", 42, 255);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-
-    // test_section("17. Tests Francinette");
-    // ft = ft_printf("ft: %23s\n", NULL);
-    // og = printf ("og: %23s\n", NULL);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: %.s\n", NULL);
-    // og = printf ("og: %.s\n", NULL);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: %-5s!\n", "abc");
-    // og = printf ("og: %-5s!\n", "abc");
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: %7.5s\n", "yolo");
-    // og = printf ("og: %7.5s\n", "yolo");
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: %7.5s\n", "bombastic");
-    // og = printf ("og: %7.5s\n", "bombastic");
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: %.03s\n", NULL);
-    // og = printf ("og: %.03s\n", NULL);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: |%7i|\n", -14);
-    // og = printf ("og: |%7i|\n", -14);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: |%3i|\n", 13862);
-    // og = printf ("og: |%3i|\n", 13862);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: |%-.48d%-166.126d%--137p%131c%111.86s|\n" ,-1733961224,-1148896912,(void*)17695841004645625598lu,-90,"v-Q/)ZI3");
-    // og = printf ("og: |%-.48d%-166.126d%--137p%131c%111.86s|\n" ,-1733961224,-1148896912,(void*)17695841004645625598lu,-90,"v-Q/)ZI3");
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: |as soon as %-16peasible|\n", (void *) (((long int)3 << 42) + 15));
-    // og = printf ("og: |as soon as %-16peasible|\n", (void *) (((long int)3 << 42) + 15));
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
+    test_func("diff_expected", &printf);
+    test_func("diff_result", &ft_printf);
 
     return (0);
 }
