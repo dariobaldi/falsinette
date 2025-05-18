@@ -14,6 +14,8 @@ void test_func(const char *name, int (*f)(const char *str, ...))
     f("- Plus sign result = %d\n", result);
     result = f("- Space flag      |% d|\n", 42);
     f("- Space flag result = %d\n", result);
+    result = f("- Plus overrides space |% +d|\n", 42);
+    f("- Plus overrides space result = %d\n", result);
     result = f("- Negative number |%+d|\n", -42);
     f("- Negative number result = %d\n", result);
     result = f("- Zero flag       |%05d|\n", 42);
@@ -26,6 +28,10 @@ void test_func(const char *name, int (*f)(const char *str, ...))
     f("- Precision only result = %d\n", result);
     result = f("- Dash and width  |%-6d|\n", 42);
     f("- Dash and width result = %d\n", result);
+    result = f("- All flags       |%+0- 10.5d|\n", 42);
+    f("- All flags result = %d\n", result);
+    result = f("- Int zero        |%+5.0d|\n", 0);
+    f("- Int zero result = %d\n", result);
     result = f("- Int INT_MAX     |%+d|\n", 2147483647);
     f("- Int INT_MAX result = %d\n", result);
     result = f("- Int INT_MIN     |%+d|\n", -2147483648);
@@ -54,8 +60,6 @@ void test_func(const char *name, int (*f)(const char *str, ...))
     f("- Hex zero-padded result = %d\n", result);
     result = f("- Hex all flags     |%-#010.6x|\n", 48879);
     f("- Hex all flags result = %d\n", result);
-
-
 }
 
 int main(void) {

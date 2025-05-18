@@ -68,9 +68,9 @@ ft_printf:
 	@make -C ../ft_printf -s bonus
 	@printf "\n\n${SUBTITLE}Bonus part 1${RESET}\n"
 	@$(VC) ./ft_printf/bonus1.c -I ../ft_printf/ -L ../ft_printf/ -lftprintf
-	@valgrind -q --leak-check=full ./Executable && diff --side-by-side --suppress-common-lines ./diff_expected ./diff_result && printf "${BG_GREEN}${BOLD}${BLACK} VA VA VA ${RESET}\n" || printf "\n${RESET}${BG_RED}${BOLD} Mince ${RESET}"
+	@valgrind -q --leak-check=full ./Executable && diff --side-by-side --suppress-common-lines ./diff_expected ./diff_result && printf "${BG_GREEN}${BOLD}${BLACK} Ba ba baaaa ${RESET}\n" || printf "\n${RESET}${BG_RED}${BOLD} Mince ${RESET}"
 	@rm -f ./Executable ./diff_expected ./diff_result
-	@printf "\n\n${SUBTITLE}Bonus part 2${RESET}\n"
+	@printf "\n${SUBTITLE}Bonus part 2${RESET}\n"
 	@$(VC) ./ft_printf/bonus2.c -I ../ft_printf/ -L ../ft_printf/ -lftprintf
 	@valgrind -q --leak-check=full ./Executable && diff --side-by-side --suppress-common-lines ./diff_expected ./diff_result && printf "${BG_GREEN}${BOLD}${BLACK} Barrilete Cosmico ! ${RESET}\n" || printf "\n${RESET}${BG_RED}${BOLD} Puree de pomme de terre ${RESET}"
 	@rm -f ./Executable ./diff_expected ./diff_result

@@ -12,6 +12,8 @@ void test_func(const char *name, int (*f)(const char *str, ...))
     f("- Char basic result = %d\n", result);
     result = f("- Char with dash |%-3c|\n", 'B');
     f("- Char with dash result = %d\n", result);
+    result = f("- Char with zero (ignored) |%03c|\n", 'C');
+    f("- Char with zero result = %d\n", result);
     result = f("- Char with dot (ignored) |%.3c|\n", 'D');
     f("- Char with dot result = %d\n", result);
 
@@ -23,6 +25,9 @@ void test_func(const char *name, int (*f)(const char *str, ...))
     f("- String with precision result = %d\n", result);
     result = f("- String with dash and precision |%-10.4s|\n", "format");
     f("- String dash/precision result = %d\n", result);
+    result = f("- String zero flag (ignored) |%010s|\n", "zero");
+    f("- String zero flag result = %d\n", result);
+
 
     result = f("- Pointer basic |%p|\n", (void*)1231111);
     f("- Pointer basic result = %d\n", result);
@@ -30,6 +35,7 @@ void test_func(const char *name, int (*f)(const char *str, ...))
     f("- Pointer NULL result = %d\n", result);
     result = f("- Pointer with dash |%-20p|\n", (void*)1234);
     f("- Pointer with dash result = %d\n", result);
+
 
     result = f("- Int basic |%d|\n", 42);
     f("- Int basic result = %d\n", result);
@@ -50,6 +56,7 @@ void test_func(const char *name, int (*f)(const char *str, ...))
     result = f("- Int width + zero + precision |%08.3d|\n", 42);
     f("- Int width + zero + precision result = %d\n", result);
 
+
     result = f("- Unsigned basic |%u|\n", 42);
     f("- Unsigned basic result = %d\n", result);
     result = f("- Unsigned zero |%u|\n", 0);
@@ -64,6 +71,7 @@ void test_func(const char *name, int (*f)(const char *str, ...))
     f("- Unsigned zero flag result = %d\n", result);
     result = f("- Unsigned all flags |%-010.5u|\n", 123);
     f("- Unsigned all flags result = %d\n", result);
+
 
     result = f("- Hex lowercase |%x|\n", 255);
     f("- Hex lowercase result = %d\n", result);
