@@ -52,6 +52,20 @@ ft_printf:
 	@norminette ../ft_printf > norm_file && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}" || ($(FAILED_NORM) && grep Error norm_file)
 	@rm -f norm_file
 	@printf "\n\n${SUBTITLE}Checking files${RESET}\n"
+	@find ../ft_printf -type f -not -name "*.c" -not -name "*.h" -not -name "Makefile" -not -path "../ft_printf/.git/*" | grep . && printf "Turn in files: ${BG_RED}${BOLD} KO: files not allowed ${RESET}" || printf "Turn in files:${GREEN}${BOLD} OK ${RESET}"
+	@grep wildcard -q ../ft_printf/Makefile && printf "\nWildcard:${BG_RED}${BOLD} KO ${RESET}" || printf "\nWildcard:${GREEN}${BOLD} OK ${RESET}"
+	@grep libtool -q ../ft_printf/Makefile && printf "\nLibtool:${BG_RED}${BOLD} KO ${RESET}" || printf "\nLibtool:${GREEN}${BOLD} OK ${RESET}"
+	@printf "\n\n${SUBTITLE}Checking make commands${RESET}\n"
+	@make -C ../ft_printf -s libftprintf.a && printf "libftprintf.a:${GREEN}${BOLD} OK ${RESET}\n"|| printf "libftprintf.a:${BG_RED}${BOLD} KO ${RESET}\n"
+	@make -C ../ft_printf -s fclean && printf "fclean:${GREEN}${BOLD} OK ${RESET}\n"|| printf "fclean:${BG_RED}${BOLD} KO ${RESET}\n"
+	@make -C ../ft_printf -s all && printf "all:${GREEN}${BOLD} OK ${RESET}\n"|| printf "all:${BG_RED}${BOLD} KO ${RESET}\n"
+	@make -C ../ft_printf -s clean && printf "clean:${GREEN}${BOLD} OK ${RESET}\n"|| printf "clean:${BG_RED}${BOLD} KO ${RESET}\n"
+	@make -C ../ft_printf -s re && printf "re:${GREEN}${BOLD} OK ${RESET}\n"|| printf "re:${BG_RED}${BOLD} KO ${RESET}\n"
+	@printf "\n\t${TITLE}Project ft_printf${RESET} : Because ft_putnbr() and ft_putstr() aren’t enough\n\n"
+	@printf "${SUBTITLE}Run norminette${RESET}\n"
+	@norminette ../ft_printf > norm_file && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}" || ($(FAILED_NORM) && grep Error norm_file)
+	@rm -f norm_file
+	@printf "\n\n${SUBTITLE}Checking files${RESET}\n"
 	@printf "${BG_YELLOW}${BOLD} TODO ${RESET}"
 	@printf "\n\n${SUBTITLE}Checking make commands${RESET}\n"
 	@printf "${BG_YELLOW}${BOLD} TODO ${RESET}"
@@ -61,10 +75,6 @@ ft_printf:
 	@valgrind -q --leak-check=full ./Executable && printf "\n${BG_GREEN}${BOLD}${BLACK} FANTASTIC ! ${RESET}\n" || printf "\n${RESET}${BG_RED}${BOLD} FAILED ${RESET}"
 	@rm -f ./Executable
 	@make -C ../ft_printf -s fclean
-
-## test : test current exo
-.PHONY: test
-test:
 	@clear
 	@make -C ../ft_printf -s all
 	@printf "\n\n${SUBTITLE}Mandatory part${RESET}\n"
@@ -72,6 +82,16 @@ test:
 	@valgrind -q --leak-check=full ./Executable && printf "\n${BG_GREEN}${BOLD}${BLACK} FANTASTIC ! ${RESET}\n" || printf "\n${RESET}${BG_RED}${BOLD} FAILED ${RESET}"
 	# @rm -f ./Executable
 	@make -C ../ft_printf -s clean
+
+## test : test current exo
+.PHONY: test
+test:
+	@clear
+	@make -C ../ft_printf -s bonus && printf "bonus:${GREEN}${BOLD} OK ${RESET}\n" || printf "bonus:${BG_YELLOW}${BOLD} KO ${RESET}\n"
+	@printf "\n\n${SUBTITLE}Mandatory part${RESET}\n"
+	@$(VC) ./ft_printf/mandatory.c -I ../ft_printf/ -L ../ft_printf/ -lftprintf
+	@valgrind -q --leak-check=full ./Executable && printf "\n${BG_GREEN}${BOLD}${BLACK} FANTASTIC ! ${RESET}\n" || printf "\n${RESET}${BG_RED}${BOLD} FAILED ${RESET}"
+	@make -C ../ft_printf -s fclean
 
 ## Libft : Your very first own library
 .PHONY: Libft

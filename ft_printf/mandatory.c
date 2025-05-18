@@ -3,22 +3,29 @@
 #include "../ft_printf/ft_printf.h"
 #include "../utils/constants.h"
 
-void test_section(const char *desc) {
-    printf("\n--- %s ---\n", desc);
+typedef struct s_test_input {
+    char    *str;
+} t_test_input;
+
+void test_section(const char *desc, int (*f)(const char *str, ...)) {
+    f("\n--- %s ---\n", desc);
+}
+
+void test_func(const char *name, t_test_input input, int (*f)(const char *str, ...))
+{
+    freopen(name, "w", stdout);
+    test_section("0. printf(0)", f);
+    f("0. printf(0)");
+    f(0);
 }
 
 int main(void) {
-    char *null_str = NULL;
-    int a = 42;
-    void *ptr = &a;
+    t_test_input input;
 
-    int og, ft;
+    input.str = "Hello, I love you, would you tell me your name?";
 
-    // test_section("0. printf(0)");
-    // ft = ft_printf(0);
-    // og = printf (0);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
+    test_func("og", input, &printf);
+    test_func("ft", input, &ft_printf);
 
     // test_section("1. Literal and %%");
     // ft = ft_printf("ft: Hello, world!\n");
@@ -257,10 +264,14 @@ int main(void) {
     // og = printf ("og: |%3i|\n", 13862);
     // if (ft != og)
     //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    ft = ft_printf("ft: |%038.4x%97p%030.48X|\n" ,3857355889u,(void*)807170435392081871lu,1801588532u);
-    og = printf ("og: |%038.4x%97p%030.48X|\n" ,3857355889u,(void*)807170435392081871lu,1801588532u);
-    if (ft != og)
-        printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
+    // ft = ft_printf("ft: |%-.48d%-166.126d%--137p%131c%111.86s|\n" ,-1733961224,-1148896912,(void*)17695841004645625598lu,-90,"v-Q/)ZI3");
+    // og = printf ("og: |%-.48d%-166.126d%--137p%131c%111.86s|\n" ,-1733961224,-1148896912,(void*)17695841004645625598lu,-90,"v-Q/)ZI3");
+    // if (ft != og)
+    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
+    // ft = ft_printf("ft: |as soon as %-16peasible|\n", (void *) (((long int)3 << 42) + 15));
+    // og = printf ("og: |as soon as %-16peasible|\n", (void *) (((long int)3 << 42) + 15));
+    // if (ft != og)
+    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
 
-    return 0;
+    return (0);
 }
