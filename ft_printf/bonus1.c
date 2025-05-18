@@ -12,48 +12,33 @@ void test_func(const char *name, t_test_input *input, int (*f)(const char *str, 
     int result;
 
     freopen(name, "w", stdout);
-    f("printf(0)");
-    result = f(0);
-    f("printf(0) result = %d\n", result);
-    result = f("Literal and %%\n");
-    f("Literal result = %d\n", result);
+    result = f("- flag c %-15c!\n", 'A');
+    f("- flag c result = %d\n", result);
+    result = f("- flag string %-10s!\n", "left");
+    f("- flag string result = %d\n", result);
 
-    result = f("%%c %c %c %c %c", '4', '2', '\0', '\n');
-    f("%%c result = %d\n", result);
+    result = f("- flag number %-5d!\n", 123);
+    f("- flag number result = %d\n", result);
+    result = f("- flag bigger number than width %-5d!\n", 1231111);
+    f("- flag bigger number than width result = %d\n", result);
 
-    result = f("%%s %s", "La Llama que llama\n");
-    f("%%s result = %d\n", result);
-    result = f("%%s empty string %s\n", "");
-    f("%%s empty string result = %d\n", result);
-    result = f("%%s NULL string %s\n", 0);
-    f("%%s NULL string result = %d\n", result);
+    result = f("- flag number %-5i!\n", 123);
+    f("- flag number result = %i\n", result);
+    result = f("- flag bigger number than width %-5i!\n", 1231111);
+    f("- flag bigger number than width result = %i\n", result);
 
-    result = f("%%p %p\n", input->str);
-    f("%%p result = %d\n", result);
-    result = f("%%p 7 15 %p %p\n", 7, 15);
-    f("%%p 7 15 result = %d\n", result);
-    result = f("%%p LONG_MIN, LONG_MAX %p %p\n", LONG_MIN, LONG_MAX);
-    f("%%p LONG_MIN, LONG_MAX result = %d\n", result);
-    result = f("%%p ULONG_MAX, -ULONG_MAX %p %p\n", ULONG_MAX, -ULONG_MAX);
-    f("%%p ULONG_MAX, -ULONG_MAX result = %d\n", result);
-    result = f("%%p NULL %p\n", NULL);
-    f("%%p NULL result = %d\n", result);
+    result = f("- flag number %-5u!\n", 123);
+    f("- flag number result = %u\n", result);
+    result = f("- flag bigger number than width %-5u!\n", 1231111);
+    f("- flag bigger number than width result = %u\n", result);
 
-    result = f("%%d %d %d %d %d %d\n", 42, -42, 0, INT_MAX, INT_MIN);
-    f("%%d result = %d\n", result);
-    result = f("%%i %i %i %i %i %i\n", 42, -42, 0, INT_MAX, INT_MIN);
-    f("%%i result = %d\n", result);
-
-    result = f("%%u %u %u %u\n", 42u, 0u, UINT_MAX);
-    f("%%u result = %d\n", result);
-
-    result = f("%%x %x %x %x %x %x\n", 0, 255, -42, INT_MAX, UINT_MAX);
-    f("%%x result = %d\n", result);
-    result = f("%%X %X %X %X %X %X\n", 0, 255, -42, INT_MAX, UINT_MAX);
-    f("%%X result = %d\n", result);
-
-    result = f("Combined %c, %s, %i, %d, %u, %x, %X, %%\n",'Y', "Dale que va\t\n", INT_MIN, INT_MAX, UINT_MAX, 0x242, 0x29575);
-    f("Combined result = %d\n", result);
+    result = f("- flag pointer %-15p!\n", 1231111);
+    f("- flag pointer result = %d\n", result);
+    
+    result = f("- flag x %-15x!\n", 1231111);
+    f("- flag x result = %d\n", result);
+    result = f("- flag X %-15X!\n", 1231111);
+    f("- flag X result = %d\n", result);
 }
 
 int main(void) {
@@ -63,20 +48,6 @@ int main(void) {
 
     test_func("diff_expected", &input, &printf);
     test_func("diff_result", &input, &ft_printf);
-
-    // test_section("8. Flags: -");
-    // ft = ft_printf("ft: %-10s!\n", "left");
-    // og = printf ("og: %-10s!\n", "left");
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: %-5d!\n", 123);
-    // og = printf ("og: %-5d!\n", 123);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
-    // ft = ft_printf("ft: %-5d!\n", 1231111);
-    // og = printf ("og: %-5d!\n", 1231111);
-    // if (ft != og)
-    //     printf (RED "KO og=%d ft=%d\n" DEFAULT, og, ft);
 
     // test_section("9. Flags: 0");
     // ft = ft_printf("ft: %05d!\n", 42);
