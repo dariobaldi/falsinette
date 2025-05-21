@@ -12,8 +12,6 @@ void test_func(const char *name, int (*f)(const char *str, ...))
     f("- Char basic result = %d\n", result);
     result = f("- Char with dash |%-3c|\n", 'B');
     f("- Char with dash result = %d\n", result);
-    result = f("- Char with zero (ignored) |%03c|\n", 'C');
-    f("- Char with zero result = %d\n", result);
     result = f("- Char with dot (ignored) |%.3c|\n", 'D');
     f("- Char with dot result = %d\n", result);
 

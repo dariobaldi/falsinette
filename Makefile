@@ -55,6 +55,7 @@ ft_printf:
 	@find ../ft_printf -type f -not -name "*.c" -not -name "*.h" -not -name "Makefile" -not -path "../ft_printf/.git/*" | grep . && printf "Turn in files: ${BG_RED}${BOLD} KO: files not allowed ${RESET}" || printf "Turn in files:${GREEN}${BOLD} OK ${RESET}"
 	@grep wildcard -q ../ft_printf/Makefile && printf "\nWildcard:${BG_RED}${BOLD} KO ${RESET}" || printf "\nWildcard:${GREEN}${BOLD} OK ${RESET}"
 	@grep libtool -q ../ft_printf/Makefile && printf "\nLibtool:${BG_RED}${BOLD} KO ${RESET}" || printf "\nLibtool:${GREEN}${BOLD} OK ${RESET}"
+	@printf "\nFlags:" && grep -q -- '-Wall' ../ft_printf/Makefile && 	grep -q -- '-Werror' ../ft_printf/Makefile && 	grep -q -- '-Wextra' ../ft_printf/Makefile && printf "${GREEN}${BOLD} OK ${RESET}" || printf "${BG_RED}${BOLD} KO ${RESET}"
 	@printf "\n\n${SUBTITLE}Checking make commands${RESET}\n"
 	@make -C ../ft_printf -s libftprintf.a && printf "libftprintf.a:${GREEN}${BOLD} OK ${RESET}\n"|| printf "libftprintf.a:${BG_RED}${BOLD} KO ${RESET}\n"
 	@make -C ../ft_printf -s fclean && printf "fclean:${GREEN}${BOLD} OK ${RESET}\n"|| printf "fclean:${BG_RED}${BOLD} KO ${RESET}\n"
