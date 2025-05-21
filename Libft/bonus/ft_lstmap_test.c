@@ -3,7 +3,7 @@
 int ft_lstmap_test()
 {
     int error = 0;
-    char *strs[6] = (char *[6]){"HELLO" , "darkness" , "MY" , "OLD" , "friend", 0};
+    char *strs[] = {"HELLO" , "darkness" , "MY" , "OLD" , "friend", 0};
     char **expected = (char *[6]){"hEllO" , "dArKnESS" , "MY" , "Old" , "frIEnd", 0};
     t_list *lst = create_linked_list((void **)strs, 5);
     t_list *lst2;

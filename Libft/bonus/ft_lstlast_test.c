@@ -46,12 +46,10 @@ static int run_tests(t_test *tests, int count)
     int i;
     t_list *result;
     int errors = 0;
-    int error;
     
     for (i = 0; i < count; i++)
     {
         t_list *lst;
-        error = 0;
         lst = create_linked_list((void **)tests[i].strs, strslen(tests[i].strs));
         result = ft_lstlast(lst);
 

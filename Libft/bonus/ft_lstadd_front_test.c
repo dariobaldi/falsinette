@@ -45,13 +45,11 @@ static int run_tests(t_test *tests, int count)
 {
     int i;
     int errors = 0;
-    int error;
     t_list *lst = NULL;
     t_list *new;
 
     for (i = 0; i < count; i++)
     {
-        error = 0;
         new = lstnew(tests[i].str);
         ft_lstadd_front(&lst, new);
 
