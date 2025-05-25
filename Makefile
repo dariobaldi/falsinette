@@ -118,7 +118,7 @@ Libft:
 	@make -C ../Libft -s fclean
 	@make -C ../Libft -np | awk '/^re:/ {print; exit}' > files && diff ./files ./Libft/part1/files_re && printf "re:${GREEN}${BOLD} OK ${RESET}\n"|| printf "re:${BG_RED}${BOLD} KO ${RESET}\n"
 	@make -C ../Libft -s bonus \
-		&& find ../Libft -type f -not -path "../Libft/.git/*" | sort > files && diff ./files ./Libft/bonus/files_bonus && printf "bonus:${GREEN}${BOLD} GREAT JOB ${RESET}\n"|| printf "bonus:${BG_RED}${BOLD} KO ${RESET}\n"
+		&& find ../Libft -type f -not -path "../Libft/.git/*" | sort > files && diff ./files ./Libft/bonus/files_bonus && printf "bonus:${GREEN}${BOLD} GREAT JOB ${RESET}\n"|| printf "bonus:${BG_YELLOW}${BOLD} KO ${RESET}\n"
 	@rm -f ./files
 	@make -C ../Libft -s fclean
 	@make -C ../Libft -s all
@@ -131,8 +131,8 @@ Libft:
 	@valgrind -q --leak-check=full ./Executable && printf "\n${BG_GREEN}${BOLD}${BLACK} FANTASTIC ! ${RESET}\n" || printf "\n${RESET}${BG_RED}${BOLD} FAILED ${RESET}"
 	@rm -f ./Executable
 	@make -C ../Libft -s fclean
-	@make -C ../Libft -s bonus
 	@printf "\n\n${SUBTITLE}Bonus part${RESET}\n"
+	@make -C ../Libft -s bonus || (printf "${BG_YELLOW}${BOLD} NO BONUS ${RESET}\n" && make -C ../Libft -s fclean && exit 1)
 	@$(VCW) ./Libft/bonus/*.c -I ../Libft/ -L ../Libft -lft -lbsd
 	@valgrind -q --leak-check=full ./Executable && printf "\n${BG_GREEN}${BOLD}${BLACK} THAT'S A BINGO ! ${RESET}\n" || printf "\n${RESET}${BG_RED}${BOLD} PUREE DE POMME DE TERRE ${RESET}"
 	@rm -f ./Executable
