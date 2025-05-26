@@ -48,9 +48,13 @@ confirm:
 test:
 	@clear
 	@printf "\n\t${TITLE}Get Next Line${RESET} : Reading a line from a file descriptor is far too tedious.\n\n"
+	@printf "${SUBTITLE}Run norminette${RESET}\n"
+	@norminette ../gnl > norm_file && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}" || ($(FAILED_NORM) && grep Error norm_file)
+	@rm -f norm_file
 	@printf "\n\n${SUBTITLE}Mandatory${RESET}\n"
-	@$(VCW) -I ../gnl/ ./gnl/main.c ../gnl/get_next_line.c ../gnl/get_next_line_utils.c
+	@$(VCW) -D BUFFER_SIZE=42 -I ../gnl/ ./gnl/mandatory.c ../gnl/get_next_line.c ../gnl/get_next_line_utils.c
 	@valgrind -q --leak-check=full ./Executable
+	@rm -f ./Executable
 
 ## ft_printf : Because ft_putnbr() and ft_putstr() aren’t enough
 .PHONY: ft_printf
