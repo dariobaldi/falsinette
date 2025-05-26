@@ -2,15 +2,15 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "build ft_printf",
+      "label": "build gnl",
       "type": "shell",
       "command": "cc",
       "args": [
         "-g",
-        "./ft_printf/*.c",
-        "-I", "../ft_printf/",
-        "-L", "../ft_printf/",
-        "-lftprintf"
+        "-I", "../gnl/",
+        "./gnl/main.c",
+        "../gnl/get_next_line.c",
+        "../gnl/get_next_line_utils.c",
       ],
       "problemMatcher": [],
       "group": {

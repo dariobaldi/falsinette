@@ -47,10 +47,10 @@ confirm:
 .PHONY: test
 test:
 	@clear
-	@make -C ../ft_printf -s all
-	@printf "\n\n${SUBTITLE}Bonus part 2${RESET}\n"
-	@$(VC) ./ft_printf/bonus2.c -I ../ft_printf/ -L ../ft_printf/ -lftprintf
-	@valgrind -q --leak-check=full ./Executable && diff --side-by-side --suppress-common-lines ./diff_expected ./diff_result && $(GOOD) || $(FAILED)
+	@printf "\n\t${TITLE}Get Next Line${RESET} : Reading a line from a file descriptor is far too tedious.\n\n"
+	@printf "\n\n${SUBTITLE}Mandatory${RESET}\n"
+	@$(VCW) -I ../gnl/ ./gnl/main.c ../gnl/get_next_line.c ../gnl/get_next_line_utils.c
+	@valgrind -q --leak-check=full ./Executable
 
 ## ft_printf : Because ft_putnbr() and ft_putstr() aren’t enough
 .PHONY: ft_printf
