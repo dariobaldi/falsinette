@@ -3,6 +3,8 @@
         "stdio.h": "c",
         "string.h": "c",
         "constants.h": "c",
-        "ft_printf.h": "c"
+        "ft_printf.h": "c",
+        "typeinfo": "c",
+        "get_next_line.h": "c"
     }
 }

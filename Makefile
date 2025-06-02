@@ -52,9 +52,63 @@ test:
 	@norminette ../gnl > norm_file && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}" || ($(FAILED_NORM) && grep Error norm_file)
 	@rm -f norm_file
 	@printf "\n\n${SUBTITLE}Mandatory${RESET}\n"
+	@printf "\n${SUBTITLE}BUFFER_SIZE=10000000${RESET}\n"
+	@rm -rf results && mkdir results
+	@$(VCW) -D BUFFER_SIZE=10000000 -I ../gnl/ ./gnl/mandatory.c ../gnl/get_next_line.c ../gnl/get_next_line_utils.c
+	@valgrind -q --leak-check=full ./Executable
+	@rm -f ./Executable
+	@for f in ./gnl/files/*; do \
+		name=$$(basename $$f); \
+		printf "$$name: " &&diff ./results/$$name ./gnl/files/$$name && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} KO ${RESET}\n"; \
+	done
+	@rm -rf results && mkdir results
+
+## gnl : Reading a line from a file descriptor is far too tedious.
+.PHONY: gnl
+gnl:
+	@clear
+	@printf "\n\t${TITLE}Get Next Line${RESET} : Reading a line from a file descriptor is far too tedious.\n\n"
+	@printf "${SUBTITLE}Run norminette${RESET}\n"
+	@norminette ../gnl > norm_file && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}" || ($(FAILED_NORM) && grep Error norm_file)
+	@rm -f norm_file
+	@printf "\n\n${SUBTITLE}Mandatory${RESET}\n"
+	@printf "\n${SUBTITLE}BUFFER_SIZE=42${RESET}\n"
+	@rm -rf results && mkdir results
 	@$(VCW) -D BUFFER_SIZE=42 -I ../gnl/ ./gnl/mandatory.c ../gnl/get_next_line.c ../gnl/get_next_line_utils.c
 	@valgrind -q --leak-check=full ./Executable
 	@rm -f ./Executable
+	@for f in ./gnl/files/*; do \
+		name=$$(basename $$f); \
+		printf "$$name: " &&diff ./results/$$name ./gnl/files/$$name && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} KO ${RESET}\n"; \
+	done
+	@printf "\n${SUBTITLE}BUFFER_SIZE=1${RESET}\n"
+	@rm -rf results && mkdir results
+	@$(VCW) -D BUFFER_SIZE=1 -I ../gnl/ ./gnl/mandatory.c ../gnl/get_next_line.c ../gnl/get_next_line_utils.c
+	@valgrind -q --leak-check=full ./Executable
+	@rm -f ./Executable
+	@for f in ./gnl/files/*; do \
+		name=$$(basename $$f); \
+		printf "$$name: " &&diff ./results/$$name ./gnl/files/$$name && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} KO ${RESET}\n"; \
+	done
+	@printf "\n${SUBTITLE}BUFFER_SIZE=10000000${RESET}\n"
+	@rm -rf results && mkdir results
+	@$(VCW) -D BUFFER_SIZE=10000000 -I ../gnl/ ./gnl/mandatory.c ../gnl/get_next_line.c ../gnl/get_next_line_utils.c
+	@valgrind -q --leak-check=full ./Executable
+	@rm -f ./Executable
+	@for f in ./gnl/files/*; do \
+		name=$$(basename $$f); \
+		printf "$$name: " &&diff ./results/$$name ./gnl/files/$$name && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} KO ${RESET}\n"; \
+	done
+	@printf "\n${SUBTITLE}BUFFER_SIZE=9999${RESET}\n"
+	@rm -rf results && mkdir results
+	@$(VCW) -D BUFFER_SIZE=9999 -I ../gnl/ ./gnl/mandatory.c ../gnl/get_next_line.c ../gnl/get_next_line_utils.c
+	@valgrind -q --leak-check=full ./Executable
+	@rm -f ./Executable
+	@for f in ./gnl/files/*; do \
+		name=$$(basename $$f); \
+		printf "$$name: " &&diff ./results/$$name ./gnl/files/$$name && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} KO ${RESET}\n"; \
+	done
+	@rm -rf results && mkdir results
 
 ## ft_printf : Because ft_putnbr() and ft_putstr() aren’t enough
 .PHONY: ft_printf

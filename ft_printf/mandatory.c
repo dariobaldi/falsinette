@@ -11,7 +11,13 @@ void test_func(const char *name, t_test_input *input, int (*f)(const char *str, 
 {
     int result;
 
-    freopen(name, "w", stdout);
+
+    FILE *fp = freopen(name, "w", stdout);
+    if (fp == NULL)
+    {
+        printf("freopen did not work for %s\n", name);
+        return ;
+    }
     f("printf(0)");
     result = f(0);
     f("printf(0) result = %d\n", result);
@@ -54,6 +60,7 @@ void test_func(const char *name, t_test_input *input, int (*f)(const char *str, 
 
     result = f("Combined %c, %s, %i, %d, %u, %x, %X, %%\n",'Y', "Dale que va\t\n", INT_MIN, INT_MAX, UINT_MAX, 0x242, 0x29575);
     f("Combined result = %d\n", result);
+    fclose(fp);
 }
 
 int main(void) {
