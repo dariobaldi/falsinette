@@ -8,42 +8,6 @@
 #include "get_next_line.h"
 #include "../utils/constants.h"
 
-void    ft_test(char *file, char *output)
-{
-    int     fd;
-	char    *line;
-    FILE    *fp;
-    
-
-    // Save original stdout file descriptor
-    int saved_stdout = dup(STDOUT_FILENO);
-
-    fp = freopen(output, "w", stdout);
-    if (fp == NULL)
-    {
-        printf("freopen did not work for %s\n", output);
-        return ;
-    }
-
-    fd = open(file, O_RDONLY);
-    if (fd < 0) {
-        printf("File %s could't be opened\n", file);
-        return ;
-    }
-    line = get_next_line(fd);
-    while (line)
-    {
-        printf("%s", line);
-        free(line);
-        line = get_next_line(fd);
-    }
-    close(fd);
-    // Restore original stdout
-    fflush(stdout);          // Flush before restoring
-    dup2(saved_stdout, STDOUT_FILENO);
-    close(saved_stdout);     // No longer needed
-}
-
 int main(void) {
     clock_t start, end;
     double cpu_time_used;
