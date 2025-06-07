@@ -46,12 +46,14 @@ int main(void) {
     {
         errors++;
         free(line);
+        printf("ID -1: " RED "KO\n" DEFAULT);
     }
     line = get_next_line(42);
     if (line)
     {
         errors++;
         free(line);
+        printf("ID 42: " RED "KO\n" DEFAULT);
     }
     int fd = open("./gnl/basic.txt", O_RDONLY);
     close(fd);
@@ -60,6 +62,7 @@ int main(void) {
     {
         errors++;
         free(line);
+        printf("Closed file: " RED "KO\n" DEFAULT);
     }
 
     end = clock();
