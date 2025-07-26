@@ -46,22 +46,215 @@ confirm:
 ## test : test current exo
 .PHONY: test
 test:
+	@clear	
+
+## push_swap : Because Swap_push doesn’t feel as natural.
+.PHONY: push_swap
+push_swap:
 	@clear
-	@printf "\n\t${TITLE}Get Next Line${RESET} : Reading a line from a file descriptor is far too tedious.\n\n"
+	@printf "\n\t${TITLE}Push_swap${RESET} : Because Swap_push doesn’t feel as natural.\n\n"
+	@printf "${SUBTITLE}----------------> Mandatory <----------------${RESET}\n\n"
 	@printf "${SUBTITLE}Run norminette${RESET}\n"
-	@norminette ../gnl > norm_file && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}" || ($(FAILED_NORM) && grep Error norm_file)
+	@norminette ../push_swap > norm_file && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}\n" || ($(FAILED_NORM) && grep Error norm_file)
 	@rm -f norm_file
-	@printf "\n\n${SUBTITLE}Mandatory${RESET}\n"
-	@printf "\n${SUBTITLE}BUFFER_SIZE=10000000${RESET}\n"
-	@rm -rf results && mkdir results
-	@$(VCW) -D BUFFER_SIZE=10000000 -I ../gnl/ ./gnl/mandatory.c ../gnl/get_next_line.c ../gnl/get_next_line_utils.c
-	@valgrind -q --leak-check=full ./Executable
-	@rm -f ./Executable
-	@for f in ./gnl/files/*; do \
-		name=$$(basename $$f); \
-		printf "$$name: " &&diff ./results/$$name ./gnl/files/$$name && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} KO ${RESET}\n"; \
-	done
-	@rm -rf results && mkdir results
+	@printf "\n\n${SUBTITLE}Checking files${RESET}\n"
+	@find ../push_swap -type f -not -name "*.c" -not -name "*.h" -not -name "Makefile" -not -path "../push_swap/.git/*" | grep . && printf "Turn in files: ${BG_RED}${BOLD} FAILED: files not allowed ${RESET}" || printf "Turn in files:${GREEN}${BOLD} OK ${RESET}"
+	@grep wildcard -q ../push_swap/Makefile && printf "\nWildcard:${BG_RED}${BOLD} FAILED ${RESET}" || printf "\nWildcard:${GREEN}${BOLD} OK ${RESET}"
+	@printf "\nFlags:" && grep -q -- '-Wall' ../push_swap/Makefile && 	grep -q -- '-Werror' ../push_swap/Makefile && 	grep -q -- '-Wextra' ../push_swap/Makefile && printf "${GREEN}${BOLD} OK ${RESET}" || printf "${BG_RED}${BOLD} FAILED ${RESET}"
+	@if [ -d "../push_swap/libft" ]; then \
+    if grep -q -- '-Wall' ../push_swap/Libft/Makefile && \
+       grep -q -- '-Werror' ../push_swap/Libft/Makefile && \
+       grep -q -- '-Wextra' ../push_swap/Libft/Makefile; then \
+        : ; \
+    else \
+        printf "${BG_RED}${BOLD} FAILED for Libft Makefile ${RESET}\n"; \
+    fi; \
+	fi
+	@printf "\n\n${SUBTITLE}Checking make command${RESET}\n"
+	@printf "push_swap:" && make -C ../push_swap -s push_swap && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@printf "No relink:" && make -C ../push_swap push_swap | grep -q "'push_swap' is up to date." && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@mv ../push_swap/push_swap ./push_swap/push_swap
+	@printf "\n${SUBTITLE}Checking Parsing${RESET}\n"
+	@./push_swap/push_swap 5 1 six 2 3 4 2> parse_err 1>/dev/null || echo -n
+	@printf "Word:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@./push_swap/push_swap 5 1 2 2 3 4 2> parse_err 1>/dev/null || echo -n
+	@printf "Repeated number:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@./push_swap/push_swap 5 1 2 3 4 "6 7 8" 2> parse_err 1>/dev/null || echo -n
+	@printf "Mixed arguments:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@./push_swap/push_swap 5 1 2 3 4 2147483648 2> parse_err 1>/dev/null || echo -n
+	@printf "Int overflow (INT MAX):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@./push_swap/push_swap 5 1 2 3 4 -2147483649 2> parse_err 1>/dev/null || echo -n
+	@printf "Int overflow (INT MIN):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@printf "\n${SUBTITLE}100 numbers${RESET}\n"
+	@echo "🔁 Running 10 random tests..."
+	@total=0; \
+	fail=0; \
+	for i in $$(seq 1 10); do \
+		ARG=$$(shuf -i 0-1000 -n 100 | tr '\n' ' '); \
+		OPS=$$(./push_swap/push_swap $$ARG); \
+		COUNT=$$(echo "$$OPS" | wc -l); \
+		CHECK=$$(echo "$$OPS" | ./push_swap/main_checker $$ARG); \
+		if [ "$$CHECK" != "OK" ]; then \
+			printf "❌ Test $$i: ${BG_RED}FAILED${RESET} (checker failed)\n"; \
+			fail=$$((fail + 1)); \
+		else \
+			printf "✅ Test $$i: ${GREEN}OK${RESET} — $$COUNT operations\n"; \
+		fi; \
+		total=$$((total + COUNT)); \
+	done; \
+	if [ "$$fail" -eq 0 ]; then \
+		avg=$$((total / 10)); \
+		echo ""; \
+		echo "📊 Average number of operations: $$avg"; \
+		echo "✅ All tests passed."; \
+	else \
+		echo ""; \
+		echo "⚠️  $$fail test(s) ${BG_RED}FAILED${RESET}. Check your implementation."; \
+		exit 1; \
+	fi
+	@printf "\n${SUBTITLE}500 numbers${RESET}\n"
+	@echo "🔁 Running 10 random tests..."
+	@total=0; \
+	fail=0; \
+	for i in $$(seq 1 10); do \
+		ARG=$$(shuf -i 0-10000 -n 500 | tr '\n' ' '); \
+		OPS=$$(./push_swap/push_swap $$ARG); \
+		COUNT=$$(echo "$$OPS" | wc -l); \
+		CHECK=$$(echo "$$OPS" | ./push_swap/main_checker $$ARG); \
+		if [ "$$CHECK" != "OK" ]; then \
+			printf "❌ Test $$i: ${BG_RED}FAILED${RESET} (checker failed)\n"; \
+			fail=$$((fail + 1)); \
+		else \
+			printf "✅ Test $$i: ${GREEN}OK${RESET} — $$COUNT operations\n"; \
+		fi; \
+		total=$$((total + COUNT)); \
+	done; \
+	if [ "$$fail" -eq 0 ]; then \
+		avg=$$((total / 10)); \
+		echo ""; \
+		echo "📊 Average number of operations: $$avg"; \
+		echo "✅ All tests passed."; \
+	else \
+		echo ""; \
+		echo "⚠️  $$fail test(s) ${BG_RED}FAILED${RESET}. Check your implementation."; \
+		exit 1; \
+	fi
+	@printf "\n${SUBTITLE}Sorted input (1 2 3 ... 500)${RESET}\n"
+	@ARG="$$(seq 1 500)"; \
+	OPS=$$(./push_swap/push_swap $$ARG); \
+	CHECK=$$(./push_swap/push_swap $$ARG | ./push_swap/main_checker $$ARG); \
+	if [ -n "$$OPS" ]; then COUNT=$$(echo "$$OPS" | wc -l); else COUNT=0; fi; \
+	if [ "$$CHECK" = "OK" ] && [ "$$COUNT" -eq 0 ]; then \
+		echo "✅ Result: ${GREEN}${BOLD} OK ${RESET} — Already sorted, 0 operations"; \
+	else \
+		echo "❌ Result: ${BG_RED}FAILED${RESET} — $$COUNT operations (should be 0) or checker failed"; \
+	fi
+	@printf "\n${SUBTITLE}Almost sorted input (2 1 3 4 ... 500)${RESET}\n"
+	@ARG="2 1 $$(seq 3 500)"; \
+	OPS=$$(./push_swap/push_swap $$ARG); \
+	COUNT=$$(echo "$$OPS" | wc -l); \
+	CHECK=$$(echo "$$OPS" | ./push_swap/main_checker $$ARG); \
+	if [ "$$CHECK" = "OK" ]; then \
+		echo "✅ Result: ${GREEN}${BOLD} OK ${RESET} — $$COUNT operations"; \
+	else \
+		echo "❌ Result: ${BG_RED}FAILED${RESET} — checker failed"; \
+		exit 1; \
+	fi
+	@printf "\n\n${SUBTITLE}----------------> Bonus <----------------${RESET}\n"
+	@make -qp -C ../push_swap | grep -q bonus: || (printf "${BG_RED}${BOLD} No bonus ${RESET}\n" && exit 1)
+	@printf "\n${SUBTITLE}Checking make command${RESET}\n"
+	@printf "bonus:" && make -s -C ../push_swap bonus && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@printf "No relink:" && make -C ../push_swap bonus | grep -q "Nothing to be done for 'bonus'" && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@mv ../push_swap/checker ./push_swap/checker
+	@printf "\n${SUBTITLE}Checking Parsing${RESET}\n"
+	@echo "pa sa" | ./push_swap/checker 5 1 six 2 3 4 2> parse_err 1>/dev/null || echo -n
+	@printf "Word:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@echo "pa sa" | ./push_swap/checker 5 1 2 2 3 4 2> parse_err 1>/dev/null || echo -n
+	@printf "Repeated number:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@echo "pa sa" | ./push_swap/checker 5 1 2 3 4 "6 7 8" 2> parse_err 1>/dev/null || echo -n
+	@printf "Mixed arguments:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@echo "pa sa" | ./push_swap/checker 5 1 2 3 4 2147483648 2> parse_err 1>/dev/null || echo -n
+	@printf "Int overflow (INT MAX):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@echo "pa sa" | ./push_swap/checker 5 1 2 3 4 -2147483649 2> parse_err 1>/dev/null || echo -n
+	@printf "Int overflow (INT MIN):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@printf "\n${SUBTITLE}100 numbers${RESET}\n"
+	@echo "🔁 Running 10 random tests..."
+	@total=0; \
+	fail=0; \
+	for i in $$(seq 1 10); do \
+		ARG=$$(shuf -i 0-1000 -n 100 | tr '\n' ' '); \
+		OPS=$$(./push_swap/push_swap $$ARG); \
+		COUNT=$$(echo "$$OPS" | wc -l); \
+		CHECK=$$(echo "$$OPS" | ./push_swap/checker $$ARG); \
+		CHECK2=$$(echo "pb" | ./push_swap/checker $$ARG); \
+		if [ "$$CHECK" != "OK" ] || [ "$$CHECK2" != "KO" ]; then \
+			printf "❌ Test $$i: ${BG_RED}FAILED${RESET} (checker failed)\n"; \
+			fail=$$((fail + 1)); \
+		else \
+			printf "✅ Test $$i: ${GREEN}OK${RESET} — $$COUNT operations\n"; \
+		fi; \
+		total=$$((total + COUNT)); \
+	done; \
+	if [ "$$fail" -eq 0 ]; then \
+		avg=$$((total / 10)); \
+		echo ""; \
+		echo "📊 Average number of operations: $$avg"; \
+		echo "✅ All tests passed."; \
+	else \
+		echo ""; \
+		echo "⚠️  $$fail test(s) ${BG_RED}FAILED${RESET}. Check your implementation."; \
+		exit 1; \
+	fi
+	@printf "\n${SUBTITLE}500 numbers${RESET}\n"
+	@echo "🔁 Running 10 random tests..."
+	@total=0; \
+	fail=0; \
+	for i in $$(seq 1 10); do \
+		ARG=$$(shuf -i 0-10000 -n 500 | tr '\n' ' '); \
+		OPS=$$(./push_swap/push_swap $$ARG); \
+		COUNT=$$(echo "$$OPS" | wc -l); \
+		CHECK=$$(echo "$$OPS" | ./push_swap/checker $$ARG); \
+		CHECK2=$$(echo "pb" | ./push_swap/checker $$ARG); \
+		if [ "$$CHECK" != "OK" ] || [ "$$CHECK2" != "KO" ]; then \
+			printf "❌ Test $$i: ${BG_RED}FAILED${RESET} (checker failed)\n"; \
+			fail=$$((fail + 1)); \
+		else \
+			printf "✅ Test $$i: ${GREEN}OK${RESET} — $$COUNT operations\n"; \
+		fi; \
+		total=$$((total + COUNT)); \
+	done; \
+	if [ "$$fail" -eq 0 ]; then \
+		avg=$$((total / 10)); \
+		echo ""; \
+		echo "📊 Average number of operations: $$avg"; \
+		echo "✅ All tests passed."; \
+	else \
+		echo ""; \
+		echo "⚠️  $$fail test(s) ${BG_RED}FAILED${RESET}. Check your implementation."; \
+		exit 1; \
+	fi
+	@printf "\n${SUBTITLE}Sorted input (1 2 3 ... 500)${RESET}\n"
+	@ARG="$$(seq 1 500)"; \
+	CHECK=$$(echo -n | ./push_swap/checker $$ARG); \
+	if [ "$$CHECK" = "OK" ]; then \
+		echo "✅ Result: ${GREEN}${BOLD} OK ${RESET} — Already sorted"; \
+	else \
+		echo "❌ Result: ${BG_RED}FAILED${RESET}"; \
+		exit 1; \
+	fi
+	@printf "\n${SUBTITLE}Almost sorted input (2 1 3 4 ... 500)${RESET}\n"
+	@ARG="2 1 $$(seq 3 500)"; \
+	OPS=$$(./push_swap/push_swap $$ARG); \
+	COUNT=$$(echo "$$OPS" | wc -l); \
+	CHECK=$$(echo "$$OPS" | ./push_swap/checker $$ARG); \
+	if [ "$$CHECK" = "OK" ]; then \
+		echo "✅ Result: ${GREEN}${BOLD} OK ${RESET} — $$COUNT operations"; \
+	else \
+		echo "❌ Result: ${BG_RED}FAILED${RESET} — checker failed"; \
+		exit 1; \
+	fi
+	@make -C ../push_swap -s fclean
+	@rm -f ./parse_err ./push_swap/push_swap ./push_swap/checker
 
 ## gnl : Reading a line from a file descriptor is far too tedious.
 .PHONY: gnl
@@ -79,7 +272,7 @@ gnl:
 	@rm -f ./Executable
 	@for f in ./gnl/files/*; do \
 		name=$$(basename $$f); \
-		printf "$$name: " &&diff ./results/$$name ./gnl/files/$$name && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} KO ${RESET}\n"; \
+		printf "$$name: " &&diff ./results/$$name ./gnl/files/$$name && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"; \
 	done
 	@printf "\n${SUBTITLE}BUFFER_SIZE=1${RESET}\n"
 	@rm -rf results && mkdir results
@@ -88,7 +281,7 @@ gnl:
 	@rm -f ./Executable
 	@for f in ./gnl/files/*; do \
 		name=$$(basename $$f); \
-		printf "$$name: " &&diff ./results/$$name ./gnl/files/$$name && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} KO ${RESET}\n"; \
+		printf "$$name: " &&diff ./results/$$name ./gnl/files/$$name && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"; \
 	done
 	@printf "\n${SUBTITLE}BUFFER_SIZE=10000000${RESET}\n"
 	@rm -rf results && mkdir results
@@ -97,7 +290,7 @@ gnl:
 	@rm -f ./Executable
 	@for f in ./gnl/files/*; do \
 		name=$$(basename $$f); \
-		printf "$$name: " &&diff ./results/$$name ./gnl/files/$$name && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} KO ${RESET}\n"; \
+		printf "$$name: " &&diff ./results/$$name ./gnl/files/$$name && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"; \
 	done
 	@printf "\n${SUBTITLE}BUFFER_SIZE=9999${RESET}\n"
 	@rm -rf results && mkdir results
@@ -106,7 +299,7 @@ gnl:
 	@rm -f ./Executable
 	@for f in ./gnl/files/*; do \
 		name=$$(basename $$f); \
-		printf "$$name: " &&diff ./results/$$name ./gnl/files/$$name && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} KO ${RESET}\n"; \
+		printf "$$name: " &&diff ./results/$$name ./gnl/files/$$name && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"; \
 	done
 	@rm -rf results && mkdir results
 
