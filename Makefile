@@ -46,8 +46,13 @@ confirm:
 ## test : test current exo
 .PHONY: test
 test:
-	@clear	
-
+	@clear
+	@make -s -C ../push_swap push_swap
+	@make -s -C ../push_swap bonus
+	@mv ../push_swap/push_swap ./push_swap/push_swap
+	@mv ../push_swap/checker ./push_swap/checker
+# 	@rm -f ./parse_err ./push_swap/push_swap ./push_swap/checker
+	
 ## push_swap : Because Swap_push doesn’t feel as natural.
 .PHONY: push_swap
 push_swap:
@@ -160,6 +165,21 @@ push_swap:
 		echo "❌ Result: ${BG_RED}FAILED${RESET} — checker failed"; \
 		exit 1; \
 	fi
+	@printf "\n\n${SUBTITLE}Checking leaks and protections${RESET}\n"
+	@echo -n "Valgrind basic input: "
+	@valgrind --leak-check=full --show-leak-kinds=all ./push_swap/push_swap 5 1 2 3 4 > mem_check 2>&1
+	@grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
+	@echo -n "Valgrind bad input: "
+	@valgrind --leak-check=full --show-leak-kinds=all ./push_swap/push_swap 1 dos 3 4 5 > mem_check 2>&1 || echo -n
+	@grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
+	@if command -v funcheck > /dev/null 2>&1; then \
+		funcheck ./push_swap/push_swap 1 2 3 4 5 > mem_check 2>&1 || echo -n; \
+		echo -n "Funcheck basic input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
+		funcheck ./push_swap/push_swap 1 dos 3 4 > mem_check 2>&1 || echo -n; \
+		echo -n "Funcheck bad input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
+	else \
+		printf "Funcheck:${BG_YELLOW}${BOLD} Not Installed ${RESET}\n"; \
+	fi
 	@printf "\n\n${SUBTITLE}----------------> Bonus <----------------${RESET}\n"
 	@make -qp -C ../push_swap | grep -q bonus: || (printf "${BG_RED}${BOLD} No bonus ${RESET}\n" && exit 1)
 	@printf "\n${SUBTITLE}Checking make command${RESET}\n"
@@ -253,8 +273,23 @@ push_swap:
 		echo "❌ Result: ${BG_RED}FAILED${RESET} — checker failed"; \
 		exit 1; \
 	fi
+	@printf "\n\n${SUBTITLE}Checking leaks and protections (checker)${RESET}\n"
+	@echo -n "Valgrind basic input: "
+	@echo sa | valgrind --leak-check=full --show-leak-kinds=all ./push_swap/checker 2 1 3 4 5 > mem_check 2>&1 || echo -n
+	@grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
+	@echo -n "Valgrind bad input: "
+	@echo sa | valgrind --leak-check=full --show-leak-kinds=all ./push_swap/checker 2 uno 3 4 5 > mem_check 2>&1 || echo -n
+	@grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
+	@if command -v funcheck > /dev/null 2>&1; then \
+		echo sa | funcheck ./push_swap/checker 2 1 3 4 5 > mem_check 2>&1 || echo -n; \
+		echo -n "Funcheck basic input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
+		echo sa | funcheck ./push_swap/checker 2 uno 3 4 5 > mem_check 2>&1 || echo -n; \
+		echo -n "Funcheck bad input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
+	else \
+		printf "Funcheck:${BG_YELLOW}${BOLD} FAILED (not installed) ${RESET}\n"; \
+	fi
 	@make -C ../push_swap -s fclean
-	@rm -f ./parse_err ./push_swap/push_swap ./push_swap/checker
+	@rm -f ./parse_err ./mem_check ./push_swap/push_swap ./push_swap/checker
 
 ## gnl : Reading a line from a file descriptor is far too tedious.
 .PHONY: gnl
