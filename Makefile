@@ -67,9 +67,9 @@ push_swap:
 	@grep wildcard -q ../push_swap/Makefile && printf "\nWildcard:${BG_RED}${BOLD} FAILED ${RESET}" || printf "\nWildcard:${GREEN}${BOLD} OK ${RESET}"
 	@printf "\nFlags:" && grep -q -- '-Wall' ../push_swap/Makefile && 	grep -q -- '-Werror' ../push_swap/Makefile && 	grep -q -- '-Wextra' ../push_swap/Makefile && printf "${GREEN}${BOLD} OK ${RESET}" || printf "${BG_RED}${BOLD} FAILED ${RESET}"
 	@if [ -d "../push_swap/libft" ]; then \
-    if grep -q -- '-Wall' ../push_swap/Libft/Makefile && \
-       grep -q -- '-Werror' ../push_swap/Libft/Makefile && \
-       grep -q -- '-Wextra' ../push_swap/Libft/Makefile; then \
+    if grep -q -- '-Wall' ../push_swap/libft/Makefile && \
+       grep -q -- '-Werror' ../push_swap/libft/Makefile && \
+       grep -q -- '-Wextra' ../push_swap/libft/Makefile; then \
         : ; \
     else \
         printf "${BG_RED}${BOLD} FAILED for Libft Makefile ${RESET}\n"; \
