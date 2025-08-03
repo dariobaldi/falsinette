@@ -94,6 +94,33 @@ push_swap:
 	@printf "Int overflow (INT MIN):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@./push_swap/push_swap 2> parse_err 1>/dev/null || echo -n
 	@printf "Empty:" && grep -q Error parse_err && printf "${BG_RED}${BOLD} FAILED ${RESET}\n" || printf "${GREEN}${BOLD} OK ${RESET}\n"
+	@printf "\n${SUBTITLE}5 numbers${RESET}\n"
+	@echo "🔁 Running 10 random tests..."
+	@total=0; \
+	fail=0; \
+	for i in $$(seq 1 10); do \
+		ARG=$$(shuf -i 0-1000 -n 5 | tr '\n' ' '); \
+		OPS=$$(./push_swap/push_swap $$ARG); \
+		COUNT=$$(echo "$$OPS" | wc -l); \
+		CHECK=$$(echo "$$OPS" | ./push_swap/main_checker $$ARG); \
+		if [ "$$CHECK" != "OK" ]; then \
+			printf "❌ Test $$i: ${BG_RED}FAILED${RESET} (checker failed)\n"; \
+			fail=$$((fail + 1)); \
+		else \
+			printf "✅ Test $$i: ${GREEN}OK${RESET} — $$COUNT operations\n"; \
+		fi; \
+		total=$$((total + COUNT)); \
+	done; \
+	if [ "$$fail" -eq 0 ]; then \
+		avg=$$((total / 10)); \
+		echo ""; \
+		echo "📊 Average number of operations: $$avg"; \
+		echo "✅ All tests passed."; \
+	else \
+		echo ""; \
+		echo "⚠️  $$fail test(s) ${BG_RED}FAILED${RESET}. Check your implementation."; \
+		exit 1; \
+	fi
 	@printf "\n${SUBTITLE}100 numbers${RESET}\n"
 	@echo "🔁 Running 10 random tests..."
 	@total=0; \
@@ -170,6 +197,17 @@ push_swap:
 	fi
 	@printf "\n${SUBTITLE}Almost sorted input (2 1 3 4 ... 500)${RESET}\n"
 	@ARG="2 1 $$(seq 3 500)"; \
+	OPS=$$(./push_swap/push_swap $$ARG); \
+	COUNT=$$(echo "$$OPS" | wc -l); \
+	CHECK=$$(echo "$$OPS" | ./push_swap/main_checker $$ARG); \
+	if [ "$$CHECK" = "OK" ]; then \
+		echo "✅ Result: ${GREEN}${BOLD} OK ${RESET} — $$COUNT operations"; \
+	else \
+		echo "❌ Result: ${BG_RED}FAILED${RESET} — checker failed"; \
+		exit 1; \
+	fi
+	@printf "\n${SUBTITLE}Almost sorted input (2 1 3 4 5)${RESET}\n"
+	@ARG="2 1 $$(seq 3 5)"; \
 	OPS=$$(./push_swap/push_swap $$ARG); \
 	COUNT=$$(echo "$$OPS" | wc -l); \
 	CHECK=$$(echo "$$OPS" | ./push_swap/main_checker $$ARG); \
