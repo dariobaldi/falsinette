@@ -63,7 +63,7 @@ push_swap:
 	@norminette ../push_swap > norm_file && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}\n" || ($(FAILED_NORM) && grep Error norm_file)
 	@rm -f norm_file
 	@printf "\n\n${SUBTITLE}Checking files${RESET}\n"
-	@find ../push_swap -type f -not -name "*.c" -not -name "*.h" -not -name "Makefile" -not -path "../push_swap/.git/*" | grep . && printf "Turn in files: ${BG_RED}${BOLD} FAILED: files not allowed ${RESET}" || printf "Turn in files:${GREEN}${BOLD} OK ${RESET}"
+	@find ../push_swap -type f -not -name "*.c" -not -name "*.h" -not -name "Makefile" -not -path "../push_swap/.git/*" -not -name ".gitignore" | grep . && printf "Turn in files: ${BG_RED}${BOLD} FAILED: files not allowed ${RESET}" || printf "Turn in files:${GREEN}${BOLD} OK ${RESET}"
 	@grep wildcard -q ../push_swap/Makefile && printf "\nWildcard:${BG_RED}${BOLD} FAILED ${RESET}" || printf "\nWildcard:${GREEN}${BOLD} OK ${RESET}"
 	@printf "\nFlags:" && grep -q -- '-Wall' ../push_swap/Makefile && 	grep -q -- '-Werror' ../push_swap/Makefile && 	grep -q -- '-Wextra' ../push_swap/Makefile && printf "${GREEN}${BOLD} OK ${RESET}" || printf "${BG_RED}${BOLD} FAILED ${RESET}"
 	@if [ -d "../push_swap/libft" ]; then \
