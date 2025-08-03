@@ -51,6 +51,8 @@ test:
 	@make -s -C ../push_swap bonus
 	@mv ../push_swap/push_swap ./push_swap/push_swap
 	@mv ../push_swap/checker ./push_swap/checker
+	@./push_swap/push_swap 2> parse_err 1>/dev/null || echo -n
+	@printf "Empty:" && grep -q Error parse_err && printf "${BG_RED}${BOLD} FAILED ${RESET}\n" || printf "${GREEN}${BOLD} OK ${RESET}\n"
 # 	@rm -f ./parse_err ./push_swap/push_swap ./push_swap/checker
 	
 ## push_swap : Because Swap_push doesn’t feel as natural.
@@ -90,6 +92,8 @@ push_swap:
 	@printf "Int overflow (INT MAX):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@./push_swap/push_swap 5 1 2 3 4 -2147483649 2> parse_err 1>/dev/null || echo -n
 	@printf "Int overflow (INT MIN):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@./push_swap/push_swap 2> parse_err 1>/dev/null || echo -n
+	@printf "Empty:" && grep -q Error parse_err && printf "${BG_RED}${BOLD} FAILED ${RESET}\n" || printf "${GREEN}${BOLD} OK ${RESET}\n"
 	@printf "\n${SUBTITLE}100 numbers${RESET}\n"
 	@echo "🔁 Running 10 random tests..."
 	@total=0; \
@@ -143,6 +147,16 @@ push_swap:
 		echo ""; \
 		echo "⚠️  $$fail test(s) ${BG_RED}FAILED${RESET}. Check your implementation."; \
 		exit 1; \
+	fi
+	@printf "\n${SUBTITLE}Sorted input (2 3)${RESET}\n"
+	@ARG="$$(seq 2 3)"; \
+	OPS=$$(./push_swap/push_swap $$ARG); \
+	CHECK=$$(./push_swap/push_swap $$ARG | ./push_swap/main_checker $$ARG); \
+	if [ -n "$$OPS" ]; then COUNT=$$(echo "$$OPS" | wc -l); else COUNT=0; fi; \
+	if [ "$$CHECK" = "OK" ] && [ "$$COUNT" -eq 0 ]; then \
+		echo "✅ Result: ${GREEN}${BOLD} OK ${RESET} — Already sorted, 0 operations"; \
+	else \
+		echo "❌ Result: ${BG_RED}FAILED${RESET} — $$COUNT operations (should be 0) or checker failed"; \
 	fi
 	@printf "\n${SUBTITLE}Sorted input (1 2 3 ... 500)${RESET}\n"
 	@ARG="$$(seq 1 500)"; \
