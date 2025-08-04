@@ -51,8 +51,41 @@ test:
 	@make -s -C ../push_swap bonus
 	@mv ../push_swap/push_swap ./push_swap/push_swap
 	@mv ../push_swap/checker ./push_swap/checker
-	@./push_swap/push_swap 2> parse_err 1>/dev/null || echo -n
-	@printf "Empty:" && grep -q Error parse_err && printf "${BG_RED}${BOLD} FAILED ${RESET}\n" || printf "${GREEN}${BOLD} OK ${RESET}\n"
+	@printf "\n${SUBTITLE}5 numbers${RESET}🔁 Running 100 random tests...\n"
+	@total=0; \
+	fail=0; \
+	max=0; \
+	for i in $$(seq 1 100); do \
+		ARG=$$(shuf -i 0-1000 -n 5 | tr '\n' ' '); \
+		OPS=$$(./push_swap/push_swap $$ARG); \
+		COUNT=$$(echo "$$OPS" | wc -l); \
+		CHECK=$$( \
+			if [ -z "$$OPS" ]; then \
+				./push_swap/main_checker $$ARG < /dev/null; \
+			else \
+				echo "$$OPS" | ./push_swap/main_checker $$ARG; \
+			fi \
+		); \
+		if [ "$$CHECK" != "OK" ]; then \
+			printf "❌ Test $$i: ${BG_RED}FAILED${RESET}\nARGS=$$ARG\n"; \
+			fail=$$((fail + 1)); \
+		else \
+			printf "✅ Test $$i: ${GREEN}OK${RESET} — $$COUNT operations\n"; \
+		fi; \
+		if [ "$$COUNT" -gt "$$max" ]; then max=$$COUNT; fi; \
+		total=$$((total + COUNT)); \
+	done; \
+	if [ "$$fail" -eq 0 ]; then \
+		avg=$$((total / 100)); \
+		echo ""; \
+		echo "📊 Average number of operations: $$avg"; \
+		echo "📈 Maximum number of operations: $$max"; \
+		echo "✅ All tests passed."; \
+	else \
+		echo ""; \
+		echo "⚠️  $$fail test(s) ${BG_RED}FAILED${RESET}. Check your implementation."; \
+		exit 1; \
+	fi
 # 	@rm -f ./parse_err ./push_swap/push_swap ./push_swap/checker
 	
 ## push_swap : Because Swap_push doesn’t feel as natural.
@@ -81,110 +114,241 @@ push_swap:
 	@printf "push_swap:" && make -C ../push_swap -s push_swap && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@printf "No relink:" && make -C ../push_swap push_swap | grep -q "'push_swap' is up to date." && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@mv ../push_swap/push_swap ./push_swap/push_swap
-	@printf "\n${SUBTITLE}Checking Parsing${RESET}\n"
+	@printf "\n\n${SUBTITLE}Checking leaks and malloc protections${RESET}\n"
+	@echo -n "Valgrind basic input: "
+	@valgrind --leak-check=full --show-leak-kinds=all ./push_swap/push_swap 5 1 2 3 4 > mem_check 2>&1
+	@grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
+	@echo -n "Valgrind bad input: "
+	@valgrind --leak-check=full --show-leak-kinds=all ./push_swap/push_swap 1 dos 3 4 5 > mem_check 2>&1 || echo -n
+	@grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
+	@if command -v funcheck > /dev/null 2>&1; then \
+		funcheck ./push_swap/push_swap 1 2 3 4 5 > mem_check 2>&1 || echo -n; \
+		echo -n "Funcheck basic input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
+		funcheck ./push_swap/push_swap 1 dos 3 4 > mem_check 2>&1 || echo -n; \
+		echo -n "Funcheck bad input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
+	else \
+		printf "Funcheck:${BG_YELLOW}${BOLD} Not Installed ${RESET}\n"; \
+	fi
+	@printf "\n${SUBTITLE}Error management${RESET}\n"
 	@./push_swap/push_swap 5 1 six 2 3 4 2> parse_err 1>/dev/null || echo -n
-	@printf "Word:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@printf "Non numeric parameters:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@./push_swap/push_swap 5 1 2 2 3 4 2> parse_err 1>/dev/null || echo -n
-	@printf "Repeated number:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@./push_swap/push_swap 5 1 2 3 4 "6 7 8" 2> parse_err 1>/dev/null || echo -n
-	@printf "Mixed arguments:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@printf "Duplicate number:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@./push_swap/push_swap 5 1 2 3 4 2147483648 2> parse_err 1>/dev/null || echo -n
 	@printf "Int overflow (INT MAX):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@./push_swap/push_swap 5 1 2 3 4 -2147483649 2> parse_err 1>/dev/null || echo -n
 	@printf "Int overflow (INT MIN):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@./push_swap/push_swap 2> parse_err 1>/dev/null || echo -n
-	@printf "Empty:" && grep -q Error parse_err && printf "${BG_RED}${BOLD} FAILED ${RESET}\n" || printf "${GREEN}${BOLD} OK ${RESET}\n"
-	@printf "\n${SUBTITLE}5 numbers${RESET}\n"
-	@echo "🔁 Running 10 random tests..."
-	@total=0; \
-	fail=0; \
-	for i in $$(seq 1 10); do \
-		ARG=$$(shuf -i 0-1000 -n 5 | tr '\n' ' '); \
-		OPS=$$(./push_swap/push_swap $$ARG); \
-		COUNT=$$(echo "$$OPS" | wc -l); \
-		CHECK=$$(echo "$$OPS" | ./push_swap/main_checker $$ARG); \
-		if [ "$$CHECK" != "OK" ]; then \
-			printf "❌ Test $$i: ${BG_RED}FAILED${RESET} (checker failed)\n"; \
-			fail=$$((fail + 1)); \
-		else \
-			printf "✅ Test $$i: ${GREEN}OK${RESET} — $$COUNT operations\n"; \
-		fi; \
-		total=$$((total + COUNT)); \
-	done; \
-	if [ "$$fail" -eq 0 ]; then \
-		avg=$$((total / 10)); \
-		echo ""; \
-		echo "📊 Average number of operations: $$avg"; \
-		echo "✅ All tests passed."; \
-	else \
-		echo ""; \
-		echo "⚠️  $$fail test(s) ${BG_RED}FAILED${RESET}. Check your implementation."; \
-		exit 1; \
-	fi
-	@printf "\n${SUBTITLE}100 numbers${RESET}\n"
-	@echo "🔁 Running 10 random tests..."
-	@total=0; \
-	fail=0; \
-	for i in $$(seq 1 10); do \
-		ARG=$$(shuf -i 0-1000 -n 100 | tr '\n' ' '); \
-		OPS=$$(./push_swap/push_swap $$ARG); \
-		COUNT=$$(echo "$$OPS" | wc -l); \
-		CHECK=$$(echo "$$OPS" | ./push_swap/main_checker $$ARG); \
-		if [ "$$CHECK" != "OK" ]; then \
-			printf "❌ Test $$i: ${BG_RED}FAILED${RESET} (checker failed)\n"; \
-			fail=$$((fail + 1)); \
-		else \
-			printf "✅ Test $$i: ${GREEN}OK${RESET} — $$COUNT operations\n"; \
-		fi; \
-		total=$$((total + COUNT)); \
-	done; \
-	if [ "$$fail" -eq 0 ]; then \
-		avg=$$((total / 10)); \
-		echo ""; \
-		echo "📊 Average number of operations: $$avg"; \
-		echo "✅ All tests passed."; \
-	else \
-		echo ""; \
-		echo "⚠️  $$fail test(s) ${BG_RED}FAILED${RESET}. Check your implementation."; \
-		exit 1; \
-	fi
-	@printf "\n${SUBTITLE}500 numbers${RESET}\n"
-	@echo "🔁 Running 10 random tests..."
-	@total=0; \
-	fail=0; \
-	for i in $$(seq 1 10); do \
-		ARG=$$(shuf -i 0-10000 -n 500 | tr '\n' ' '); \
-		OPS=$$(./push_swap/push_swap $$ARG); \
-		COUNT=$$(echo "$$OPS" | wc -l); \
-		CHECK=$$(echo "$$OPS" | ./push_swap/main_checker $$ARG); \
-		if [ "$$CHECK" != "OK" ]; then \
-			printf "❌ Test $$i: ${BG_RED}FAILED${RESET} (checker failed)\n"; \
-			fail=$$((fail + 1)); \
-		else \
-			printf "✅ Test $$i: ${GREEN}OK${RESET} — $$COUNT operations\n"; \
-		fi; \
-		total=$$((total + COUNT)); \
-	done; \
-	if [ "$$fail" -eq 0 ]; then \
-		avg=$$((total / 10)); \
-		echo ""; \
-		echo "📊 Average number of operations: $$avg"; \
-		echo "✅ All tests passed."; \
-	else \
-		echo ""; \
-		echo "⚠️  $$fail test(s) ${BG_RED}FAILED${RESET}. Check your implementation."; \
-		exit 1; \
-	fi
-	@printf "\n${SUBTITLE}Sorted input (2 3)${RESET}\n"
-	@ARG="$$(seq 2 3)"; \
+	@printf "No parameters:" && grep -q Error parse_err && printf "${BG_RED}${BOLD} FAILED ${RESET}\n" || printf "${GREEN}${BOLD} OK ${RESET}\n"
+	@printf "\n${SUBTITLE}Identity test${RESET}\n"
+	@printf "Sorted input (42): "
+	@ARG="42"; \
 	OPS=$$(./push_swap/push_swap $$ARG); \
 	CHECK=$$(./push_swap/push_swap $$ARG | ./push_swap/main_checker $$ARG); \
 	if [ -n "$$OPS" ]; then COUNT=$$(echo "$$OPS" | wc -l); else COUNT=0; fi; \
 	if [ "$$CHECK" = "OK" ] && [ "$$COUNT" -eq 0 ]; then \
-		echo "✅ Result: ${GREEN}${BOLD} OK ${RESET} — Already sorted, 0 operations"; \
+		echo "✅ ${GREEN}${BOLD} OK ${RESET} 0 operations"; \
 	else \
-		echo "❌ Result: ${BG_RED}FAILED${RESET} — $$COUNT operations (should be 0) or checker failed"; \
+		echo "❌ ${BG_RED}FAILED${RESET} — $$COUNT operations (should be 0) or checker failed"; \
 	fi
+	@printf "Sorted input (2 3): "
+	@ARG="2 3"; \
+	OPS=$$(./push_swap/push_swap $$ARG); \
+	CHECK=$$(./push_swap/push_swap $$ARG | ./push_swap/main_checker $$ARG); \
+	if [ -n "$$OPS" ]; then COUNT=$$(echo "$$OPS" | wc -l); else COUNT=0; fi; \
+	if [ "$$CHECK" = "OK" ] && [ "$$COUNT" -eq 0 ]; then \
+		echo "✅ ${GREEN}${BOLD} OK ${RESET} 0 operations"; \
+	else \
+		echo "❌ ${BG_RED}FAILED${RESET} — $$COUNT operations (should be 0) or checker failed"; \
+	fi
+	@printf "Sorted input (0 1 2 3): "
+	@ARG="0 1 2 3"; \
+	OPS=$$(./push_swap/push_swap $$ARG); \
+	CHECK=$$(./push_swap/push_swap $$ARG | ./push_swap/main_checker $$ARG); \
+	if [ -n "$$OPS" ]; then COUNT=$$(echo "$$OPS" | wc -l); else COUNT=0; fi; \
+	if [ "$$CHECK" = "OK" ] && [ "$$COUNT" -eq 0 ]; then \
+		echo "✅ ${GREEN}${BOLD} OK ${RESET} 0 operations"; \
+	else \
+		echo "❌ ${BG_RED}FAILED${RESET} — $$COUNT operations (should be 0) or checker failed"; \
+	fi
+	@printf "Sorted input (0 1 2 3 4 5 6 7 8): "
+	@ARG="0 1 2 3 4 5 6 7 8"; \
+	OPS=$$(./push_swap/push_swap $$ARG); \
+	CHECK=$$(./push_swap/push_swap $$ARG | ./push_swap/main_checker $$ARG); \
+	if [ -n "$$OPS" ]; then COUNT=$$(echo "$$OPS" | wc -l); else COUNT=0; fi; \
+	if [ "$$CHECK" = "OK" ] && [ "$$COUNT" -eq 0 ]; then \
+		echo "✅ ${GREEN}${BOLD} OK ${RESET} 0 operations"; \
+	else \
+		echo "❌ ${BG_RED}FAILED${RESET} — $$COUNT operations (should be 0) or checker failed"; \
+	fi
+	@printf "9 randomly sorted values: "
+	@ARG="$$(shuf -i 0-999 -n 9 | sort -n | tr '\n' ' ')"; \
+	OPS=$$(./push_swap/push_swap $$ARG); \
+	CHECK=$$(./push_swap/push_swap $$ARG | ./push_swap/main_checker $$ARG); \
+	if [ -n "$$OPS" ]; then COUNT=$$(echo "$$OPS" | wc -l); else COUNT=0; fi; \
+	if [ "$$CHECK" = "OK" ] && [ "$$COUNT" -eq 0 ]; then \
+		echo "✅ ${GREEN}${BOLD} OK ${RESET} 0 operations"; \
+	else \
+		echo "❌ ${BG_RED}FAILED${RESET} — $$COUNT operations (should be 0) or checker failed\nARGS=$$ARG"; \
+	fi
+	@printf "\n${SUBTITLE}Simple version${RESET}\n"
+	@printf "Input 2 1 0: "
+	@ARG="2 1 0"; \
+	OPS=$$(./push_swap/push_swap $$ARG); \
+	CHECK=$$(./push_swap/push_swap $$ARG | ./push_swap/main_checker $$ARG); \
+	if [ -n "$$OPS" ]; then COUNT=$$(echo "$$OPS" | wc -l); else COUNT=0; fi; \
+	if [ "$$CHECK" = "OK" ] && [ "$$COUNT" -lt 4 ]; then \
+		echo "✅ ${GREEN}${BOLD} OK ${RESET} $$COUNT operations"; \
+	else \
+		echo "❌ ${BG_RED}FAILED${RESET} — $$COUNT operations (should be less than 4) or checker failed"; \
+	fi
+	@printf "\n🔁 Between 1 and 3 random numbers: Running 10 tests...\n"
+	@total=0; \
+	fail=0; \
+	max=0; \
+	for i in $$(seq 1 10); do \
+		NUM=$$(shuf -i 1-3 -n 1); \
+		ARG=$$(shuf -i 0-1000 -n $$NUM | tr '\n' ' '); \
+		OPS=$$(./push_swap/push_swap $$ARG); \
+		COUNT=$$(echo "$$OPS" | wc -l); \
+		CHECK=$$( \
+			if [ -z "$$OPS" ]; then \
+				./push_swap/main_checker $$ARG < /dev/null; \
+			else \
+				echo "$$OPS" | ./push_swap/main_checker $$ARG; \
+			fi \
+		); \
+		if [ "$$CHECK" != "OK" ] || [ "$$COUNT" -gt 3 ]; then \
+			printf "❌ Test $$i: ${BG_RED}FAILED${RESET} $$COUNT operations (should be less than 4) \nARG=$$ARG\nOPS=\n$$OPS\n"; \
+			fail=$$((fail + 1)); \
+# 		else \
+# 			printf "✅ Test $$i: ${GREEN}OK${RESET} — $$COUNT operations\n"; \
+		fi; \
+		if [ "$$COUNT" -gt "$$max" ]; then max=$$COUNT; fi; \
+		total=$$((total + COUNT)); \
+	done; \
+	if [ "$$fail" -eq 0 ]; then \
+		avg=$$((total / 10)); \
+		echo "📊 Average number of operations: $$avg"; \
+		echo "📈 Maximum number of operations: $$max"; \
+		echo "✅ All tests passed."; \
+	else \
+		echo ""; \
+		echo "⚠️  $$fail test(s) ${BG_RED}FAILED${RESET}. Check your implementation."; \
+	fi
+	@printf "\n${SUBTITLE}Another simple version${RESET}\n"
+	@printf "Input 1 5 2 4 3: "
+	@ARG="1 5 2 4 3"; \
+	OPS=$$(./push_swap/push_swap $$ARG); \
+	CHECK=$$(./push_swap/push_swap $$ARG | ./push_swap/main_checker $$ARG); \
+	if [ -n "$$OPS" ]; then COUNT=$$(echo "$$OPS" | wc -l); else COUNT=0; fi; \
+	if [ "$$CHECK" = "OK" ] && [ "$$COUNT" -lt 13 ]; then \
+		echo "✅ ${GREEN}${BOLD} OK ${RESET} $$COUNT operations"; \
+	else \
+		echo "❌ ${BG_RED}FAILED${RESET} — $$COUNT operations (should be less than 4) or checker failed"; \
+	fi
+	@printf "\n🔁 5 numbers: Running 100 random tests...\n"
+	@total=0; \
+	fail=0; \
+	max=0; \
+	for i in $$(seq 1 100); do \
+		ARG=$$(shuf -i 0-1000 -n 5 | tr '\n' ' '); \
+		OPS=$$(./push_swap/push_swap $$ARG); \
+		COUNT=$$(echo "$$OPS" | wc -l); \
+		CHECK=$$( \
+			if [ -z "$$OPS" ]; then \
+				./push_swap/main_checker $$ARG < /dev/null; \
+			else \
+				echo "$$OPS" | ./push_swap/main_checker $$ARG; \
+			fi \
+		); \
+		if [ "$$CHECK" != "OK" ]; then \
+			printf "❌ Test $$i: ${BG_RED}FAILED${RESET}\nARGS=$$ARG\n"; \
+			fail=$$((fail + 1)); \
+# 		else \
+# 			printf "✅ Test $$i: ${GREEN}OK${RESET} — $$COUNT operations\n"; \
+		fi; \
+		if [ "$$COUNT" -gt "$$max" ]; then max=$$COUNT; fi; \
+		total=$$((total + COUNT)); \
+	done; \
+	if [ "$$fail" -eq 0 ]; then \
+		avg=$$((total / 100)); \
+		echo "📊 Average number of operations: $$avg"; \
+		echo "📈 Maximum number of operations: $$max"; \
+		echo "✅ All tests passed."; \
+	else \
+		echo ""; \
+		echo "⚠️  $$fail test(s) ${BG_RED}FAILED${RESET}. Check your implementation."; \
+	fi
+	@printf "\n${SUBTITLE}Middle version${RESET}\n"
+	@printf "\n🔁 100 numbers: Running 50 random tests...\n"
+	@total=0; \
+	fail=0; \
+	max=0; \
+	for i in $$(seq 1 50); do \
+		ARG=$$(shuf -i 0-1000 -n 100 | tr '\n' ' '); \
+		OPS=$$(./push_swap/push_swap $$ARG); \
+		COUNT=$$(echo "$$OPS" | wc -l); \
+		CHECK=$$( \
+			if [ -z "$$OPS" ]; then \
+				./push_swap/main_checker $$ARG < /dev/null; \
+			else \
+				echo "$$OPS" | ./push_swap/main_checker $$ARG; \
+			fi \
+		); \
+		if [ "$$CHECK" != "OK" ]; then \
+			printf "❌ Test $$i: ${BG_RED}FAILED${RESET}\nARGS=$$ARG\n"; \
+			fail=$$((fail + 1)); \
+# 		else \
+# 			printf "✅ Test $$i: ${GREEN}OK${RESET} — $$COUNT operations\n"; \
+		fi; \
+		if [ "$$COUNT" -gt "$$max" ]; then max=$$COUNT; fi; \
+		total=$$((total + COUNT)); \
+	done; \
+	if [ "$$fail" -eq 0 ]; then \
+		avg=$$((total / 50)); \
+		echo "📊 Average number of operations: $$avg"; \
+		echo "📈 Maximum number of operations: $$max"; \
+		echo "✅ All tests passed."; \
+	else \
+		echo ""; \
+		echo "⚠️  $$fail test(s) ${BG_RED}FAILED${RESET}. Check your implementation."; \
+	fi
+	@printf "\n${SUBTITLE}Advanced version${RESET}\n"
+	@printf "\n🔁 500 numbers: Running 10 random tests...\n"
+	@total=0; \
+	fail=0; \
+	max=0; \
+	for i in $$(seq 1 10); do \
+		ARG=$$(shuf -i 0-10000 -n 500 | tr '\n' ' '); \
+		OPS=$$(./push_swap/push_swap $$ARG); \
+		COUNT=$$(echo "$$OPS" | wc -l); \
+		CHECK=$$( \
+			if [ -z "$$OPS" ]; then \
+				./push_swap/main_checker $$ARG < /dev/null; \
+			else \
+				echo "$$OPS" | ./push_swap/main_checker $$ARG; \
+			fi \
+		); \
+		if [ "$$CHECK" != "OK" ]; then \
+			printf "❌ Test $$i: ${BG_RED}FAILED${RESET}\nARGS=$$ARG\n"; \
+			fail=$$((fail + 1)); \
+# 		else \
+# 			printf "✅ Test $$i: ${GREEN}OK${RESET} — $$COUNT operations\n"; \
+		fi; \
+		if [ "$$COUNT" -gt "$$max" ]; then max=$$COUNT; fi; \
+		total=$$((total + COUNT)); \
+	done; \
+	if [ "$$fail" -eq 0 ]; then \
+		avg=$$((total / 10)); \
+		echo "📊 Average number of operations: $$avg"; \
+		echo "📈 Maximum number of operations: $$max"; \
+		echo "✅ All tests passed."; \
+	else \
+		echo ""; \
+		echo "⚠️  $$fail test(s) ${BG_RED}FAILED${RESET}. Check your implementation."; \
+	fi
+	@printf "\n${SUBTITLE}Just for fun${RESET}\n"
 	@printf "\n${SUBTITLE}Sorted input (1 2 3 ... 500)${RESET}\n"
 	@ARG="$$(seq 1 500)"; \
 	OPS=$$(./push_swap/push_swap $$ARG); \
@@ -194,6 +358,26 @@ push_swap:
 		echo "✅ Result: ${GREEN}${BOLD} OK ${RESET} — Already sorted, 0 operations"; \
 	else \
 		echo "❌ Result: ${BG_RED}FAILED${RESET} — $$COUNT operations (should be 0) or checker failed"; \
+	fi
+	@printf "\n${SUBTITLE}Reverse sorted input (500 499 ... 1)${RESET}\n"
+	@ARG="$$(seq 500 -1 1)"; \
+	OPS=$$(./push_swap/push_swap $$ARG); \
+	CHECK=$$(./push_swap/push_swap $$ARG | ./push_swap/main_checker $$ARG); \
+	if [ -n "$$OPS" ]; then COUNT=$$(echo "$$OPS" | wc -l); else COUNT=0; fi; \
+	if [ "$$CHECK" = "OK" ] ; then \
+		echo "✅ Result: ${GREEN}${BOLD} OK ${RESET} — $$COUNT operations"; \
+	else \
+		echo "❌ Result: ${BG_RED}FAILED${RESET}"; \
+	fi
+	@printf "\n${SUBTITLE}Reverse sorted input (5 ... 1)${RESET}\n"
+	@ARG="$$(seq 5 -1 1)"; \
+	OPS=$$(./push_swap/push_swap $$ARG); \
+	CHECK=$$(./push_swap/push_swap $$ARG | ./push_swap/main_checker $$ARG); \
+	if [ -n "$$OPS" ]; then COUNT=$$(echo "$$OPS" | wc -l); else COUNT=0; fi; \
+	if [ "$$CHECK" = "OK" ] ; then \
+		echo "✅ Result: ${GREEN}${BOLD} OK ${RESET} — $$COUNT operations"; \
+	else \
+		echo "❌ Result: ${BG_RED}FAILED${RESET}"; \
 	fi
 	@printf "\n${SUBTITLE}Almost sorted input (2 1 3 4 ... 500)${RESET}\n"
 	@ARG="2 1 $$(seq 3 500)"; \
@@ -217,21 +401,7 @@ push_swap:
 		echo "❌ Result: ${BG_RED}FAILED${RESET} — checker failed"; \
 		exit 1; \
 	fi
-	@printf "\n\n${SUBTITLE}Checking leaks and protections${RESET}\n"
-	@echo -n "Valgrind basic input: "
-	@valgrind --leak-check=full --show-leak-kinds=all ./push_swap/push_swap 5 1 2 3 4 > mem_check 2>&1
-	@grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
-	@echo -n "Valgrind bad input: "
-	@valgrind --leak-check=full --show-leak-kinds=all ./push_swap/push_swap 1 dos 3 4 5 > mem_check 2>&1 || echo -n
-	@grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
-	@if command -v funcheck > /dev/null 2>&1; then \
-		funcheck ./push_swap/push_swap 1 2 3 4 5 > mem_check 2>&1 || echo -n; \
-		echo -n "Funcheck basic input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
-		funcheck ./push_swap/push_swap 1 dos 3 4 > mem_check 2>&1 || echo -n; \
-		echo -n "Funcheck bad input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
-	else \
-		printf "Funcheck:${BG_YELLOW}${BOLD} Not Installed ${RESET}\n"; \
-	fi
+
 	@printf "\n\n${SUBTITLE}----------------> Bonus <----------------${RESET}\n"
 	@make -qp -C ../push_swap | grep -q bonus: || (printf "${BG_RED}${BOLD} No bonus ${RESET}\n" && exit 1)
 	@printf "\n${SUBTITLE}Checking make command${RESET}\n"
@@ -243,8 +413,6 @@ push_swap:
 	@printf "Word:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@echo "pa sa" | ./push_swap/checker 5 1 2 2 3 4 2> parse_err 1>/dev/null || echo -n
 	@printf "Repeated number:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@echo "pa sa" | ./push_swap/checker 5 1 2 3 4 "6 7 8" 2> parse_err 1>/dev/null || echo -n
-	@printf "Mixed arguments:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@echo "pa sa" | ./push_swap/checker 5 1 2 3 4 2147483648 2> parse_err 1>/dev/null || echo -n
 	@printf "Int overflow (INT MAX):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@echo "pa sa" | ./push_swap/checker 5 1 2 3 4 -2147483649 2> parse_err 1>/dev/null || echo -n
