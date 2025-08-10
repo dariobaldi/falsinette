@@ -51,11 +51,20 @@ test:
 	@make -s -C ../push_swap bonus
 	@mv ../push_swap/push_swap ./push_swap/push_swap
 	@mv ../push_swap/checker ./push_swap/checker
-	@printf "\n${SUBTITLE}Right tests${RESET}\n"
-	@echo -n | ./push_swap/checker 0 1 2 1> parse_err 2>/dev/null || echo -n
-	@printf "./checker 0 1 2:" && grep -q OK parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@echo "pb\nra\npb\nra\nsa\nra\npa\npa" | ./push_swap/checker 0 9 1 8 2 1> parse_err 2>/dev/null || echo -n
-	@printf "[pb, ra, pb, ra, sa, ra, pa, pa] > ./checker 0 9 1 8 2:" && grep -q OK parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@rm -f ./parse_err && echo "pa\nsa" | ./push_swap/checker 5 1 six 2 3 4 2> parse_err 1>/dev/null || echo -n
+	@printf "Non numeric parameters:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@rm -f ./parse_err && echo "pa\nsa" | ./push_swap/checker 5 1 2 2 3 4 2> parse_err 1>/dev/null || echo -n
+	@printf "Duplicate number:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@rm -f ./parse_err && echo "pa\nsa" | ./push_swap/checker 5 1 2 3 4 2147483648 2> parse_err 1>/dev/null || echo -n
+	@printf "Int overflow (INT MAX):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@rm -f ./parse_err && echo "pa\nsa" | ./push_swap/checker 5 1 2 3 4 -2147483649 2> parse_err 1>/dev/null || echo -n
+	@printf "Int overflow (INT MIN):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@rm -f ./parse_err && echo -n | ./push_swap/checker 2> parse_err 1>/dev/null || echo -n
+	@printf "No parameters:" && grep -q Error parse_err && printf "${BG_RED}${BOLD} FAILED ${RESET}\n" || printf "${GREEN}${BOLD} OK ${RESET}\n"
+	@rm -f ./parse_err && echo "ra\nsaa" | ./push_swap/checker 5 2 1 3 4 2> parse_err 1>/dev/null || echo -n
+	@printf "Non existent action:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	@rm -f ./parse_err && echo "ra  \n  sa" | ./push_swap/checker 5 2 1 3 4 2> parse_err 1>/dev/null || echo -n
+	@printf "Spaces before and after actions" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 # 	@rm -f ./parse_err ./push_swap/push_swap ./push_swap/checker
 	
 ## push_swap : Because Swap_push doesn’t feel as natural.
@@ -394,13 +403,13 @@ push_swap:
 		printf "Funcheck:${BG_YELLOW}${BOLD} FAILED (not installed) ${RESET}\n"; \
 	fi
 	@printf "\n${SUBTITLE}Error management${RESET}\n"
-	@rm -f ./parse_err && echo "pa sa" | ./push_swap/checker 5 1 six 2 3 4 2> parse_err 1>/dev/null || echo -n
+	@rm -f ./parse_err && echo "pa\nsa" | ./push_swap/checker 5 1 six 2 3 4 2> parse_err 1>/dev/null || echo -n
 	@printf "Non numeric parameters:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@rm -f ./parse_err && echo "pa sa" | ./push_swap/checker 5 1 2 2 3 4 2> parse_err 1>/dev/null || echo -n
+	@rm -f ./parse_err && echo "pa\nsa" | ./push_swap/checker 5 1 2 2 3 4 2> parse_err 1>/dev/null || echo -n
 	@printf "Duplicate number:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@rm -f ./parse_err && echo "pa sa" | ./push_swap/checker 5 1 2 3 4 2147483648 2> parse_err 1>/dev/null || echo -n
+	@rm -f ./parse_err && echo "pa\nsa" | ./push_swap/checker 5 1 2 3 4 2147483648 2> parse_err 1>/dev/null || echo -n
 	@printf "Int overflow (INT MAX):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@rm -f ./parse_err && echo "pa sa" | ./push_swap/checker 5 1 2 3 4 -2147483649 2> parse_err 1>/dev/null || echo -n
+	@rm -f ./parse_err && echo "pa\nsa" | ./push_swap/checker 5 1 2 3 4 -2147483649 2> parse_err 1>/dev/null || echo -n
 	@printf "Int overflow (INT MIN):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@rm -f ./parse_err && echo -n | ./push_swap/checker 2> parse_err 1>/dev/null || echo -n
 	@printf "No parameters:" && grep -q Error parse_err && printf "${BG_RED}${BOLD} FAILED ${RESET}\n" || printf "${GREEN}${BOLD} OK ${RESET}\n"
