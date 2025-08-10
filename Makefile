@@ -86,29 +86,29 @@ push_swap:
 	@mv ../push_swap/push_swap ./push_swap/push_swap
 	@printf "\n\n${SUBTITLE}Checking leaks and malloc protections${RESET}\n"
 	@echo -n "Valgrind basic input: "
-	@valgrind --leak-check=full --show-leak-kinds=all ./push_swap/push_swap 5 1 2 3 4 > mem_check 2>&1
+	@rm -f ./mem_check && valgrind --leak-check=full --show-leak-kinds=all ./push_swap/push_swap 5 1 2 3 4 > mem_check 2>&1
 	@grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
 	@echo -n "Valgrind bad input: "
 	@valgrind --leak-check=full --show-leak-kinds=all ./push_swap/push_swap 1 dos 3 4 5 > mem_check 2>&1 || echo -n
 	@grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
 	@if command -v funcheck > /dev/null 2>&1; then \
-		funcheck ./push_swap/push_swap 1 2 3 4 5 > mem_check 2>&1 || echo -n; \
+		rm -f ./mem_check && funcheck ./push_swap/push_swap 1 2 3 4 5 > mem_check 2>&1 || echo -n; \
 		echo -n "Funcheck basic input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
-		funcheck ./push_swap/push_swap 1 dos 3 4 > mem_check 2>&1 || echo -n; \
+		rm -f ./mem_check && funcheck ./push_swap/push_swap 1 dos 3 4 > mem_check 2>&1 || echo -n; \
 		echo -n "Funcheck bad input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
 	else \
 		printf "Funcheck:${BG_YELLOW}${BOLD} Not Installed ${RESET}\n"; \
 	fi
 	@printf "\n${SUBTITLE}Error management${RESET}\n"
-	@./push_swap/push_swap 5 1 six 2 3 4 2> parse_err 1>/dev/null || echo -n
+	@rm -f ./parse_err && ./push_swap/push_swap 5 1 six 2 3 4 2> parse_err 1>/dev/null || echo -n
 	@printf "Non numeric parameters:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@./push_swap/push_swap 5 1 2 2 3 4 2> parse_err 1>/dev/null || echo -n
+	@rm -f ./parse_err && ./push_swap/push_swap 5 1 2 2 3 4 2> parse_err 1>/dev/null || echo -n
 	@printf "Duplicate number:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@./push_swap/push_swap 5 1 2 3 4 2147483648 2> parse_err 1>/dev/null || echo -n
+	@rm -f ./parse_err && ./push_swap/push_swap 5 1 2 3 4 2147483648 2> parse_err 1>/dev/null || echo -n
 	@printf "Int overflow (INT MAX):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@./push_swap/push_swap 5 1 2 3 4 -2147483649 2> parse_err 1>/dev/null || echo -n
 	@printf "Int overflow (INT MIN):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@./push_swap/push_swap 2> parse_err 1>/dev/null || echo -n
+	@rm -f ./parse_err && ./push_swap/push_swap 2> parse_err 1>/dev/null || echo -n
 	@printf "No parameters:" && grep -q Error parse_err && printf "${BG_RED}${BOLD} FAILED ${RESET}\n" || printf "${GREEN}${BOLD} OK ${RESET}\n"
 	@printf "\n${SUBTITLE}Identity test${RESET}\n"
 	@printf "Sorted input (42): "
@@ -380,36 +380,36 @@ push_swap:
 	@mv ../push_swap/checker ./push_swap/checker
 	@printf "\n\n${SUBTITLE}Checking leaks and protections (checker)${RESET}\n"
 	@echo -n "Valgrind basic input: "
-	@echo sa | valgrind --leak-check=full --show-leak-kinds=all ./push_swap/checker 2 1 3 4 5 > mem_check 2>&1 || echo -n
+	@rm -f ./mem_check && echo sa | valgrind --leak-check=full --show-leak-kinds=all ./push_swap/checker 2 1 3 4 5 > mem_check 2>&1 || echo -n
 	@grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
 	@echo -n "Valgrind bad input: "
-	@echo sa | valgrind --leak-check=full --show-leak-kinds=all ./push_swap/checker 2 uno 3 4 5 > mem_check 2>&1 || echo -n
+	@rm -f ./mem_check && echo sa | valgrind --leak-check=full --show-leak-kinds=all ./push_swap/checker 2 uno 3 4 5 > mem_check 2>&1 || echo -n
 	@grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
 	@if command -v funcheck > /dev/null 2>&1; then \
-		echo sa | funcheck ./push_swap/checker 2 1 3 4 5 > mem_check 2>&1 || echo -n; \
+		rm -f ./mem_check && echo sa | funcheck ./push_swap/checker 2 1 3 4 5 > mem_check 2>&1 || echo -n; \
 		echo -n "Funcheck basic input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
-		echo sa | funcheck ./push_swap/checker 2 uno 3 4 5 > mem_check 2>&1 || echo -n; \
+		rm -f ./mem_check && echo sa | funcheck ./push_swap/checker 2 uno 3 4 5 > mem_check 2>&1 || echo -n; \
 		echo -n "Funcheck bad input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
 	else \
 		printf "Funcheck:${BG_YELLOW}${BOLD} FAILED (not installed) ${RESET}\n"; \
 	fi
 	@printf "\n${SUBTITLE}Error management${RESET}\n"
-	@echo "pa sa" | ./push_swap/checker 5 1 six 2 3 4 2> parse_err 1>/dev/null || echo -n
+	@rm -f ./parse_err && echo "pa sa" | ./push_swap/checker 5 1 six 2 3 4 2> parse_err 1>/dev/null || echo -n
 	@printf "Non numeric parameters:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@echo "pa sa" | ./push_swap/checker 5 1 2 2 3 4 2> parse_err 1>/dev/null || echo -n
+	@rm -f ./parse_err && echo "pa sa" | ./push_swap/checker 5 1 2 2 3 4 2> parse_err 1>/dev/null || echo -n
 	@printf "Duplicate number:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@echo "pa sa" | ./push_swap/checker 5 1 2 3 4 2147483648 2> parse_err 1>/dev/null || echo -n
+	@rm -f ./parse_err && echo "pa sa" | ./push_swap/checker 5 1 2 3 4 2147483648 2> parse_err 1>/dev/null || echo -n
 	@printf "Int overflow (INT MAX):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@echo "pa sa" | ./push_swap/checker 5 1 2 3 4 -2147483649 2> parse_err 1>/dev/null || echo -n
+	@rm -f ./parse_err && echo "pa sa" | ./push_swap/checker 5 1 2 3 4 -2147483649 2> parse_err 1>/dev/null || echo -n
 	@printf "Int overflow (INT MIN):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@echo -n | ./push_swap/checker 2> parse_err 1>/dev/null || echo -n
+	@rm -f ./parse_err && echo -n | ./push_swap/checker 2> parse_err 1>/dev/null || echo -n
 	@printf "No parameters:" && grep -q Error parse_err && printf "${BG_RED}${BOLD} FAILED ${RESET}\n" || printf "${GREEN}${BOLD} OK ${RESET}\n"
-	@echo "ra\nsaa" | ./push_swap/checker 5 2 1 3 4 2> parse_err 1>/dev/null || echo -n
+	@rm -f ./parse_err && echo "ra\nsaa" | ./push_swap/checker 5 2 1 3 4 2> parse_err 1>/dev/null || echo -n
 	@printf "Non existent action:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@echo "ra  \n  sa" | ./push_swap/checker 5 2 1 3 4 2> parse_err 1>/dev/null || echo -n
+	@rm -f ./parse_err && echo "ra  \n  sa" | ./push_swap/checker 5 2 1 3 4 2> parse_err 1>/dev/null || echo -n
 	@printf "Spaces before and after actions" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@printf "\n${SUBTITLE}False tests${RESET}\n"
-	@echo "sa\npb\nrrr" | ./push_swap/checker 0 9 1 8 2 7 3 6 4 5 1> parse_err 2>/dev/null || echo -n
+	@rm -f ./parse_err && echo "sa\npb\nrrr" | ./push_swap/checker 0 9 1 8 2 7 3 6 4 5 1> parse_err 2>/dev/null || echo -n
 	@printf "[sa, pb, rrr] > ./checker 0 9 1 8 2 7 3 6 4 5:" && grep -q KO parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@echo "\n🔁 Running 10 random tests with wrong instructions..."
 	@fail=0; \
@@ -428,9 +428,9 @@ push_swap:
 		echo "⚠️  $$fail test(s) ${BG_RED}FAILED${RESET}. Check your implementation."; \
 	fi
 	@printf "\n${SUBTITLE}Right tests${RESET}\n"
-	@echo -n | ./push_swap/checker 0 1 2 1> parse_err 2>/dev/null || echo -n
+	@rm -f ./parse_err && echo -n | ./push_swap/checker 0 1 2 1> parse_err 2>/dev/null || echo -n
 	@printf "./checker 0 1 2:" && grep -q OK parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@echo "pb\nra\npb\nra\nsa\nra\npa\npa" | ./push_swap/checker 0 9 1 8 2 1> parse_err 2>/dev/null || echo -n
+	@rm -f ./parse_err && echo "pb\nra\npb\nra\nsa\nra\npa\npa" | ./push_swap/checker 0 9 1 8 2 1> parse_err 2>/dev/null || echo -n
 	@printf "[pb, ra, pb, ra, sa, ra, pa, pa] > ./checker 0 9 1 8 2:" && grep -q OK parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@echo "\n🔁 100 numbers: Running 10 random tests..."
 	@total=0; \
@@ -856,5 +856,3 @@ C11:
 	@echo "\n\n** EX04: ft_is_sort"
 	@$(CW) ../C11/ex04/ft_is_sort.c ./C11/ex04.c && ./Executable && rm -f ./Executable || printf "${BG_RED}${BOLD} FAILED ${RESET}"
 	@echo ""
-
-
