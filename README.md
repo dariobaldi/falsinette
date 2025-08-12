@@ -27,7 +27,7 @@ Clonez le repo à côté de votre dossier de projet :
 Comme ça :
 
 ```bash
-git clone https://github.com/dariobaldi/falsinette.git
+git clone http://github.com/dariobaldi/falsinette
 ```
 
 -----
