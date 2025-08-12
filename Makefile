@@ -29,6 +29,30 @@ XCLEAN_FAIL := ./Executable && rm -f ./Executable || $(FAILED)
 XCLEAN_FAIL_OK := ./Executable && $(GOOD) && rm -f ./Executable || $(FAILED)
 VXCLEAN_FAIL := valgrind -q --leak-check=full ./Executable && rm -f ./Executable || $(FAILED)
 
+# $(call MEMCHECK,title,input,command)
+define MEMCHECK
+	@echo "\n${SUBTITLE}$(1)${RESET}"
+	@echo -n "-Valgrind:"
+	@rm -f ./mem_check; \
+	$(2) | valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all \
+		$(3) > mem_check 2>&1; \
+	if [ $$? -eq 0 ]; then \
+		printf "${GREEN}${BOLD} OK ${RESET}\n"; \
+	else \
+		printf "${BG_RED}${BOLD} FAILED ${RESET}\n"; \
+		cat mem_check; \
+	fi;
+	@echo -n "-Funcheck:"
+	@rm -f ./mem_check && $(2) | funcheck $(3) > mem_check 2>&1; echo $$? > mem_check_code; \
+	if [ $$? -eq 0 ]; then \
+		printf "${GREEN}${BOLD} OK ${RESET}\n"; \
+	else \
+		printf "${BG_RED}${BOLD} FAILED ${RESET}\n"; \
+		cat mem_check; \
+	fi
+endef
+
+
 .PHONY: help
 help:
 	@echo '*** Commands:'
@@ -51,20 +75,8 @@ test:
 	@make -s -C ../push_swap bonus
 	@mv ../push_swap/push_swap ./push_swap/push_swap
 	@mv ../push_swap/checker ./push_swap/checker
-	@rm -f ./parse_err && echo "pa\nsa" | ./push_swap/checker 5 1 six 2 3 4 2> parse_err 1>/dev/null || echo -n
-	@printf "Non numeric parameters:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@rm -f ./parse_err && echo "pa\nsa" | ./push_swap/checker 5 1 2 2 3 4 2> parse_err 1>/dev/null || echo -n
-	@printf "Duplicate number:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@rm -f ./parse_err && echo "pa\nsa" | ./push_swap/checker 5 1 2 3 4 2147483648 2> parse_err 1>/dev/null || echo -n
-	@printf "Int overflow (INT MAX):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@rm -f ./parse_err && echo "pa\nsa" | ./push_swap/checker 5 1 2 3 4 -2147483649 2> parse_err 1>/dev/null || echo -n
-	@printf "Int overflow (INT MIN):" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@rm -f ./parse_err && echo -n | ./push_swap/checker 2> parse_err 1>/dev/null || echo -n
-	@printf "No parameters:" && grep -q Error parse_err && printf "${BG_RED}${BOLD} FAILED ${RESET}\n" || printf "${GREEN}${BOLD} OK ${RESET}\n"
-	@rm -f ./parse_err && echo "ra\nsaa" | ./push_swap/checker 5 2 1 3 4 2> parse_err 1>/dev/null || echo -n
-	@printf "Non existent action:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@rm -f ./parse_err && echo "ra  \n  sa" | ./push_swap/checker 5 2 1 3 4 2> parse_err 1>/dev/null || echo -n
-	@printf "Spaces before and after actions" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
+	$(call MEMCHECK,"simple coso",echo -n,./push_swap/push_swap 1 3 2)
+	$(call MEMCHECK,"simple coso",echo "            ",./push_swap/checker 1 3 2)
 # 	@rm -f ./parse_err ./push_swap/push_swap ./push_swap/checker
 	
 ## push_swap : Because Swap_push doesn’t feel as natural.
