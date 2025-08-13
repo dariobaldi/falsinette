@@ -51,7 +51,6 @@ define MEMCHECK
 	else \
 		printf "${BG_RED}${BOLD} Funcheck not installed ${RESET}\n"; \
 	fi
-	@echo
 	# @rm -f mem_check;
 endef
 
@@ -74,11 +73,22 @@ confirm:
 .PHONY: test
 test:
 	@clear
-	# @make -s -C ../push_swap push_swap
+	@make -s -C ../push_swap push_swap
 	@make -s -C ../push_swap bonus
-	# @mv ../push_swap/push_swap ./push_swap/push_swap
+	@mv ../push_swap/push_swap ./push_swap/push_swap
 	@mv ../push_swap/checker ./push_swap/checker
-	$(call MEMCHECK,"simple coso",echo "            ",./push_swap/checker 1 3 2)
+	@printf "\n\n${SUBTITLE}Checking leaks and protections (checker)${RESET}"
+	@$(call MEMCHECK,"0.Empty input",echo -n,./push_swap/push_swap)
+	@$(call MEMCHECK,"1.Simple unordered",echo -n,./push_swap/push_swap 1 3 2)
+	@$(call MEMCHECK,"2.Already sorted",echo -n,./push_swap/push_swap 1 2 3)
+	@$(call MEMCHECK,"3.Reverse sorted",echo -n,./push_swap/push_swap 3 2 1)
+	@$(call MEMCHECK,"4.Single number",echo -n,./push_swap/push_swap 42)
+	@$(call MEMCHECK,"5.Long sequence",echo -n,./push_swap/push_swap 1 3 5 7 8 9 6 4 42 -42 21 10 2147483647)
+	@$(call MEMCHECK,"6.Duplicate numbers",echo -n,./push_swap/push_swap 2 1 2)
+	@$(call MEMCHECK,"7.Non-integer",echo -n,./push_swap/push_swap a b c)
+	@$(call MEMCHECK,"8.Int max overflow",echo -n,./push_swap/push_swap 2147483648)
+	@$(call MEMCHECK,"9.Int min overflow",echo -n,./push_swap/push_swap -2147483649)
+	@$(call MEMCHECK,"10.Mixed spaces/tabs",echo -n,./push_swap/push_swap "1   2	\t3")
 # 	@rm -f ./parse_err ./push_swap/push_swap ./push_swap/checker
 	
 ## push_swap : Because Swap_push doesn’t feel as natural.
@@ -106,23 +116,20 @@ push_swap:
 	@printf "\n\n${SUBTITLE}Checking make command${RESET}\n"
 	@printf "push_swap:" && make -C ../push_swap -s push_swap && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@printf "No relink:" && make -C ../push_swap push_swap | grep -q "'push_swap' is up to date." && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
-	@mv ../push_swap/push_swap ./push_swap/push_swap
-	@printf "\n\n${SUBTITLE}Checking leaks and malloc protections${RESET}\n"
-	@echo -n "Valgrind basic input: "
-	@rm -f ./mem_check && valgrind --leak-check=full --show-leak-kinds=all ./push_swap/push_swap 5 1 2 3 4 > mem_check 2>&1
-	@grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
-	@echo -n "Valgrind bad input: "
-	@valgrind --leak-check=full --show-leak-kinds=all ./push_swap/push_swap 1 dos 3 4 5 > mem_check 2>&1 || echo -n
-	@grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
-	@if command -v funcheck > /dev/null 2>&1; then \
-		rm -f ./mem_check && funcheck ./push_swap/push_swap 1 2 3 4 5 > mem_check 2>&1 || echo -n; \
-		echo -n "Funcheck basic input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
-		rm -f ./mem_check && funcheck ./push_swap/push_swap 1 dos 3 4 > mem_check 2>&1 || echo -n; \
-		echo -n "Funcheck bad input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
-	else \
-		printf "Funcheck:${BG_YELLOW}${BOLD} Not Installed ${RESET}\n"; \
-	fi
-	@printf "\n${SUBTITLE}Error management${RESET}\n"
+	@mv ../push_swap/push_swap ./push_swap/push_swap && make -C ../push_swap -s fclean
+	@printf "\n\n${SUBTITLE}Checking leaks and malloc protections${RESET}"
+	@$(call MEMCHECK,"0.Empty input",echo -n,./push_swap/push_swap)
+	@$(call MEMCHECK,"1.Simple unordered",echo -n,./push_swap/push_swap 1 3 2)
+	@$(call MEMCHECK,"2.Already sorted",echo -n,./push_swap/push_swap 1 2 3)
+	@$(call MEMCHECK,"3.Reverse sorted",echo -n,./push_swap/push_swap 3 2 1)
+	@$(call MEMCHECK,"4.Single number",echo -n,./push_swap/push_swap 42)
+	@$(call MEMCHECK,"5.Long sequence",echo -n,./push_swap/push_swap 1 3 5 7 8 9 6 4 42 -42 21 10 2147483647)
+	@$(call MEMCHECK,"6.Duplicate numbers",echo -n,./push_swap/push_swap 2 1 2)
+	@$(call MEMCHECK,"7.Non-integer",echo -n,./push_swap/push_swap a b c)
+	@$(call MEMCHECK,"8.Int max overflow",echo -n,./push_swap/push_swap 2147483648)
+	@$(call MEMCHECK,"9.Int min overflow",echo -n,./push_swap/push_swap -2147483649)
+	@$(call MEMCHECK,"10.Mixed spaces/tabs",echo -n,./push_swap/push_swap "1   2	\t3")
+	@printf "\n\n${SUBTITLE}Error management${RESET}\n"
 	@rm -f ./parse_err && ./push_swap/push_swap 5 1 six 2 3 4 2> parse_err 1>/dev/null || echo -n
 	@printf "Non numeric parameters:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@rm -f ./parse_err && ./push_swap/push_swap 5 1 2 2 3 4 2> parse_err 1>/dev/null || echo -n
@@ -401,22 +408,17 @@ push_swap:
 	@printf "bonus:" && make -s -C ../push_swap bonus && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@printf "No relink:" && make -C ../push_swap bonus | grep -q "Nothing to be done for 'bonus'" && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@mv ../push_swap/checker ./push_swap/checker
-	@printf "\n\n${SUBTITLE}Checking leaks and protections (checker)${RESET}\n"
-	@echo -n "Valgrind basic input: "
-	@rm -f ./mem_check && echo sa | valgrind --leak-check=full --show-leak-kinds=all ./push_swap/checker 2 1 3 4 5 > mem_check 2>&1 || echo -n
-	@grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
-	@echo -n "Valgrind bad input: "
-	@rm -f ./mem_check && echo sa | valgrind --leak-check=full --show-leak-kinds=all ./push_swap/checker 2 uno 3 4 5 > mem_check 2>&1 || echo -n
-	@grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
-	@if command -v funcheck > /dev/null 2>&1; then \
-		rm -f ./mem_check && echo sa | funcheck ./push_swap/checker 2 1 3 4 5 > mem_check 2>&1 || echo -n; \
-		echo -n "Funcheck basic input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
-		rm -f ./mem_check && echo sa | funcheck ./push_swap/checker 2 uno 3 4 5 > mem_check 2>&1 || echo -n; \
-		echo -n "Funcheck bad input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
-	else \
-		printf "Funcheck:${BG_YELLOW}${BOLD} FAILED (not installed) ${RESET}\n"; \
-	fi
-	@printf "\n${SUBTITLE}Error management${RESET}\n"
+	@printf "\n\n${SUBTITLE}Checking leaks and protections${RESET}"
+	@$(call MEMCHECK,"0.Checker OK",echo "pb\nsa\nrra\npa\nra",./push_swap/checker 4 3 2 1)
+	@$(call MEMCHECK,"1.Checker KO",echo "pb\nsa\npa",./push_swap/checker 2 1)
+	@$(call MEMCHECK,"2.Wrong instructions",echo "pb\nra",./push_swap/checker 1 3 2)
+	@$(call MEMCHECK,"3.Empty instructions",echo -n,./push_swap/checker 1 2 3)
+	@$(call MEMCHECK,"4.Invalid instruction",echo "pusha\nrotatea",./push_swap/checker 1 2 3)
+	@$(call MEMCHECK,"5.Duplicate numbers",echo -n,./push_swap/checker 1 1 2)
+	@$(call MEMCHECK,"6.Int max overflow",echo -n,./push_swap/checker 2147483648)
+	@$(call MEMCHECK,"6.Int min overflow",echo -n,./push_swap/checker 42 -2147483649000 1)
+	@$(call MEMCHECK,"7.Large input no ops",echo -n,./push_swap/checker 10 9 8 7 6 5 4 3 2 1 0 -10 -9 -8 -7 -6 -5 -4 -3 -2 -1)
+	@printf "\n\n${SUBTITLE}Error management${RESET}\n"
 	@rm -f ./parse_err && echo "pa\nsa" | ./push_swap/checker 5 1 six 2 3 4 2> parse_err 1>/dev/null || echo -n
 	@printf "Non numeric parameters:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@rm -f ./parse_err && echo "pa\nsa" | ./push_swap/checker 5 1 2 2 3 4 2> parse_err 1>/dev/null || echo -n
