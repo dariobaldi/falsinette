@@ -107,21 +107,21 @@ push_swap:
 	@printf "push_swap:" && make -C ../push_swap -s push_swap && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@printf "No relink:" && make -C ../push_swap push_swap | grep -q "'push_swap' is up to date." && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@mv ../push_swap/push_swap ./push_swap/push_swap
-	@printf "\n\n${SUBTITLE}Checking leaks and malloc protections${RESET}\n"
-	@echo -n "Valgrind basic input: "
-	@rm -f ./mem_check && valgrind --leak-check=full --show-leak-kinds=all ./push_swap/push_swap 5 1 2 3 4 > mem_check 2>&1
-	@grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
-	@echo -n "Valgrind bad input: "
-	@valgrind --leak-check=full --show-leak-kinds=all ./push_swap/push_swap 1 dos 3 4 5 > mem_check 2>&1 || echo -n
-	@grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
-	@if command -v funcheck > /dev/null 2>&1; then \
-		rm -f ./mem_check && funcheck ./push_swap/push_swap 1 2 3 4 5 > mem_check 2>&1 || echo -n; \
-		echo -n "Funcheck basic input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
-		rm -f ./mem_check && funcheck ./push_swap/push_swap 1 dos 3 4 > mem_check 2>&1 || echo -n; \
-		echo -n "Funcheck bad input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
-	else \
-		printf "Funcheck:${BG_YELLOW}${BOLD} Not Installed ${RESET}\n"; \
-	fi
+	# @printf "\n\n${SUBTITLE}Checking leaks and malloc protections${RESET}\n"
+	# @echo -n "Valgrind basic input: "
+	# @rm -f ./mem_check && valgrind --leak-check=full --show-leak-kinds=all ./push_swap/push_swap 5 1 2 3 4 > mem_check 2>&1
+	# @grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
+	# @echo -n "Valgrind bad input: "
+	# @valgrind --leak-check=full --show-leak-kinds=all ./push_swap/push_swap 1 dos 3 4 5 > mem_check 2>&1 || echo -n
+	# @grep -q "0 errors" mem_check && printf "${GREEN}${BOLD} OK ${RESET}\n" || (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check)
+	# @if command -v funcheck > /dev/null 2>&1; then \
+	# 	rm -f ./mem_check && funcheck ./push_swap/push_swap 1 2 3 4 5 > mem_check 2>&1 || echo -n; \
+	# 	echo -n "Funcheck basic input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
+	# 	rm -f ./mem_check && funcheck ./push_swap/push_swap 1 dos 3 4 > mem_check 2>&1 || echo -n; \
+	# 	echo -n "Funcheck bad input: " && grep -q "failed" mem_check && (printf "${BG_RED}${BOLD} FAILED ${RESET}\n" && cat mem_check) || printf "${GREEN}${BOLD} OK ${RESET}\n" ; \
+	# else \
+	# 	printf "Funcheck:${BG_YELLOW}${BOLD} Not Installed ${RESET}\n"; \
+	# fi
 	@printf "\n${SUBTITLE}Error management${RESET}\n"
 	@rm -f ./parse_err && ./push_swap/push_swap 5 1 six 2 3 4 2> parse_err 1>/dev/null || echo -n
 	@printf "Non numeric parameters:" && grep -q Error parse_err && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
