@@ -73,22 +73,13 @@ confirm:
 .PHONY: test
 test:
 	@clear
-	@make -s -C ../push_swap push_swap
-	@make -s -C ../push_swap bonus
-	@mv ../push_swap/push_swap ./push_swap/push_swap
-	@mv ../push_swap/checker ./push_swap/checker
-	@printf "\n\n${SUBTITLE}Checking leaks and protections (checker)${RESET}"
-	@$(call MEMCHECK,"0.Empty input",echo -n,./push_swap/push_swap)
-	@$(call MEMCHECK,"1.Simple unordered",echo -n,./push_swap/push_swap 1 3 2)
-	@$(call MEMCHECK,"2.Already sorted",echo -n,./push_swap/push_swap 1 2 3)
-	@$(call MEMCHECK,"3.Reverse sorted",echo -n,./push_swap/push_swap 3 2 1)
-	@$(call MEMCHECK,"4.Single number",echo -n,./push_swap/push_swap 42)
-	@$(call MEMCHECK,"5.Long sequence",echo -n,./push_swap/push_swap 1 3 5 7 8 9 6 4 42 -42 21 10 2147483647)
-	@$(call MEMCHECK,"6.Duplicate numbers",echo -n,./push_swap/push_swap 2 1 2)
-	@$(call MEMCHECK,"7.Non-integer",echo -n,./push_swap/push_swap a b c)
-	@$(call MEMCHECK,"8.Int max overflow",echo -n,./push_swap/push_swap 2147483648)
-	@$(call MEMCHECK,"9.Int min overflow",echo -n,./push_swap/push_swap -2147483649)
-	@$(call MEMCHECK,"10.Mixed spaces/tabs",echo -n,./push_swap/push_swap "1   2	\t3")
+	# @make -s -C ../push_swap push_swap
+	# @make -s -C ../push_swap bonus
+	# @mv ../push_swap/push_swap ./push_swap/push_swap
+	# @mv ../push_swap/checker ./push_swap/checker
+	@printf "${SUBTITLE}Run norminette${RESET}\n"
+	@rm -f norm_file && norminette ../push_swap > norm_file || echo -n
+	@grep Error norm_file && $(FAILED_NORM) || printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}\n"
 # 	@rm -f ./parse_err ./push_swap/push_swap ./push_swap/checker
 	
 ## push_swap : Because Swap_push doesn’t feel as natural.
@@ -98,7 +89,8 @@ push_swap:
 	@printf "\n\t${TITLE}Push_swap${RESET} : Because Swap_push doesn’t feel as natural.\n\n"
 	@printf "${SUBTITLE}----------------> Mandatory <----------------${RESET}\n\n"
 	@printf "${SUBTITLE}Run norminette${RESET}\n"
-	@norminette ../push_swap > norm_file && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}\n" || ($(FAILED_NORM) && grep Error norm_file)
+	@rm -f norm_file && norminette ../push_swap > norm_file || echo -n
+	@grep Error norm_file && $(FAILED_NORM) || printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}\n"
 	@rm -f norm_file
 	@printf "\n\n${SUBTITLE}Checking files${RESET}\n"
 	@find ../push_swap -type f -not -name "*.c" -not -name "*.h" -not -name "Makefile" -not -path "../push_swap/.git/*" -not -name ".gitignore" | grep . && printf "Turn in files: ${BG_RED}${BOLD} FAILED: files not allowed ${RESET}" || printf "Turn in files:${GREEN}${BOLD} OK ${RESET}"
@@ -408,7 +400,7 @@ push_swap:
 	@printf "bonus:" && make -s -C ../push_swap bonus && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@printf "No relink:" && make -C ../push_swap bonus | grep -q "Nothing to be done for 'bonus'" && printf "${GREEN}${BOLD} OK ${RESET}\n" || printf "${BG_RED}${BOLD} FAILED ${RESET}\n"
 	@mv ../push_swap/checker ./push_swap/checker
-	@printf "\n\n${SUBTITLE}Checking leaks and protections${RESET}"
+	@printf "\n\n${SUBTITLE}Checking leaks and malloc protections${RESET}"
 	@$(call MEMCHECK,"0.Checker OK",echo "pb\nsa\nrra\npa\nra",./push_swap/checker 4 3 2 1)
 	@$(call MEMCHECK,"1.Checker KO",echo "pb\nsa\npa",./push_swap/checker 2 1)
 	@$(call MEMCHECK,"2.Wrong instructions",echo "pb\nra",./push_swap/checker 1 3 2)
@@ -508,7 +500,8 @@ gnl:
 	@clear
 	@printf "\n\t${TITLE}Get Next Line${RESET} : Reading a line from a file descriptor is far too tedious.\n\n"
 	@printf "${SUBTITLE}Run norminette${RESET}\n"
-	@norminette ../gnl > norm_file && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}" || ($(FAILED_NORM) && grep Error norm_file)
+	@rm -f norm_file && norminette ../gnl > norm_file || echo -n
+	@grep Error norm_file && $(FAILED_NORM) || printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}\n"
 	@rm -f norm_file
 	@printf "\n\n${SUBTITLE}Mandatory${RESET}\n"
 	@printf "\n${SUBTITLE}BUFFER_SIZE=42${RESET}\n"
@@ -555,7 +548,8 @@ ft_printf:
 	@clear
 	@printf "\n\t${TITLE}Project ft_printf${RESET} : Because ft_putnbr() and ft_putstr() aren’t enough\n\n"
 	@printf "${SUBTITLE}Run norminette${RESET}\n"
-	@norminette ../ft_printf > norm_file && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}" || ($(FAILED_NORM) && grep Error norm_file)
+	@rm -f norm_file && norminette ../ft_printf > norm_file || echo -n
+	@grep Error norm_file && $(FAILED_NORM) || printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}\n"
 	@rm -f norm_file
 	@printf "\n\n${SUBTITLE}Checking files${RESET}\n"
 	@find ../ft_printf -type f -not -name "*.c" -not -name "*.h" -not -name "Makefile" -not -path "../ft_printf/.git/*" | grep . && printf "Turn in files: ${BG_RED}${BOLD} KO: files not allowed ${RESET}" || printf "Turn in files:${GREEN}${BOLD} OK ${RESET}"
@@ -598,7 +592,8 @@ Libft:
 	@clear
 	@printf "\n\t${TITLE}Project Libft${RESET} : Your very first own library\n\n"
 	@printf "${SUBTITLE}Run norminette${RESET}\n"
-	@norminette ../Libft > norm_file && printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}" || ($(FAILED_NORM) && grep Error norm_file)
+	@rm -f norm_file && norminette ../Libft > norm_file || echo -n
+	@grep Error norm_file && $(FAILED_NORM) || printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}\n"
 	@rm -f norm_file
 	@printf "\n\n${SUBTITLE}Checking files${RESET}\n"
 	@find ../Libft -type f -not -name "*_bonus.c" -not -path "../Libft/.git/*" | sort > files && diff ./files ./Libft/part1/files && $(GOOD)|| printf "${BG_RED}${BOLD} KO: mismatched files (Mandatory) ${RESET}"
