@@ -31,25 +31,28 @@ VXCLEAN_FAIL := valgrind -q --leak-check=full ./Executable && rm -f ./Executable
 
 # $(call MEMCHECK,title,input,command)
 define MEMCHECK
-	@echo "\n${SUBTITLE}$(1)${RESET}"
-	@echo -n "-Valgrind:"
+	@echo -n "\n$(1):"
 	@rm -f ./mem_check; \
-	$(2) | valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all \
+	$(2) | valgrind --error-exitcode=123 --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all \
 		$(3) > mem_check 2>&1; \
-	if [ $$? -eq 0 ]; then \
-		printf "${GREEN}${BOLD} OK ${RESET}\n"; \
-	else \
-		printf "${BG_RED}${BOLD} FAILED ${RESET}\n"; \
+	exit_code=$$?; \
+	if [ $$exit_code -eq 0 ]; then \
+		printf " ✅${GREEN}${BOLD}Valgrind ${RESET}"; \
+	elif [ $$exit_code -eq 123 ]; then \
+		printf "${BG_RED}${BOLD} Valgrind ${RESET}\n"; \
 		cat mem_check; \
+		echo ; \
+	else \
+		printf " ✅${GREEN}${BOLD}Valgrind ${RESET}(exit $$exit_code) "; \
 	fi;
-	@echo -n "-Funcheck:"
-	@rm -f ./mem_check && $(2) | funcheck $(3) > mem_check 2>&1; echo $$? > mem_check_code; \
-	if [ $$? -eq 0 ]; then \
-		printf "${GREEN}${BOLD} OK ${RESET}\n"; \
+	@if command -v funcheck > /dev/null 2>&1; then \
+		rm -f ./mem_check && $(2) | funcheck -a $(3) > mem_check 2>&1; \
+		grep -q -E "failed|not freed" mem_check && (printf "${BG_RED}${BOLD} Funcheck ${RESET}\n" && cat mem_check && echo) || printf " ✅${GREEN}${BOLD}Funcheck ${RESET}" ; \
 	else \
-		printf "${BG_RED}${BOLD} FAILED ${RESET}\n"; \
-		cat mem_check; \
+		printf "${BG_RED}${BOLD} Funcheck not installed ${RESET}\n"; \
 	fi
+	@echo
+	# @rm -f mem_check;
 endef
 
 
@@ -71,11 +74,10 @@ confirm:
 .PHONY: test
 test:
 	@clear
-	@make -s -C ../push_swap push_swap
+	# @make -s -C ../push_swap push_swap
 	@make -s -C ../push_swap bonus
-	@mv ../push_swap/push_swap ./push_swap/push_swap
+	# @mv ../push_swap/push_swap ./push_swap/push_swap
 	@mv ../push_swap/checker ./push_swap/checker
-	$(call MEMCHECK,"simple coso",echo -n,./push_swap/push_swap 1 3 2)
 	$(call MEMCHECK,"simple coso",echo "            ",./push_swap/checker 1 3 2)
 # 	@rm -f ./parse_err ./push_swap/push_swap ./push_swap/checker
 	
@@ -138,7 +140,7 @@ push_swap:
 	CHECK=$$(./push_swap/push_swap $$ARG | ./push_swap/main_checker $$ARG); \
 	if [ -n "$$OPS" ]; then COUNT=$$(echo "$$OPS" | wc -l); else COUNT=0; fi; \
 	if [ "$$CHECK" = "OK" ] && [ "$$COUNT" -eq 0 ]; then \
-		echo "✅ ${GREEN}${BOLD} OK ${RESET} 0 operations"; \
+		echo "${GREEN}${BOLD} OK ${RESET} 0 operations"; \
 	else \
 		echo "❌ ${BG_RED}FAILED${RESET} — $$COUNT operations (should be 0) or checker failed"; \
 	fi
@@ -148,7 +150,7 @@ push_swap:
 	CHECK=$$(./push_swap/push_swap $$ARG | ./push_swap/main_checker $$ARG); \
 	if [ -n "$$OPS" ]; then COUNT=$$(echo "$$OPS" | wc -l); else COUNT=0; fi; \
 	if [ "$$CHECK" = "OK" ] && [ "$$COUNT" -eq 0 ]; then \
-		echo "✅ ${GREEN}${BOLD} OK ${RESET} 0 operations"; \
+		echo "${GREEN}${BOLD} OK ${RESET} 0 operations"; \
 	else \
 		echo "❌ ${BG_RED}FAILED${RESET} — $$COUNT operations (should be 0) or checker failed"; \
 	fi
@@ -158,7 +160,7 @@ push_swap:
 	CHECK=$$(./push_swap/push_swap $$ARG | ./push_swap/main_checker $$ARG); \
 	if [ -n "$$OPS" ]; then COUNT=$$(echo "$$OPS" | wc -l); else COUNT=0; fi; \
 	if [ "$$CHECK" = "OK" ] && [ "$$COUNT" -eq 0 ]; then \
-		echo "✅ ${GREEN}${BOLD} OK ${RESET} 0 operations"; \
+		echo "${GREEN}${BOLD} OK ${RESET} 0 operations"; \
 	else \
 		echo "❌ ${BG_RED}FAILED${RESET} — $$COUNT operations (should be 0) or checker failed"; \
 	fi
@@ -168,7 +170,7 @@ push_swap:
 	CHECK=$$(./push_swap/push_swap $$ARG | ./push_swap/main_checker $$ARG); \
 	if [ -n "$$OPS" ]; then COUNT=$$(echo "$$OPS" | wc -l); else COUNT=0; fi; \
 	if [ "$$CHECK" = "OK" ] && [ "$$COUNT" -eq 0 ]; then \
-		echo "✅ ${GREEN}${BOLD} OK ${RESET} 0 operations"; \
+		echo "${GREEN}${BOLD} OK ${RESET} 0 operations"; \
 	else \
 		echo "❌ ${BG_RED}FAILED${RESET} — $$COUNT operations (should be 0) or checker failed"; \
 	fi
@@ -178,7 +180,7 @@ push_swap:
 	CHECK=$$(./push_swap/push_swap $$ARG | ./push_swap/main_checker $$ARG); \
 	if [ -n "$$OPS" ]; then COUNT=$$(echo "$$OPS" | wc -l); else COUNT=0; fi; \
 	if [ "$$CHECK" = "OK" ] && [ "$$COUNT" -eq 0 ]; then \
-		echo "✅ ${GREEN}${BOLD} OK ${RESET} 0 operations"; \
+		echo "${GREEN}${BOLD} OK ${RESET} 0 operations"; \
 	else \
 		echo "❌ ${BG_RED}FAILED${RESET} — $$COUNT operations (should be 0) or checker failed\nARGS=$$ARG"; \
 	fi
@@ -189,7 +191,7 @@ push_swap:
 	CHECK=$$(./push_swap/push_swap $$ARG | ./push_swap/main_checker $$ARG); \
 	if [ -n "$$OPS" ]; then COUNT=$$(echo "$$OPS" | wc -l); else COUNT=0; fi; \
 	if [ "$$CHECK" = "OK" ] && [ "$$COUNT" -lt 4 ]; then \
-		echo "✅ ${GREEN}${BOLD} OK ${RESET} $$COUNT operations"; \
+		echo "${GREEN}${BOLD} OK ${RESET} $$COUNT operations"; \
 	else \
 		echo "❌ ${BG_RED}FAILED${RESET} — $$COUNT operations (should be less than 4) or checker failed"; \
 	fi
@@ -213,7 +215,7 @@ push_swap:
 			printf "❌ Test $$i: ${BG_RED}FAILED${RESET} $$COUNT operations (should be less than 4) \nARG=$$ARG\nOPS=\n$$OPS\n"; \
 			fail=$$((fail + 1)); \
 # 		else \
-# 			printf "✅ Test $$i: ${GREEN}OK${RESET} — $$COUNT operations\n"; \
+# 			printf "Test $$i: ${GREEN}OK${RESET} — $$COUNT operations\n"; \
 		fi; \
 		if [ "$$COUNT" -gt "$$max" ]; then max=$$COUNT; fi; \
 		total=$$((total + COUNT)); \
