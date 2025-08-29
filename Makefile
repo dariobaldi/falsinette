@@ -72,15 +72,14 @@ confirm:
 ## test : test current exo
 .PHONY: test
 test:
-	@clear
-	# @make -s -C ../push_swap push_swap
-	# @make -s -C ../push_swap bonus
-	# @mv ../push_swap/push_swap ./push_swap/push_swap
-	# @mv ../push_swap/checker ./push_swap/checker
-	@printf "${SUBTITLE}Run norminette${RESET}\n"
-	@rm -f norm_file && norminette ../push_swap > norm_file || echo -n
-	@grep Error norm_file && $(FAILED_NORM) || printf "${BG_GREEN}${BOLD}${BLACK} NORM: PASSES ${RESET}\n"
+	@make -s -C ./pipex test
 # 	@rm -f ./parse_err ./push_swap/push_swap ./push_swap/checker
+
+
+## pipex : Go dance salsa somewhere! :)
+.PHONY: pipex
+pipex:
+	@make -s -C ./pipex
 	
 ## push_swap : Because Swap_push doesn’t feel as natural.
 .PHONY: push_swap
