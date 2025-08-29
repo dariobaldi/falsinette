@@ -73,13 +73,12 @@ confirm:
 .PHONY: test
 test:
 	@make -s -C ./pipex test
-# 	@rm -f ./parse_err ./push_swap/push_swap ./push_swap/checker
 
 
 ## pipex : Go dance salsa somewhere! :)
 .PHONY: pipex
 pipex:
-	@make -s -C ./pipex
+	@make -s -C ./pipex pipex
 	
 ## push_swap : Because Swap_push doesn’t feel as natural.
 .PHONY: push_swap
