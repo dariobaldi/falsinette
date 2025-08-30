@@ -72,13 +72,13 @@ confirm:
 ## test : test current exo
 .PHONY: test
 test:
-	@make -s -C ./pipex test
+	@make --no-print-directory -C ./pipex test
 
 
 ## pipex : Go dance salsa somewhere! :)
 .PHONY: pipex
 pipex:
-	@make -s -C ./pipex pipex
+	@make --no-print-directory -C ./pipex pipex
 	
 ## push_swap : Because Swap_push doesn’t feel as natural.
 .PHONY: push_swap
